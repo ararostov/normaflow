@@ -1,0 +1,891 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Норма · Этап 1Б — Создание заказа в ПП</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 24px;
+    color: #111;
+    line-height: 1.55;
+    font-size: 17px;
+  }
+  h1 { font-size: 42px; margin-bottom: 6px; line-height: 1.2; }
+  h2 {
+    font-size: 28px;
+    margin-top: 48px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+    line-height: 1.25;
+  }
+  h2 .h2-count { color: #9aa0a6; font-weight: 500; }
+  h3 { font-size: 18px; margin-top: 26px; margin-bottom: 8px; }
+
+  .meta {
+    color: #444;
+    font-size: 16px;
+    margin-bottom: 22px;
+    line-height: 1.55;
+  }
+  .meta b { color: #111; }
+
+  .stage-pill {
+    display: inline-block;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: #6b3696;
+    background: #f3ebf7;
+    border: 1px solid #d6bce8;
+    border-radius: 4px;
+    padding: 3px 8px;
+    margin-bottom: 14px;
+    letter-spacing: 0.5px;
+  }
+
+  ul { padding-left: 22px; }
+  li { margin-bottom: 4px; }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 10px;
+    font-size: 15px;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    padding: 9px 11px;
+    vertical-align: top;
+    text-align: left;
+  }
+  th { background: #f4f4f6; font-weight: 600; }
+  tbody tr { transition: background-color 0.12s ease; }
+  tbody tr:hover:not(.cat) { background: #f6f9fc; }
+
+  tr.cat td,
+  td.cat {
+    background: #e8f0fa !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 12.5px;
+    letter-spacing: 0.8px;
+    color: #1e4d84 !important;
+    padding: 9px 11px;
+    border-color: #cfdcee !important;
+  }
+
+  .chip {
+    display: inline-block;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 6px;
+    background: #eaf1f9;
+    color: #2b6cb0;
+    border-radius: 4px;
+    margin: 1px 2px 1px 0;
+    white-space: nowrap;
+  }
+  .chip.gray { background: #f4f4f6; color: #555; }
+  .chip.green { background: #e6f4ea; color: #1e7a3c; }
+  .chip.orange { background: #fff3d6; color: #8a5a00; }
+  .chip.red { background: #fde8e8; color: #a42c2c; }
+  .chip.purple { background: #f3ebf7; color: #6b3696; }
+
+  /* System chips */
+  .chip.app { background: #ffffff; color: #111; border: 1.5px solid #111; }
+  .chip.back { background: #111; color: #fff; border: 1.5px solid #111; }
+  .chip.agbis { background: #fde8e8; color: #a42c2c; border: 1.5px solid #f0c4c4; }
+  .chip.tele { background: #d7f5f2; color: #0d6c64; border: 1.5px solid #9fddd5; }
+  .chip.maxma { background: #ede7f6; color: #512da8; border: 1.5px solid #b39ddb; }
+  .chip.cloud { background: #e3f2fd; color: #0d47a1; border: 1.5px solid #90caf9; }
+  .chip.life { background: #fff3e0; color: #bf5f00; border: 1.5px solid #ffcc80; }
+
+  .sys { font-weight: 600; font-size: 14px; color: #222; }
+
+  code.inline {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 13.5px;
+    background: #f4f4f6;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: #222;
+  }
+
+  .note {
+    color: #555;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    background: #fafbfc;
+    border-left: 3px solid #2b6cb0;
+    margin: 14px 0;
+  }
+  .note b { color: #111; }
+
+  .warn {
+    color: #5c3a00;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    background: #fff8e6;
+    border-left: 3px solid #d97706;
+    margin: 14px 0;
+  }
+  .warn b { color: #5c3a00; }
+
+  .alt-badge {
+    color: #4a246b;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    background: #faf5fd;
+    border-left: 3px solid #6b3696;
+    margin: 14px 0;
+  }
+  .alt-badge b { color: #4a246b; }
+
+  .delay {
+    color: #7a1f1f;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    background: #fdeeee;
+    border-left: 3px solid #c4453c;
+    margin: 14px 0;
+  }
+  .delay b { color: #7a1f1f; }
+
+  .diagram-wrap {
+    border: 1px solid #ddd;
+    background: #fff;
+    padding: 18px;
+    margin-top: 14px;
+    overflow-x: auto;
+  }
+
+  .diagram-sticky-wrap { position: relative; }
+  .diagram-legend-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    padding: 10px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    margin-top: 14px;
+  }
+  .diagram-legend-sticky + .diagram-wrap {
+    margin-top: 0;
+    border-top: 1px solid #eee;
+  }
+  .legend-chip {
+    font-size: 12.5px;
+    padding: 4px 9px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-weight: 600;
+  }
+  .actor-chip {
+    background: #f4f4f6;
+    color: #555;
+    border: 1.5px solid #cbd0d6;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  .state-blocks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 14px 0 24px;
+  }
+  .state-block {
+    border: 1px solid #ddd;
+    padding: 14px 16px;
+    background: #fafbfc;
+  }
+  .state-block.entry { border-left: 3px solid #6b7280; }
+  .state-block.exit  { border-left: 3px solid #1e7a3c; }
+  .state-block h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #555;
+    font-weight: 700;
+  }
+  .state-block.entry h3 { color: #555; }
+  .state-block.exit h3  { color: #1e7a3c; }
+  .state-block ul { list-style: none; padding: 0; margin: 0; }
+  .state-block li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+  }
+  .state-block li:last-child { border-bottom: none; }
+  .state-block .sname {
+    min-width: 100px;
+    font-weight: 600;
+    color: #222;
+    font-size: 13px;
+  }
+  .state-block .sval { color: #444; flex: 1; }
+
+  @media (max-width: 720px) {
+    .state-blocks { grid-template-columns: 1fr; }
+  }
+
+  .mermaid { font-family: ui-monospace, Menlo, Consolas, monospace; }
+  .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .mermaid .labelText,
+  .mermaid .loopText,
+  .mermaid text.loopText,
+  .mermaid text.labelText {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+  }
+  .mermaid .labelBox { rx: 3; ry: 3; }
+
+  hr { border: none; border-top: 1px solid #ddd; margin: 32px 0; }
+
+  ol.steps { padding-left: 22px; margin-top: 8px; }
+  ol.steps li { margin-bottom: 10px; }
+  ol.steps li b { color: #111; }
+
+  .toc-links {
+    font-size: 14px;
+    color: #555;
+    margin-top: 30px;
+    padding-top: 16px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+  }
+  .toc-links a {
+    color: #2b6cb0;
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px dashed #a8c3e2;
+  }
+  .toc-links a:hover { color: #1e4d84; border-bottom-color: #2b6cb0; }
+</style>
+</head>
+<body>
+
+<div class="stage-pill">ЭТАП 1Б · АЛЬТЕРНАТИВА · СОЗДАНИЕ В ПП</div>
+<h1>Создание заказа в пункте приёма</h1>
+
+<p class="meta">
+  Альтернативная версия Этапа 1. Клиент пришёл с вещами в пункт приёма (без оформления в приложении). Технолог создаёт заказ прямо в АГБИС, принимает вещи, применяет лояльность и опционально получает оплату. <b>Ведущая система — АГБИС.</b> Back узнаёт о заказе постфактум, через стандартную задержку 15–45 мин.
+</p>
+
+<div class="alt-badge">
+  <b>Когда применяется.</b> Клиент ещё не пользовался приложением (массовый кейс первого знакомства), либо пользователь приложения решил воспользоваться оффлайн-точкой. Этот этап заменяет собой <a href="stage-1a.html">Этап 1А (Создание заказа в приложении)</a>. Дальше в работу включается большинство обычных этапов с небольшими упрощениями — см. блок «Как это влияет на остальные этапы» ниже.
+</div>
+
+<div class="warn">
+  <b>Задержка АГБИС → Back 15–45 минут здесь видна в полный рост.</b> Это значит: между моментом оформления в ПП и появлением заказа в Back (а значит и в приложении клиента, когда он его скачает) проходит до 45 минут. В UX приложения должен быть понятный экран «ждём ваш заказ из ПП…» либо простая проверка по телефону с ретраем.
+</div>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">01 ·</span> Переходы статусов и признаков</h2>
+
+<h3>Состояние на входе и на выходе</h3>
+
+<div class="state-blocks">
+  <div class="state-block entry">
+    <h3>На входе в этап</h3>
+    <ul>
+      <li><span class="sname">App</span><span class="sval"><span class="chip gray">нет заказа</span> (клиент может вообще не иметь приложения)</span></li>
+      <li><span class="sname">Back</span><span class="sval"><span class="chip gray">нет заказа</span></span></li>
+      <li><span class="sname">АГБИС</span><span class="sval"><span class="chip gray">заказ не создан</span></span></li>
+      <li><span class="sname">Maxma</span><span class="sval"><span class="chip gray">нет заказа</span> · у клиента может быть баланс бонусов</span></li>
+      <li><span class="sname">Телетрек</span><span class="sval"><span class="chip gray">не задействован</span></span></li>
+    </ul>
+  </div>
+
+  <div class="state-block exit">
+    <h3>На выходе из этапа</h3>
+    <ul>
+      <li><span class="sname">АГБИС · заказ</span><span class="sval"><span class="chip agbis">AG-1</span> «Новый» · с фото/комментариями (опционально)</span></li>
+      <li><span class="sname">АГБИС · признаки</span><span class="sval"><span class="chip green">фабрика = Да</span> · <span class="chip green">клиент = Да</span> (технолог ставит сразу)</span></li>
+      <li><span class="sname">Back</span><span class="sval"><span class="chip back">BACK-5</span> «Подтверждён клиентом» <span class="chip red">задержка 15–45 мин</span></span></li>
+      <li><span class="sname">App</span><span class="sval"><span class="chip app">APP-5</span> «Вещи приняты» (если клиент скачал приложение и привязал заказ)</span></li>
+      <li><span class="sname">Maxma</span><span class="sval"><span class="chip maxma">MAX-1</span> «В работе» · применённая скидка и списанные бонусы синхронизированы из АГБИС</span></li>
+      <li><span class="sname">Признак оплаты</span><span class="sval"><span class="chip green">Оплачено</span> (если оплатил в ПП) или <span class="chip orange">Не оплачено</span> (позже в приложении или при выдаче)</span></li>
+      <li><span class="sname">Тип получения</span><span class="sval"><span class="chip gray">не выбран</span> · клиент выберет в приложении (курьер или ПП)</span></li>
+    </ul>
+  </div>
+</div>
+
+<div class="delay">
+  <b>Задержка АГБИС → Back: 15–45 минут.</b> Вся синхронизация данных заказа (создание, подтверждение, оплата, лояльность) — с этой задержкой. Отправка в АГБИС быстрая, но в нашем флоу инициатором везде является АГБИС, поэтому ждём мы.
+</div>
+
+<div class="note">
+  <b>Тип получения при создании не выбран.</b> Технолог в АГБИС не указывает адрес доставки — клиент выберет сам в приложении (слот, зону и т.д.). По умолчанию заказ находится в «подвешенном» состоянии: ни курьер, ни самовывоз не выбран. Клиент должен определиться в приложении.
+</div>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">02 ·</span> Как это работает</h2>
+
+<p>
+  Этап делится на четыре фазы. Ключевые отличия от Этапа 1: создание инициирует АГБИС (не App), подтверждение фабрики и клиента ставится сразу (оба «Да») — клиент физически присутствует, оплата может быть сделана прямо в ПП через кассу АГБИС, лояльность (бонусы, промокоды, акции) применяется в АГБИС — не в Maxma.
+</p>
+
+<ol class="steps">
+  <li>
+    <b>Фаза 1 · Технолог оформляет заказ в АГБИС.</b>
+    Клиент пришёл с вещами. Технолог создаёт заказ, добавляет услуги и цены, опционально фотографирует вещи (не обязательно — клиент здесь сам). Адрес доставки <b>не заполняется</b>. Тип получения — не выбран.
+  </li>
+  <li>
+    <b>Фаза 2 · Лояльность и оплата в ПП.</b>
+    Если клиент — постоянный (есть в АГБИС или Maxma по телефону):
+    <ul>
+      <li><b>Акции / промокоды</b> — технолог применяет через интерфейс АГБИС. Эти правила продублированы в АГБИС из Maxma (с рассинхроном).</li>
+      <li><b>Бонусы</b> — технолог списывает из <b>локального баланса АГБИС</b>. Максима пока не знает об этой операции.</li>
+      <li><b>Оплата</b> — наличные / карта через терминал АГБИС / СБП через АГБИС. Признак оплаты проставляется в АГБИС сразу. <b>Либо</b> — клиент говорит «оплачу позже в приложении» или «при получении», оплата переносится.</li>
+    </ul>
+  </li>
+  <li>
+    <b>Фаза 3 · Подтверждение сразу, технолог и клиент вместе.</b>
+    Поскольку клиент физически присутствует и согласен с составом и ценой, технолог в АГБИС <b>сразу</b> ставит признаки: «фабрика = Да» и «клиент = Да». Не нужен отдельный круг подтверждения как в Этапе 3. Приёмка закрыта.
+  </li>
+  <li>
+    <b>Фаза 4 · Синхронизация в Back с задержкой 15–45 мин.</b>
+    АГБИС → Back передаёт: новый заказ, состав, цену, признаки подтверждения, признак оплаты (если была), итоговую скидку и количество списанных бонусов. Back создаёт заказ у себя со статусом <code class="inline">BACK-5 "Подтверждён клиентом"</code> (сразу прыгаем через 1-4 статус, потому что клиент уже подтвердил). Back создаёт запись в Maxma: статус <code class="inline">MAX-1</code>, применяет скидку и списывает бонусы из баланса Maxma. Если клиент открыл приложение — он видит заказ со статусом <code class="inline">APP-5 "Вещи приняты"</code>.
+  </li>
+</ol>
+
+<div class="note">
+  <b>Лояльность: Maxma — мастер, АГБИС — локально.</b> Maxma считается глобальным источником правды по программе лояльности. АГБИС в ПП работает с собственной копией данных (бонусы, акции, промокоды продублированы туда из Maxma). Back — медиатор: когда АГБИС списал бонусы у клиента, Back получает информацию и катит изменения в Maxma. Из-за задержки 15–45 мин и асинхронности — возможны разрывы: клиент мог списать одни и те же бонусы дважды (в ПП и в приложении), если операции прошли одновременно.
+</div>
+
+<div class="note">
+  <b>Что мы видим от АГБИС по лояльности.</b> Не детализацию «какая акция сработала, какой промокод», а агрегированные данные: <b>итоговая сумма скидки в рублях</b> и <b>количество списанных (или начисленных) бонусов</b>. Этого достаточно чтобы передать в Maxma: «ручная скидка N руб, списать M бонусов у клиента».
+</div>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">03 ·</span> Sequence-диаграмма</h2>
+
+<div class="diagram-sticky-wrap">
+  <div class="diagram-legend-sticky">
+    <span class="legend-item"><span class="legend-chip actor-chip">👤 Клиент</span></span>
+    <span class="legend-item"><span class="legend-chip actor-chip">🧑‍🔧 Технолог</span></span>
+    <span class="legend-item"><span class="legend-chip chip agbis">АГБИС</span></span>
+    <span class="legend-item"><span class="legend-chip chip back">Norma Back</span></span>
+    <span class="legend-item"><span class="legend-chip chip maxma">Maxma</span></span>
+    <span class="legend-item"><span class="legend-chip chip app">Norma App</span></span>
+  </div>
+
+<div class="diagram-wrap">
+<div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor Client as Клиент
+    actor Tech as Технолог
+    participant AGBIS as АГБИС
+    participant Back as Norma Back
+    participant Maxma as Maxma
+    participant App as Norma App
+
+    Note over Client,App: Фаза 1 · Технолог оформляет заказ в АГБИС
+
+    Client->>Tech: Приходит с вещами,<br/>диктует телефон
+    Tech->>AGBIS: Создаёт заказ<br/>AG-1 "Новый"<br/>(услуги, цены,<br/>адрес НЕ заполнен,<br/>тип получения НЕ выбран)
+    Tech->>AGBIS: Опционально: фото вещей,<br/>комментарии
+
+    Note over Client,App: Фаза 2 · Лояльность и оплата в ПП
+
+    Tech->>AGBIS: Применяет акции / промокод<br/>(из локальной копии)
+    Tech->>AGBIS: Списывает бонусы<br/>(из локального баланса АГБИС)
+
+    alt СЦЕНАРИЙ · Клиент платит в ПП сразу
+        Client->>Tech: Платит:<br/>наличные / карта / СБП
+        Tech->>AGBIS: Проводит оплату
+        AGBIS->>AGBIS: Признак оплаты: Оплачено
+    else СЦЕНАРИЙ · Клиент откладывает оплату
+        Note right of AGBIS: Признак: Не оплачено<br/>Клиент оплатит позже<br/>в приложении или<br/>при получении
+    end
+
+    Note over Client,App: Фаза 3 · Подтверждение сразу (клиент здесь, в ПП)
+
+    Tech->>AGBIS: Ставит признаки:<br/>фабрика = Да<br/>клиент = Да
+
+    Note over Client,App: Фаза 4 · Синхронизация в Back с задержкой 15–45 мин
+
+    Note right of AGBIS: Задержка 15–45 мин<br/>на AGBIS → Back
+
+    AGBIS->>Back: Передаёт весь заказ:<br/>состав, цена,<br/>скидка, списанные бонусы,<br/>признаки оплаты и подтверждения
+
+    Back->>Back: Создаём заказ сразу<br/>в BACK-5 "Подтверждён клиентом"<br/>Признаки оплаты и подтверждения<br/>берём из АГБИС
+
+    Back->>Maxma: Создаём заказ<br/>со скидкой N руб,<br/>списываем M бонусов у клиента
+    Maxma->>Maxma: MAX-1 "В работе"<br/>Баланс бонусов обновлён
+
+    alt ВАРИАНТ · Клиент установил приложение<br/>(сейчас или позже)
+        Client->>App: Скачивает, логинится<br/>по телефону
+        App->>Back: 
+        Back->>App: Отдаёт все заказы клиента<br/>(включая новый из ПП)
+        App->>App: Показывает заказ<br/>APP-5 "Вещи приняты"<br/>(или появляется push "новый заказ")
+    else ВАРИАНТ · Клиент не скачал приложение
+        Note right of Client: Заказ есть в АГБИС.<br/>Дальнейшая работа<br/>через ПП возможна<br/>без приложения.
+    end
+
+    Note over Client,App: Этап 1Б завершён · Заказ создан и подтверждён<br/>Дальше: Этап 3 пропускается, переходим к Этапу 5 (Чистка)
+</div>
+</div>
+</div>
+
+<h3>Изменения по фазам</h3>
+
+<table>
+  <colgroup>
+    <col style="width:14%">
+    <col style="width:24%">
+    <col style="width:26%">
+    <col style="width:13%">
+    <col style="width:23%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Система</th>
+      <th>Было</th>
+      <th>Стало</th>
+      <th>Триггер</th>
+      <th>Что меняется</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr><td colspan="5" class="cat">Фаза 1 · Технолог оформляет заказ в АГБИС</td></tr>
+    <tr>
+      <td><span class="sys">АГБИС</span></td>
+      <td><span class="chip gray">—</span></td>
+      <td><span class="chip agbis">AG-1</span> «Новый» · состав, цена, признаки не проставлены</td>
+      <td><span class="sys">Технолог</span></td>
+      <td>создание заказа</td>
+    </tr>
+
+    <tr><td colspan="5" class="cat">Фаза 2 · Лояльность и оплата в ПП (опционально)</td></tr>
+    <tr>
+      <td><span class="sys">АГБИС</span></td>
+      <td>Без скидки, бонусы не списаны</td>
+      <td>Скидка применена, бонусы списаны <span style="color:#888; font-size:12px;">(локально в АГБИС)</span></td>
+      <td><span class="sys">Технолог</span></td>
+      <td>лояльность</td>
+    </tr>
+    <tr>
+      <td><span class="sys">АГБИС</span></td>
+      <td>Признак оплаты: <span class="chip orange">Не оплачено</span></td>
+      <td>Признак оплаты: <span class="chip green">Оплачено</span> (если платит в ПП) · источник: касса / карта / СБП</td>
+      <td><span class="sys">Технолог</span></td>
+      <td>признак оплаты</td>
+    </tr>
+
+    <tr><td colspan="5" class="cat">Фаза 3 · Подтверждение сразу</td></tr>
+    <tr>
+      <td><span class="sys">АГБИС · признаки</span></td>
+      <td><span class="chip gray">фабрика = Нет</span> · <span class="chip gray">клиент = Нет</span></td>
+      <td><span class="chip green">фабрика = Да</span> · <span class="chip green">клиент = Да</span></td>
+      <td><span class="sys">Технолог</span></td>
+      <td>признаки подтверждения</td>
+    </tr>
+
+    <tr><td colspan="5" class="cat">Фаза 4 · Синхронизация в Back с задержкой 15–45 мин</td></tr>
+    <tr>
+      <td><span class="sys">Back</span></td>
+      <td><span class="chip gray">—</span></td>
+      <td><span class="chip back">BACK-5</span> «Подтверждён клиентом» · скидка/бонусы/оплата синхронизированы из АГБИС <span class="chip red">задержка 15–45 мин</span></td>
+      <td><span class="sys">АГБИС</span></td>
+      <td>создание + статус + все признаки</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Maxma</span></td>
+      <td><span class="chip gray">—</span> · баланс клиента N бонусов</td>
+      <td><span class="chip maxma">MAX-1</span> «В работе» · скидка применена, баланс уменьшен на M бонусов</td>
+      <td><span class="sys">Back</span></td>
+      <td>создание + списание</td>
+    </tr>
+    <tr>
+      <td><span class="sys">App</span></td>
+      <td><span class="chip gray">нет заказа</span></td>
+      <td><span class="chip app">APP-5</span> «Вещи приняты» (если клиент скачал приложение)</td>
+      <td><span class="sys">Back</span></td>
+      <td>отображение UI</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">04 ·</span> Интеграции на этапе</h2>
+
+<table>
+  <colgroup>
+    <col style="width:24%">
+    <col style="width:20%">
+    <col style="width:28%">
+    <col style="width:28%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Направление</th>
+      <th>Режим</th>
+      <th>Когда вызывается</th>
+      <th>Зачем</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="sys">АГБИС → Back</span></td>
+      <td><span class="chip red">задержка 15–45 мин</span></td>
+      <td>Фаза 4 · после завершения оформления в АГБИС</td>
+      <td>Передать новый заказ с состоянием, признаками, лояльностью, оплатой</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back → Maxma</span></td>
+      <td><span class="chip green">быстро</span></td>
+      <td>Фаза 4 · после получения данных от АГБИС</td>
+      <td>Создать заказ в Maxma, применить скидку, списать бонусы</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back → App</span></td>
+      <td><span class="chip green">реалтайм</span></td>
+      <td>Когда клиент скачал приложение и залогинился (может быть сильно позже)</td>
+      <td>Показать клиенту заказ из ПП с актуальным состоянием</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note">
+  <b>Телетрек, Cloud, Life не задействованы.</b> Курьер здесь не нужен (клиент сам пришёл). Онлайн-оплата не проводилась (платил в ПП через АГБИС). Терминал Life — только для курьеров, в ПП используется терминал АГБИС.
+</div>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">05 ·</span> Как это влияет на остальные этапы</h2>
+
+<p>Флоу 1Б не создаёт параллельную ветку через все 7 этапов — большинство этапов сохраняются с небольшими отличиями:</p>
+
+<table>
+  <colgroup><col style="width:16%"><col style="width:14%"><col style="width:70%"></colgroup>
+  <thead>
+    <tr><th>Этап</th><th>Статус</th><th>Что меняется</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="stage-2.html">Этап 2 · Сбор вещей</a></td>
+      <td><span class="chip gray">пропускается</span></td>
+      <td>Вещи уже в ПП — курьер не нужен. Телетрек не задействован.</td>
+    </tr>
+    <tr>
+      <td><a href="stage-3.html">Этап 3 · Приёмка и подтверждение</a></td>
+      <td><span class="chip orange">упрощён</span></td>
+      <td>Подтверждение «фабрика = Да / клиент = Да» было поставлено в Фазе 3 текущего этапа. Отдельный Этап 3 не проходим. Виджет <code class="inline">W-2</code> не показываем.</td>
+    </tr>
+    <tr>
+      <td><a href="stage-4.html">Этап 4 · Оплата и лояльность</a></td>
+      <td><span class="chip orange">частично</span></td>
+      <td>Если клиент оплатил в ПП — этап пропускается (признак «Оплачено» уже есть). Если отложил — проходит стандартно в приложении (онлайн сейчас / при доставке). Лояльность уже применена через АГБИС.</td>
+    </tr>
+    <tr>
+      <td><a href="stage-5.html">Этап 5 · Чистка</a></td>
+      <td><span class="chip green">без изменений</span></td>
+      <td>Идентично основному флоу.</td>
+    </tr>
+    <tr>
+      <td><a href="stage-6a.html">Этап 6А · Доставка домой</a></td>
+      <td><span class="chip orange">зависит от выбора</span></td>
+      <td>Работает, если клиент скачал приложение и выбрал доставку курьером. Клиент вводит адрес, выбирает слот, далее по основному флоу.</td>
+    </tr>
+    <tr>
+      <td><a href="stage-6v.html">Этап 6В · Самовывоз из ПП</a></td>
+      <td><span class="chip orange">зависит от выбора</span></td>
+      <td>Если клиент выбрал самовывоз (в приложении или устно в ПП) — работает этот этап. Может работать даже без приложения.</td>
+    </tr>
+    <tr>
+      <td><a href="stage-7.html">Этап 7 · Отзыв</a></td>
+      <td><span class="chip green">без изменений</span></td>
+      <td>Идентично. Требует приложение — если клиент не скачал, отзыв не собираем.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">06 ·</span> Заметки и риски</h2>
+
+<div class="warn">
+  <b>Два источника правды по бонусам — Maxma vs АГБИС.</b> Maxma — мастер, АГБИС ведёт свою копию для оффлайн-работы в ПП. Синхронизация через Back, асинхронная с задержкой 15–45 мин. Возможные проблемы: клиент использовал бонусы в ПП и одновременно в приложении (двойное списание), актуальный баланс в АГБИС может отличаться от реального в Maxma. Это <b>системный риск</b>, требует мониторинга и политики разрешения конфликтов.
+</div>
+
+<div class="note">
+  <b>Идентификация клиента в ПП.</b> Клиент диктует телефон. Технолог в АГБИС ищет существующего клиента (уже есть баланс в Maxma, есть история заказов) или создаёт нового. Если клиент был только в Maxma (через приложение), АГБИС должен тоже знать о нём — это даёт локальная синхронизация Maxma→АГБИС.
+</div>
+
+<div class="note">
+  <b>Как приложение «находит» заказ из ПП.</b> Клиент логинится в приложении по телефону. Back уже получил данные заказа от АГБИС (возможно, до того как клиент скачал приложение). Приложение делает запрос «мои заказы» к Back по телефону — получает список, включая заказ из ПП. Никаких QR-кодов или номеров заказа вводить не нужно — привязка по телефону.
+</div>
+
+<div class="warn">
+  <b>Клиент без приложения — ограниченные возможности.</b> Клиент может полностью пройти флоу через ПП: оформил, заплатил, заказ сделали, пришёл за ним — забрал. Приложение не обязательно. Но: клиент не получит push-уведомление о готовности (только если по SMS от АГБИС — отдельный канал, не описан), не сможет выбрать курьерскую доставку (не через телефон в ПП, а нужно именно приложение), не сможет оставить отзыв.
+</div>
+
+<div class="warn">
+  <b>Unhappy path не покрыт.</b> Проблемы создания: клиент отменил перед оплатой в ПП, технолог ошибся в цене и нужно скорректировать, АГБИС недоступен, синхронизация АГБИС → Back упала, Maxma не списала бонусы после успешного списания в АГБИС (рассинхрон). Все эти сценарии требуют отдельной проработки.
+</div>
+
+<!-- ========================================================== -->
+<div class="toc-links">
+  <span>Альтернатива: <a href="stage-1a.html">Этап 1А — Создание в приложении</a></span>
+  <span><a href="index.html">↑ К оглавлению</a></span>
+  <span>Следующий: <a href="stage-5.html">Этап 5 — Чистка →</a></span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#fafbfc',
+      primaryTextColor: '#111',
+      primaryBorderColor: '#111',
+      lineColor: '#333',
+      secondaryColor: '#eaf1f9',
+      tertiaryColor: '#fff',
+      actorBkg: '#fafbfc',
+      actorBorder: '#222',
+      actorTextColor: '#111',
+      actorLineColor: '#333',
+      signalColor: '#333',
+      signalTextColor: '#111',
+      labelBoxBkgColor: '#2b6cb0',
+      labelBoxBorderColor: '#1e4d84',
+      labelTextColor: '#fff',
+      loopTextColor: '#111',
+      noteBorderColor: '#cfdcee',
+      noteBkgColor: '#eaf1f9',
+      noteTextColor: '#1e4d84',
+      activationBorderColor: '#2b6cb0',
+      activationBkgColor: '#eaf1f9',
+      sequenceNumberColor: '#fff',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif'
+    },
+    sequence: {
+      diagramMarginX: 40,
+      diagramMarginY: 20,
+      actorMargin: 80,
+      boxMargin: 12,
+      boxTextMargin: 6,
+      messageMargin: 38,
+      messageFontSize: 13,
+      noteFontSize: 13,
+      actorFontSize: 14,
+      labelBoxWidth: 60,
+      labelFontSize: 15,
+      labelFontWeight: 700,
+      mirrorActors: true,
+      bottomMarginAdj: 40
+    }
+  });
+</script>
+
+<script>
+(function() {
+  // Цвет линии — плотный, контрастный
+  const LINE_COLOR = {
+    'Клиент': '#555',
+    'Технолог': '#555',
+    'Norma App': '#111',
+    'Norma Back': '#111',
+    'АГБИС': '#a42c2c',
+    'Телетрек': '#0d6c64',
+    'Maxma': '#512da8',
+    'Cloud': '#0d47a1',
+    'Life': '#bf5f00',
+  };
+
+  // Цвета плашек участников — { fill, stroke, text }
+  const BOX_COLOR = {
+    'Клиент':     { fill: '#f4f4f6', stroke: '#cbd0d6', text: '#555' },
+    'Технолог':   { fill: '#f4f4f6', stroke: '#cbd0d6', text: '#555' },
+    'Norma App':  { fill: '#ffffff', stroke: '#111',    text: '#111' },
+    'Norma Back': { fill: '#111',    stroke: '#111',    text: '#ffffff' },
+    'АГБИС':      { fill: '#fde8e8', stroke: '#f0c4c4', text: '#a42c2c' },
+    'Телетрек':   { fill: '#d7f5f2', stroke: '#9fddd5', text: '#0d6c64' },
+    'Maxma':      { fill: '#ede7f6', stroke: '#b39ddb', text: '#512da8' },
+    'Cloud':      { fill: '#e3f2fd', stroke: '#90caf9', text: '#0d47a1' },
+    'Life':       { fill: '#fff3e0', stroke: '#ffcc80', text: '#bf5f00' },
+  };
+
+  function colorizeDiagram() {
+    const diagrams = document.querySelectorAll('.mermaid svg');
+    diagrams.forEach(function(svg) {
+      
+      // === 1. Собираем карту: отображаемое имя → X-центр столбца ===
+      // Все <text class="actor"> содержат отображаемые имена.
+      // Они рендерятся по два (сверху и снизу) — достаточно любого.
+      const nameToX = {};
+      svg.querySelectorAll('text.actor').forEach(function(t) {
+        const name = (t.textContent || '').trim();
+        if (!name) return;
+        const x = parseFloat(t.getAttribute('x'));
+        if (!isNaN(x) && !(name in nameToX)) {
+          nameToX[name] = x;
+        }
+      });
+
+      // === 2. Красим вертикальные lifeline-линии ===
+      // Они могут иметь класс "actor-line" или класс "200" (баг Mermaid)
+      // или быть без класса. Определяем по тому что x1===x2 и достаточная длина.
+      svg.querySelectorAll('line').forEach(function(line) {
+        const x1 = parseFloat(line.getAttribute('x1'));
+        const x2 = parseFloat(line.getAttribute('x2'));
+        const y1 = parseFloat(line.getAttribute('y1'));
+        const y2 = parseFloat(line.getAttribute('y2'));
+        if (isNaN(x1) || isNaN(x2) || isNaN(y1) || isNaN(y2)) return;
+        // Вертикальная линия: x1 ≈ x2
+        if (Math.abs(x1 - x2) > 2) return;
+        // Достаточно длинная (чтобы исключить мелкие детали человечка)
+        if (Math.abs(y2 - y1) < 50) return;
+
+        // Находим ближайший actor по X
+        let nearestName = null;
+        let minDist = Infinity;
+        for (const name in nameToX) {
+          const dist = Math.abs(nameToX[name] - x1);
+          if (dist < minDist) { minDist = dist; nearestName = name; }
+        }
+        // Допуск — линия должна быть ровно в столбце
+        if (minDist > 5) return;
+
+        if (nearestName && LINE_COLOR[nearestName]) {
+          const color = LINE_COLOR[nearestName];
+          line.setAttribute('stroke', color);
+          line.setAttribute('stroke-width', '2.5');
+          line.style.stroke = color;
+          line.style.strokeWidth = '2.5px';
+        }
+      });
+
+      // === 3. Красим плашки participants ===
+      // <rect class="actor actor-top"> и <rect class="actor actor-bottom">
+      // У них есть <text class="actor"> рядом с тем же x-центром + (x, y+h/2)
+      svg.querySelectorAll('rect.actor').forEach(function(rect) {
+        const rectX = parseFloat(rect.getAttribute('x'));
+        const rectW = parseFloat(rect.getAttribute('width'));
+        const rectY = parseFloat(rect.getAttribute('y'));
+        const rectH = parseFloat(rect.getAttribute('height'));
+        if (isNaN(rectX) || isNaN(rectW)) return;
+        const centerX = rectX + rectW / 2;
+
+        // Ищем соответствующий actor по имени (по X-центру)
+        let nearestName = null;
+        let minDist = Infinity;
+        for (const name in nameToX) {
+          const dist = Math.abs(nameToX[name] - centerX);
+          if (dist < minDist) { minDist = dist; nearestName = name; }
+        }
+        if (!nearestName || minDist > 5 || !BOX_COLOR[nearestName]) return;
+
+        const colors = BOX_COLOR[nearestName];
+
+        // Красим rect
+        rect.setAttribute('fill', colors.fill);
+        rect.setAttribute('stroke', colors.stroke);
+        rect.setAttribute('stroke-width', '1.5');
+        rect.style.fill = colors.fill;
+        rect.style.stroke = colors.stroke;
+        rect.style.strokeWidth = '1.5px';
+
+        // Находим соответствующий <text class="actor"> в той же группе
+        // (либо через parentNode, либо по X и диапазону Y)
+        const parentG = rect.parentNode;
+        if (parentG) {
+          parentG.querySelectorAll('text.actor').forEach(function(t) {
+            const tx = parseFloat(t.getAttribute('x'));
+            if (!isNaN(tx) && Math.abs(tx - centerX) < 5) {
+              t.setAttribute('fill', colors.text);
+              t.style.fill = colors.text;
+              t.style.fontWeight = '700';
+              // Также красим все <tspan> внутри
+              t.querySelectorAll('tspan').forEach(function(tspan) {
+                tspan.setAttribute('fill', colors.text);
+                tspan.style.fill = colors.text;
+              });
+            }
+          });
+        }
+      });
+
+      // === 4. Красим actor-man (фигурки человечков) ===
+      // <g class="actor-man actor-top"> или <g class="actor-man actor-bottom">
+      // Содержат <line> и <circle> — это рисунок человечка.
+      // Рядом в SVG есть <text class="actor"> с именем actor'а.
+      svg.querySelectorAll('g.actor-man').forEach(function(manG) {
+        // Находим ассоциированный text.actor
+        // Все text.actor с parent_class="actor-man ..." относятся к этому человечку
+        // Но по структуре SVG text может быть и в том же g, и рядом
+        // Попробуем: имя человечка — из text внутри manG
+        const nameText = manG.querySelector('text.actor') ||
+                         manG.parentNode.querySelector('text.actor');
+        if (!nameText) return;
+        const name = (nameText.textContent || '').trim();
+        if (!name || !BOX_COLOR[name]) return;
+        const colors = BOX_COLOR[name];
+
+        // Красим линии (тело, руки, ноги) и круг (голова)
+        manG.querySelectorAll('line').forEach(function(l) {
+          l.setAttribute('stroke', colors.text);
+          l.setAttribute('stroke-width', '2');
+          l.style.stroke = colors.text;
+          l.style.strokeWidth = '2px';
+        });
+        manG.querySelectorAll('circle').forEach(function(c) {
+          c.setAttribute('stroke', colors.text);
+          c.setAttribute('fill', colors.fill);
+          c.style.stroke = colors.text;
+          c.style.fill = colors.fill;
+        });
+
+        // Красим имя под/над человечком
+        if (nameText) {
+          nameText.setAttribute('fill', colors.text);
+          nameText.style.fill = colors.text;
+          nameText.style.fontWeight = '700';
+          nameText.querySelectorAll('tspan').forEach(function(tspan) {
+            tspan.setAttribute('fill', colors.text);
+            tspan.style.fill = colors.text;
+          });
+        }
+      });
+    });
+  }
+
+  function waitForDiagrams(attempts) {
+    attempts = attempts || 0;
+    const svgs = document.querySelectorAll('.mermaid svg');
+    if (svgs.length > 0) { setTimeout(colorizeDiagram, 100); return; }
+    if (attempts > 100) return;
+    setTimeout(function() { waitForDiagrams(attempts + 1); }, 100);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { waitForDiagrams(0); });
+  } else {
+    waitForDiagrams(0);
+  }
+})();
+</script>
+
+</body>
+</html>

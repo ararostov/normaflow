@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Норма · Этап 7 — Завершение и отзыв</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 24px;
+    color: #111;
+    line-height: 1.55;
+    font-size: 17px;
+  }
+  h1 { font-size: 42px; margin-bottom: 6px; line-height: 1.2; }
+  h2 {
+    font-size: 28px;
+    margin-top: 48px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+    line-height: 1.25;
+  }
+  h2 .h2-count { color: #9aa0a6; font-weight: 500; }
+  h3 { font-size: 18px; margin-top: 26px; margin-bottom: 8px; }
+
+  .meta {
+    color: #444;
+    font-size: 16px;
+    margin-bottom: 22px;
+    line-height: 1.55;
+  }
+  .meta b { color: #111; }
+
+  .stage-pill {
+    display: inline-block;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: #2b6cb0;
+    background: #eaf1f9;
+    border: 1px solid #cfdcee;
+    border-radius: 4px;
+    padding: 3px 8px;
+    margin-bottom: 14px;
+    letter-spacing: 0.5px;
+  }
+
+  ul { padding-left: 22px; }
+  li { margin-bottom: 4px; }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 10px;
+    font-size: 15px;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    padding: 9px 11px;
+    vertical-align: top;
+    text-align: left;
+  }
+  th { background: #f4f4f6; font-weight: 600; }
+  tbody tr { transition: background-color 0.12s ease; }
+  tbody tr:hover:not(.cat) { background: #f6f9fc; }
+
+  tr.cat td,
+  td.cat {
+    background: #e8f0fa !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 12.5px;
+    letter-spacing: 0.8px;
+    color: #1e4d84 !important;
+    padding: 9px 11px;
+    border-color: #cfdcee !important;
+  }
+
+  .chip {
+    display: inline-block;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 6px;
+    background: #eaf1f9;
+    color: #2b6cb0;
+    border-radius: 4px;
+    margin: 1px 2px 1px 0;
+    white-space: nowrap;
+  }
+  .chip.gray { background: #f4f4f6; color: #555; }
+  .chip.green { background: #e6f4ea; color: #1e7a3c; }
+  .chip.orange { background: #fff3d6; color: #8a5a00; }
+  .chip.red { background: #fde8e8; color: #a42c2c; }
+  .chip.purple { background: #f3ebf7; color: #6b3696; }
+
+  /* ===== System-coded chip colors (Variant B) ===== */
+  .chip.app {
+    background: #ffffff;
+    color: #111;
+    border: 1.5px solid #111;
+  }
+  .chip.back {
+    background: #111;
+    color: #fff;
+    border: 1.5px solid #111;
+  }
+  .chip.agbis {
+    background: #fde8e8;
+    color: #a42c2c;
+    border: 1.5px solid #f0c4c4;
+  }
+  .chip.tele {
+    background: #d7f5f2;
+    color: #0d6c64;
+    border: 1.5px solid #9fddd5;
+  }
+  .chip.maxma {
+    background: #ede7f6;
+    color: #512da8;
+    border: 1.5px solid #b39ddb;
+  }
+
+  .arrow { color: #9aa0a6; margin: 0 4px; font-weight: 600; }
+
+  .sys { font-weight: 600; font-size: 14px; color: #222; }
+
+  code.inline {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 13.5px;
+    background: #f4f4f6;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: #222;
+  }
+
+  .note {
+    color: #555;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    background: #fafbfc;
+    border-left: 3px solid #2b6cb0;
+    margin: 14px 0;
+  }
+  .note b { color: #111; }
+
+  .warn {
+    color: #5c3a00;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    background: #fff8e6;
+    border-left: 3px solid #d97706;
+    margin: 14px 0;
+  }
+
+  .delay {
+    color: #7a1f1f;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    background: #fdeeee;
+    border-left: 3px solid #c4453c;
+    margin: 14px 0;
+  }
+  .delay b { color: #7a1f1f; }
+
+  .diagram-wrap {
+    border: 1px solid #ddd;
+    background: #fff;
+    padding: 18px;
+    margin-top: 14px;
+    overflow-x: auto;
+  }
+
+  /* State-on-entry / state-on-exit blocks */
+  .state-blocks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 14px 0 24px;
+  }
+  .state-block {
+    border: 1px solid #ddd;
+    padding: 14px 16px;
+    background: #fafbfc;
+  }
+  .state-block.entry { border-left: 3px solid #6b7280; }
+  .state-block.exit  { border-left: 3px solid #1e7a3c; }
+  .state-block h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #555;
+    font-weight: 700;
+  }
+  .state-block.entry h3 { color: #555; }
+  .state-block.exit h3  { color: #1e7a3c; }
+  .state-block ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .state-block li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+  }
+  .state-block li:last-child { border-bottom: none; }
+  .state-block .sname {
+    min-width: 100px;
+    font-weight: 600;
+    color: #222;
+    font-size: 13px;
+  }
+  .state-block .sval {
+    color: #444;
+    flex: 1;
+  }
+
+  @media (max-width: 720px) {
+    .state-blocks { grid-template-columns: 1fr; }
+  }
+
+  .mermaid { font-family: ui-monospace, Menlo, Consolas, monospace; }
+  .mermaid svg { max-width: 100% !important; height: auto !important; }
+
+  .mermaid .labelText,
+  .mermaid .loopText,
+  .mermaid text.loopText,
+  .mermaid text.labelText {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+  }
+  .mermaid .labelBox { rx: 3; ry: 3; }
+
+  hr { border: none; border-top: 1px solid #ddd; margin: 32px 0; }
+
+  ol.steps { padding-left: 22px; margin-top: 8px; }
+  ol.steps li { margin-bottom: 10px; }
+  ol.steps li b { color: #111; }
+
+  .toc-links {
+    font-size: 14px;
+    color: #555;
+    margin-top: 30px;
+    padding-top: 16px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+  }
+  .toc-links a {
+    color: #2b6cb0;
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px dashed #a8c3e2;
+  }
+  .toc-links a:hover { color: #1e4d84; border-bottom-color: #2b6cb0; }
+</style>
+</head>
+<body>
+
+<div class="stage-pill">ЭТАП 7 из 7</div>
+<h1>Завершение и отзыв</h1>
+
+<p class="meta">
+  Заказ выдан клиенту, все статусы в финальных значениях. Приложение предлагает клиенту оставить отзыв и поставить оценку. Отзыв — <b>опциональный шаг</b>: клиент может пропустить, и это никак не повлияет на статус заказа. Отзыв сохраняется только в Back и никуда больше не передаётся.
+</p>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">01 ·</span> Переходы статусов и признаков</h2>
+
+<h3>Состояние на входе и на выходе</h3>
+
+<div class="state-blocks">
+  <div class="state-block entry">
+    <h3>На входе в этап</h3>
+    <ul>
+      <li><span class="sname">App</span><span class="sval"><span class="chip app">APP-10</span> «Выдан»</span></li>
+      <li><span class="sname">Back</span><span class="sval"><span class="chip back">BACK-11</span> «Завершён»</span></li>
+      <li><span class="sname">АГБИС · заказ</span><span class="sval"><span class="chip agbis">AG-4</span> «Выданный»</span></li>
+      <li><span class="sname">Телетрек</span><span class="sval"><span class="chip tele">TELE-5</span> «Выполнена» · задача на отдачу</span></li>
+      <li><span class="sname">Maxma</span><span class="sval"><span class="chip maxma">MAX-2</span> «Завершённый»</span></li>
+      <li><span class="sname">Признак оплаты</span><span class="sval"><span class="chip green">Оплачено</span></span></li>
+      <li><span class="sname">Отзыв</span><span class="sval"><span class="chip gray">не оставлен</span></span></li>
+    </ul>
+  </div>
+
+  <div class="state-block exit">
+    <h3>На выходе из этапа</h3>
+    <ul>
+      <li><span class="sname">App</span><span class="sval"><span class="chip app">APP-10</span> «Выдан» · без изменений</span></li>
+      <li><span class="sname">Back</span><span class="sval"><span class="chip back">BACK-11</span> «Завершён» · без изменений</span></li>
+      <li><span class="sname">АГБИС · заказ</span><span class="sval"><span class="chip agbis">AG-4</span> «Выданный» · без изменений</span></li>
+      <li><span class="sname">Телетрек</span><span class="sval"><span class="chip tele">TELE-5</span> «Выполнена» · без изменений</span></li>
+      <li><span class="sname">Maxma</span><span class="sval"><span class="chip maxma">MAX-2</span> «Завершённый» · без изменений</span></li>
+      <li><span class="sname">Признак оплаты</span><span class="sval"><span class="chip green">Оплачено</span> · без изменений</span></li>
+      <li><span class="sname">Отзыв</span><span class="sval"><span class="chip green">оставлен</span> (если клиент оставил) или <span class="chip gray">не оставлен</span> (если пропустил)</span></li>
+    </ul>
+  </div>
+</div>
+
+<div class="note">
+  <b>Статусы заказа не меняются.</b> Все системы уже в финальных значениях после Этапа 6. На этом этапе меняется только <b>наличие отзыва</b> в Back — и только если клиент решил его оставить.
+</div>
+
+<div class="note">
+  <b><code class="inline">AG-5 "Закрытый"</code> не используется.</b> В справочнике АГБИС есть статус «Закрытый» (после «Выданный»), но в нашем флоу он не задействован. Заказ остаётся в <code class="inline">AG-4 "Выданный"</code> и никуда дальше не движется.
+</div>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">02 ·</span> Как это работает</h2>
+
+<p>
+  После того как курьер вручил клиенту вещи (конец Этапа 6), приложение показывает экран с предложением оценить заказ. Этот экран появляется автоматически при открытии приложения или возврате к заказу. Клиент может оставить отзыв прямо сейчас, отложить на потом или вообще пропустить.
+</p>
+
+<ol class="steps">
+  <li>
+    <b>Приложение предлагает оставить отзыв.</b>
+    Back триггерит в App показ экрана оценки и ввода отзыва. Это происходит один раз после завершения заказа (следующий раз появится у следующего заказа).
+  </li>
+  <li>
+    <b>Опционально · Клиент оставляет отзыв.</b>
+    Клиент ставит оценку (например, звёзды) и пишет текст. App передаёт оценку и текст в Back. Back сохраняет отзыв как артефакт заказа.
+  </li>
+  <li>
+    <b>Заказ окончательно закрыт.</b>
+    Никаких дополнительных действий не требуется. Все системы остаются в своих финальных состояниях. Отзыв хранится только в Back — в Maxma, АГБИС или другие системы он не передаётся.
+  </li>
+</ol>
+
+<div class="note">
+  <b>Отзыв — только в Back.</b> Мы не передаём отзыв в Maxma или АГБИС. Если в будущем понадобится учитывать отзывы в программе лояльности, этот процесс придётся добавлять отдельно.
+</div>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">03 ·</span> Sequence-диаграмма</h2>
+
+<div class="diagram-wrap">
+<div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor Client as Клиент
+    participant App as Norma App
+    participant Back as Norma Back
+
+    Note over Client,Back: Фаза 1 · Предложение оставить отзыв
+
+    Back->>App: 
+    App->>App: Показываем экран<br/>"Оцените заказ"
+
+    Note over Client,Back: Фаза 2 · Клиент оставляет отзыв (опционально)
+
+    alt ВАРИАНТ · Клиент оставляет отзыв
+        Client->>App: Ставит оценку<br/>и пишет отзыв
+        App->>Back: 
+        Back->>Back: Сохраняем отзыв<br/>в заказе
+    else ВАРИАНТ · Клиент пропускает
+        Note right of Client: Клиент закрывает экран<br/>или не открывает приложение.<br/>Заказ остаётся завершённым.
+    end
+
+    Note over Client,Back: Этап 7 завершён · Заказ окончательно закрыт
+</div>
+</div>
+
+<h3>Изменения по фазам</h3>
+
+<table>
+  <colgroup>
+    <col style="width:14%">
+    <col style="width:24%">
+    <col style="width:26%">
+    <col style="width:13%">
+    <col style="width:23%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Система</th>
+      <th>Было</th>
+      <th>Стало</th>
+      <th>Триггер</th>
+      <th>Что меняется</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr><td colspan="5" class="cat">Фаза 1 · Предложение оставить отзыв</td></tr>
+    <tr>
+      <td><span class="sys">App</span></td>
+      <td>Нет экрана оценки</td>
+      <td>Показан экран «Оцените заказ»</td>
+      <td><span class="sys">Back</span></td>
+      <td>UI</td>
+    </tr>
+
+    <tr><td colspan="5" class="cat">Фаза 2 · Клиент оставляет отзыв (опционально)</td></tr>
+    <tr>
+      <td><span class="sys">App</span></td>
+      <td>Оценка не выбрана, отзыв не введён</td>
+      <td>Оценка и текст отзыва введены</td>
+      <td><span class="sys">Клиент</span></td>
+      <td>данные отзыва</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back</span></td>
+      <td>Отзыв отсутствует</td>
+      <td>Отзыв сохранён в заказе</td>
+      <td><span class="sys">App</span></td>
+      <td>артефакт заказа</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">04 ·</span> Интеграции на этапе</h2>
+
+<table>
+  <colgroup>
+    <col style="width:24%">
+    <col style="width:20%">
+    <col style="width:28%">
+    <col style="width:28%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Направление</th>
+      <th>Режим</th>
+      <th>Когда вызывается</th>
+      <th>Зачем</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="sys">Back → App</span></td>
+      <td><span class="chip green">реалтайм</span></td>
+      <td>После завершения Этапа 6</td>
+      <td>Показать клиенту экран оценки заказа</td>
+    </tr>
+    <tr>
+      <td><span class="sys">App → Back</span></td>
+      <td><span class="chip green">реалтайм</span></td>
+      <td>Когда клиент отправил отзыв</td>
+      <td>Сохранить оценку и текст отзыва в заказе</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note">
+  <b>АГБИС, Телетрек, Maxma, Cloud, Life на этом этапе не задействованы.</b> Никаких обращений к этим системам. Все интеграции — только между App и Back.
+</div>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">05 ·</span> Заметки</h2>
+
+<div class="note">
+  <b>Отзыв — не блокирующий шаг.</b> Клиент может пропустить экран оценки, и это никак не повлияет на статус заказа. С точки зрения бизнес-флоу заказ уже завершён на Этапе 6.
+</div>
+
+<div class="note">
+  <b>Будущее расширение — передача отзывов в Maxma.</b> Сейчас отзыв хранится только в Back. Если понадобится связать отзывы с программой лояльности (например, начислять бонусы за отзыв, поднимать рейтинг клиента) — добавим стрелку <code class="inline">Back → Maxma</code> в этом этапе. Пока такой интеграции нет.
+</div>
+
+<div class="warn">
+  <b>Unhappy path не покрыт.</b> Плохая оценка / жалобный отзыв / запрос на возврат — должны обрабатываться отдельным процессом (менеджер клиентского сервиса, претензии, возвраты). В текущем флоу мы только сохраняем отзыв как артефакт.
+</div>
+
+<!-- ========================================================== -->
+<div class="toc-links">
+  <span>← <a href="stage-6a.html">Этап 6А — Доставка домой</a> · <a href="stage-6v.html">или 6В (в ПП)</a></span>
+  <span><a href="index.html">↑ К оглавлению</a></span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#fafbfc',
+      primaryTextColor: '#111',
+      primaryBorderColor: '#111',
+      lineColor: '#333',
+      secondaryColor: '#eaf1f9',
+      tertiaryColor: '#fff',
+      actorBkg: '#fafbfc',
+      actorBorder: '#222',
+      actorTextColor: '#111',
+      actorLineColor: '#333',
+      signalColor: '#333',
+      signalTextColor: '#111',
+      labelBoxBkgColor: '#2b6cb0',
+      labelBoxBorderColor: '#1e4d84',
+      labelTextColor: '#fff',
+      loopTextColor: '#111',
+      noteBorderColor: '#cfdcee',
+      noteBkgColor: '#eaf1f9',
+      noteTextColor: '#1e4d84',
+      activationBorderColor: '#2b6cb0',
+      activationBkgColor: '#eaf1f9',
+      sequenceNumberColor: '#fff',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif'
+    },
+    sequence: {
+      diagramMarginX: 40,
+      diagramMarginY: 20,
+      actorMargin: 80,
+      boxMargin: 12,
+      boxTextMargin: 6,
+      messageMargin: 38,
+      messageFontSize: 13,
+      noteFontSize: 13,
+      actorFontSize: 14,
+      labelBoxWidth: 60,
+      labelFontSize: 15,
+      labelFontWeight: 700,
+      mirrorActors: true,
+      bottomMarginAdj: 40
+    }
+  });
+</script>
+
+
+<script>
+(function() {
+  // Цвет линии — плотный, контрастный
+  const LINE_COLOR = {
+    'Клиент': '#555',
+    'Технолог': '#555',
+    'Norma App': '#111',
+    'Norma Back': '#111',
+    'АГБИС': '#a42c2c',
+    'Телетрек': '#0d6c64',
+    'Maxma': '#512da8',
+    'Cloud': '#0d47a1',
+    'Life': '#bf5f00',
+  };
+
+  const BOX_COLOR = {
+    'Клиент':     { fill: '#f4f4f6', stroke: '#cbd0d6', text: '#555' },
+    'Технолог':   { fill: '#f4f4f6', stroke: '#cbd0d6', text: '#555' },
+    'Norma App':  { fill: '#ffffff', stroke: '#111',    text: '#111' },
+    'Norma Back': { fill: '#111',    stroke: '#111',    text: '#ffffff' },
+    'АГБИС':      { fill: '#fde8e8', stroke: '#f0c4c4', text: '#a42c2c' },
+    'Телетрек':   { fill: '#d7f5f2', stroke: '#9fddd5', text: '#0d6c64' },
+    'Maxma':      { fill: '#ede7f6', stroke: '#b39ddb', text: '#512da8' },
+    'Cloud':      { fill: '#e3f2fd', stroke: '#90caf9', text: '#0d47a1' },
+    'Life':       { fill: '#fff3e0', stroke: '#ffcc80', text: '#bf5f00' },
+  };
+
+  function colorizeDiagram() {
+    const diagrams = document.querySelectorAll('.mermaid svg');
+    diagrams.forEach(function(svg) {
+      const nameToX = {};
+      svg.querySelectorAll('text.actor').forEach(function(t) {
+        const name = (t.textContent || '').trim();
+        if (!name) return;
+        const x = parseFloat(t.getAttribute('x'));
+        if (!isNaN(x) && !(name in nameToX)) {
+          nameToX[name] = x;
+        }
+      });
+
+      svg.querySelectorAll('line').forEach(function(line) {
+        const x1 = parseFloat(line.getAttribute('x1'));
+        const x2 = parseFloat(line.getAttribute('x2'));
+        const y1 = parseFloat(line.getAttribute('y1'));
+        const y2 = parseFloat(line.getAttribute('y2'));
+        if (isNaN(x1) || isNaN(x2) || isNaN(y1) || isNaN(y2)) return;
+        if (Math.abs(x1 - x2) > 2) return;
+        if (Math.abs(y2 - y1) < 50) return;
+
+        let nearestName = null;
+        let minDist = Infinity;
+        for (const name in nameToX) {
+          const dist = Math.abs(nameToX[name] - x1);
+          if (dist < minDist) { minDist = dist; nearestName = name; }
+        }
+        if (minDist > 5) return;
+
+        if (nearestName && LINE_COLOR[nearestName]) {
+          const color = LINE_COLOR[nearestName];
+          line.setAttribute('stroke', color);
+          line.setAttribute('stroke-width', '2.5');
+          line.style.stroke = color;
+          line.style.strokeWidth = '2.5px';
+        }
+      });
+
+      svg.querySelectorAll('rect.actor').forEach(function(rect) {
+        const rectX = parseFloat(rect.getAttribute('x'));
+        const rectW = parseFloat(rect.getAttribute('width'));
+        if (isNaN(rectX) || isNaN(rectW)) return;
+        const centerX = rectX + rectW / 2;
+
+        let nearestName = null;
+        let minDist = Infinity;
+        for (const name in nameToX) {
+          const dist = Math.abs(nameToX[name] - centerX);
+          if (dist < minDist) { minDist = dist; nearestName = name; }
+        }
+        if (!nearestName || minDist > 5 || !BOX_COLOR[nearestName]) return;
+
+        const colors = BOX_COLOR[nearestName];
+
+        rect.setAttribute('fill', colors.fill);
+        rect.setAttribute('stroke', colors.stroke);
+        rect.setAttribute('stroke-width', '1.5');
+        rect.style.fill = colors.fill;
+        rect.style.stroke = colors.stroke;
+        rect.style.strokeWidth = '1.5px';
+
+        const parentG = rect.parentNode;
+        if (parentG) {
+          parentG.querySelectorAll('text.actor').forEach(function(t) {
+            const tx = parseFloat(t.getAttribute('x'));
+            if (!isNaN(tx) && Math.abs(tx - centerX) < 5) {
+              t.setAttribute('fill', colors.text);
+              t.style.fill = colors.text;
+              t.style.fontWeight = '700';
+              t.querySelectorAll('tspan').forEach(function(tspan) {
+                tspan.setAttribute('fill', colors.text);
+                tspan.style.fill = colors.text;
+              });
+            }
+          });
+        }
+      });
+
+      svg.querySelectorAll('g.actor-man').forEach(function(manG) {
+        const nameText = manG.querySelector('text.actor') ||
+                         manG.parentNode.querySelector('text.actor');
+        if (!nameText) return;
+        const name = (nameText.textContent || '').trim();
+        if (!name || !BOX_COLOR[name]) return;
+        const colors = BOX_COLOR[name];
+
+        manG.querySelectorAll('line').forEach(function(l) {
+          l.setAttribute('stroke', colors.text);
+          l.setAttribute('stroke-width', '2');
+          l.style.stroke = colors.text;
+          l.style.strokeWidth = '2px';
+        });
+        manG.querySelectorAll('circle').forEach(function(c) {
+          c.setAttribute('stroke', colors.text);
+          c.setAttribute('fill', colors.fill);
+          c.style.stroke = colors.text;
+          c.style.fill = colors.fill;
+        });
+
+        if (nameText) {
+          nameText.setAttribute('fill', colors.text);
+          nameText.style.fill = colors.text;
+          nameText.style.fontWeight = '700';
+          nameText.querySelectorAll('tspan').forEach(function(tspan) {
+            tspan.setAttribute('fill', colors.text);
+            tspan.style.fill = colors.text;
+          });
+        }
+      });
+    });
+  }
+
+  function waitForDiagrams(attempts) {
+    attempts = attempts || 0;
+    const svgs = document.querySelectorAll('.mermaid svg');
+    if (svgs.length > 0) { setTimeout(colorizeDiagram, 100); return; }
+    if (attempts > 100) return;
+    setTimeout(function() { waitForDiagrams(attempts + 1); }, 100);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { waitForDiagrams(0); });
+  } else {
+    waitForDiagrams(0);
+  }
+})();
+</script>
+
+</body>
+</html>

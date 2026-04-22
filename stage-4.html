@@ -1,0 +1,1110 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Норма · Этап 4 — Оплата и лояльность</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 24px;
+    color: #111;
+    line-height: 1.55;
+    font-size: 17px;
+  }
+  h1 { font-size: 42px; margin-bottom: 6px; line-height: 1.2; }
+  h2 {
+    font-size: 28px;
+    margin-top: 48px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+    line-height: 1.25;
+  }
+  h2 .h2-count { color: #9aa0a6; font-weight: 500; }
+  h3 { font-size: 18px; margin-top: 26px; margin-bottom: 8px; }
+
+  .meta {
+    color: #444;
+    font-size: 16px;
+    margin-bottom: 22px;
+    line-height: 1.55;
+  }
+  .meta b { color: #111; }
+
+  .stage-pill {
+    display: inline-block;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: #2b6cb0;
+    background: #eaf1f9;
+    border: 1px solid #cfdcee;
+    border-radius: 4px;
+    padding: 3px 8px;
+    margin-bottom: 14px;
+    letter-spacing: 0.5px;
+  }
+
+  ul { padding-left: 22px; }
+  li { margin-bottom: 4px; }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 10px;
+    font-size: 15px;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    padding: 9px 11px;
+    vertical-align: top;
+    text-align: left;
+  }
+  th { background: #f4f4f6; font-weight: 600; }
+  tbody tr { transition: background-color 0.12s ease; }
+  tbody tr:hover:not(.cat) { background: #f6f9fc; }
+
+  tr.cat td,
+  td.cat {
+    background: #e8f0fa !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 12.5px;
+    letter-spacing: 0.8px;
+    color: #1e4d84 !important;
+    padding: 9px 11px;
+    border-color: #cfdcee !important;
+  }
+
+  .chip {
+    display: inline-block;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 6px;
+    background: #eaf1f9;
+    color: #2b6cb0;
+    border-radius: 4px;
+    margin: 1px 2px 1px 0;
+    white-space: nowrap;
+  }
+  .chip.gray { background: #f4f4f6; color: #555; }
+  .chip.green { background: #e6f4ea; color: #1e7a3c; }
+  .chip.orange { background: #fff3d6; color: #8a5a00; }
+  .chip.red { background: #fde8e8; color: #a42c2c; }
+  .chip.purple { background: #f3ebf7; color: #6b3696; }
+
+  /* ===== System-coded chip colors (Variant B) ===== */
+  .chip.app {
+    background: #ffffff;
+    color: #111;
+    border: 1.5px solid #111;
+  }
+  .chip.back {
+    background: #111;
+    color: #fff;
+    border: 1.5px solid #111;
+  }
+  .chip.agbis {
+    background: #fde8e8;
+    color: #a42c2c;
+    border: 1.5px solid #f0c4c4;
+  }
+  .chip.tele {
+    background: #d7f5f2;
+    color: #0d6c64;
+    border: 1.5px solid #9fddd5;
+  }
+  .chip.maxma {
+    background: #ede7f6;
+    color: #512da8;
+    border: 1.5px solid #b39ddb;
+  }
+  .chip.cloud {
+    background: #e3f2fd;
+    color: #0d47a1;
+    border: 1.5px solid #90caf9;
+  }
+  .chip.life {
+    background: #fff3e0;
+    color: #bf5f00;
+    border: 1.5px solid #ffcc80;
+  }
+
+  .arrow { color: #9aa0a6; margin: 0 4px; font-weight: 600; }
+
+  .sys { font-weight: 600; font-size: 14px; color: #222; }
+
+  code.inline {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 13.5px;
+    background: #f4f4f6;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: #222;
+  }
+
+  .note {
+    color: #555;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    background: #fafbfc;
+    border-left: 3px solid #2b6cb0;
+    margin: 14px 0;
+  }
+  .note b { color: #111; }
+
+  .warn {
+    color: #5c3a00;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    background: #fff8e6;
+    border-left: 3px solid #d97706;
+    margin: 14px 0;
+  }
+
+  .delay {
+    color: #7a1f1f;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    background: #fdeeee;
+    border-left: 3px solid #c4453c;
+    margin: 14px 0;
+  }
+  .delay b { color: #7a1f1f; }
+
+  .scenario-box {
+    border: 1px solid #cfdcee;
+    background: #f6f9fc;
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 4px;
+  }
+  .scenario-box h3 {
+    margin-top: 0;
+    color: #1e4d84;
+    font-size: 16px;
+  }
+  .scenario-box .scenario-label {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: #2b6cb0;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+
+  /* ===== Sticky header legend for long sequence diagrams ===== */
+  .diagram-sticky-wrap {
+    position: relative;
+  }
+  .diagram-legend-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    padding: 10px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    margin-top: 14px;
+  }
+  .diagram-legend-sticky + .diagram-wrap {
+    margin-top: 0;
+    border-top: 1px solid #eee;
+  }
+  .legend-chip {
+    font-size: 12.5px;
+    padding: 4px 9px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-weight: 600;
+  }
+  .actor-chip {
+    background: #f4f4f6;
+    color: #555;
+    border: 1.5px solid #cbd0d6;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  /* State-on-entry / state-on-exit blocks */
+  .state-blocks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 14px 0 24px;
+  }
+  .state-block {
+    border: 1px solid #ddd;
+    padding: 14px 16px;
+    background: #fafbfc;
+  }
+  .state-block.entry { border-left: 3px solid #6b7280; }
+  .state-block.exit  { border-left: 3px solid #1e7a3c; }
+  .state-block h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #555;
+    font-weight: 700;
+  }
+  .state-block.entry h3 { color: #555; }
+  .state-block.exit h3  { color: #1e7a3c; }
+  .state-block ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .state-block li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+  }
+  .state-block li:last-child { border-bottom: none; }
+  .state-block .sname {
+    min-width: 82px;
+    font-weight: 600;
+    color: #222;
+    font-size: 13px;
+  }
+  .state-block .sval {
+    color: #444;
+    flex: 1;
+  }
+
+  @media (max-width: 720px) {
+    .state-blocks { grid-template-columns: 1fr; }
+  }
+
+  .diagram-wrap {
+    border: 1px solid #ddd;
+    background: #fff;
+    padding: 18px;
+    margin-top: 14px;
+    overflow-x: auto;
+  }
+  .mermaid { font-family: ui-monospace, Menlo, Consolas, monospace; }
+  .mermaid svg { max-width: 100% !important; height: auto !important; }
+
+  .mermaid .labelText,
+  .mermaid .loopText,
+  .mermaid text.loopText,
+  .mermaid text.labelText {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+  }
+  .mermaid .labelBox { rx: 3; ry: 3; }
+
+  hr { border: none; border-top: 1px solid #ddd; margin: 32px 0; }
+
+  ol.steps { padding-left: 22px; margin-top: 8px; }
+  ol.steps li { margin-bottom: 10px; }
+  ol.steps li b { color: #111; }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+    margin: 18px 0 24px;
+  }
+  .meta-grid .cell {
+    border: 1px solid #ddd;
+    padding: 10px 12px;
+    background: #fafbfc;
+  }
+  .meta-grid .label {
+    font-size: 11.5px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .meta-grid .value {
+    font-size: 14.5px;
+    color: #111;
+    font-weight: 500;
+  }
+
+  .toc-links {
+    font-size: 14px;
+    color: #555;
+    margin-top: 30px;
+    padding-top: 16px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+  }
+  .toc-links a {
+    color: #2b6cb0;
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px dashed #a8c3e2;
+  }
+  .toc-links a:hover { color: #1e4d84; border-bottom-color: #2b6cb0; }
+
+  .alt-badge {
+    color: #4a246b;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    background: #faf5fd;
+    border-left: 3px solid #6b3696;
+    margin: 14px 0;
+  }
+  .alt-badge b { color: #4a246b; }
+</style>
+</head>
+<body>
+
+<div class="stage-pill">ЭТАП 4 из 7</div>
+<h1>Оплата и лояльность</h1>
+
+<div class="alt-badge">
+  <b>Частично применяется при оформлении в ПП.</b> Если заказ создан через <a href="stage-1b.html">Этап 1Б (Создание в ПП)</a>, есть три варианта:
+  <ul style="margin:8px 0 0 0;">
+    <li><b>Оплатил в ПП</b> — этап пропускается полностью, признак оплаты уже «Оплачено», лояльность (скидки/бонусы) уже применена через АГБИС.</li>
+    <li><b>Откладывает оплату — заплатит в приложении</b> — этап проходит стандартно (Сценарий A или B). Лояльность уже применена в АГБИС, через Back синхронизирована с Maxma, повторно не применяем.</li>
+    <li><b>Откладывает оплату — заплатит при получении</b> — этап пропускается, оплата происходит на Этапе <a href="stage-6a.html">6А</a> или <a href="stage-6v.html">6В</a>.</li>
+  </ul>
+</div>
+
+<p class="meta">
+  После двойного подтверждения на Этапе 3 заказ готов к оплате. Клиент видит финальную сумму, баланс бонусов, доступную скидку, может ввести промокод и выбрать способ оплаты. <b>Важно:</b> на этом этапе статусы заказа (<code class="inline">BACK-5 "Подтверждён клиентом"</code>, <code class="inline">APP-5 "Вещи приняты"</code>) не меняются — меняются только <b>признаки оплаты</b>.
+</p>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">01 ·</span> Переходы статусов и признаков</h2>
+
+<h3>Состояние на входе и на выходе</h3>
+
+<div class="state-blocks">
+  <div class="state-block entry">
+    <h3>На входе в этап</h3>
+    <ul>
+      <li><span class="sname">App</span><span class="sval"><span class="chip app">APP-5</span> «Вещи приняты»</span></li>
+      <li><span class="sname">Back</span><span class="sval"><span class="chip back">BACK-5</span> «Подтверждён клиентом»</span></li>
+      <li><span class="sname">АГБИС</span><span class="sval"><span class="chip agbis">AG-1</span> «Новый»</span></li>
+      <li><span class="sname">Maxma</span><span class="sval"><span class="chip maxma">MAX-1</span> «В работе»</span></li>
+      <li><span class="sname">Признак оплаты</span><span class="sval"><span class="chip gray">Не оплачено</span> <span style="color:#888; font-size:12px;">(в Back, АГБИС, Maxma, Телетрек)</span></span></li>
+    </ul>
+  </div>
+
+  <div class="state-block exit">
+    <h3>На выходе из этапа</h3>
+    <ul>
+      <li><span class="sname">App</span><span class="sval"><span class="chip app">APP-5</span> «Вещи приняты» · без изменений</span></li>
+      <li><span class="sname">Back</span><span class="sval"><span class="chip back">BACK-5</span> «Подтверждён клиентом» · без изменений</span></li>
+      <li><span class="sname">АГБИС</span><span class="sval"><span class="chip agbis">AG-1</span> «Новый» · без изменений</span></li>
+      <li><span class="sname">Maxma</span><span class="sval"><span class="chip maxma">MAX-2</span> «Завершённый» (Сценарии A, B) или <span class="chip maxma">MAX-1</span> «В работе» (Сценарий C)</span></li>
+      <li><span class="sname">Признак оплаты</span><span class="sval"><span class="chip green">Оплачено</span> (A, B) или <span class="chip orange">Не оплачено</span> (C) <span style="color:#888; font-size:12px;">синхронизирован в Back, АГБИС, Maxma, Телетрек</span></span></li>
+    </ul>
+  </div>
+</div>
+
+<div class="note">
+  <b>Статусы заказа не меняются.</b> Весь Этап 4 происходит «поверх» стабильного статуса <code class="inline">BACK-5 "Подтверждён клиентом"</code> / <code class="inline">APP-5 "Вещи приняты"</code>. Меняются только <b>признаки оплаты</b> и записи в Maxma.
+</div>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">02 ·</span> Как это работает</h2>
+
+<p>
+  Оплата собирается из трёх слоёв лояльности (скидка, промокод, бонусы) плюс денежный остаток. Скидка и промокод применяются <b>автоматически</b> — клиент не может отказаться от них или согласиться, они либо есть, либо нет. Бонусы — <b>по выбору клиента</b> (всё или ничего). Остаток — клиент выбирает <b>когда и как платить</b>.
+</p>
+
+<ol class="steps">
+  <li>
+    <b>Back запрашивает скидку и бонусы у Maxma.</b>
+    Одним запросом получаем доступную скидку и текущий баланс бонусов клиента. Скидка применится автоматически — клиент её просто видит в чеке.
+  </li>
+  <li>
+    <b>App показывает клиенту экран оплаты.</b>
+    Сумма заказа со скидкой, баланс бонусов (с опцией «списать»), поле для промокода, варианты оплаты остатка.
+  </li>
+  <li>
+    <b>Опционально · Клиент вводит промокод.</b>
+    Back идёт в Maxma, проверяет валидность. Если валиден — применяется автоматически, сумма к оплате пересчитывается.
+  </li>
+  <li>
+    <b>Клиент выбирает конфигурацию.</b>
+    Только два решения: <b>списать ли бонусы</b> (всё или 0) и <b>когда оплачивать остаток</b> (сейчас онлайн или при доставке — СБП Cloud / картой Life Pay).
+  </li>
+  <li>
+    <b>Применение лояльности одним действием.</b>
+    Back идёт в Maxma и одним вызовом применяет скидку + промокод + списание бонусов. Maxma фиксирует у себя, возвращает подтверждение.
+  </li>
+  <li>
+    <b>Оплата остатка.</b>
+    Один из трёх сценариев: онлайн сейчас, по ссылке от технолога, или при доставке (готовим инфраструктуру).
+  </li>
+</ol>
+
+<h3>Три сценария оплаты остатка</h3>
+
+<div class="scenario-box">
+  <div class="scenario-label">Сценарий A · Онлайн сейчас</div>
+  <h3>Клиент оплачивает в приложении через Cloud</h3>
+  <p>Back запрашивает у Cloud ссылку на оплату, клиент платит картой или СБП. Cloud присылает колбэк «оплачено». Back обновляет признак оплаты у себя, в App и в АГБИС.</p>
+</div>
+
+<div class="scenario-box">
+  <div class="scenario-label">Сценарий B · Ссылка от технолога</div>
+  <h3>Технолог генерирует ссылку и отправляет её клиенту вне системы</h3>
+  <p>Используется, когда клиент не может сам оплатить через приложение (технические проблемы, пожилой клиент и т.п.). Технолог запрашивает ссылку через Back, получает её и отправляет клиенту в смс / мессенджер / email. Клиент оплачивает — дальше поток идентичен Сценарию A.</p>
+</div>
+
+<div class="scenario-box">
+  <div class="scenario-label">Сценарий C · При доставке</div>
+  <h3>Back готовит инфраструктуру для оплаты курьеру</h3>
+  <p>На доставке клиент выберет: <b>СБП (Cloud QR)</b> или <b>карта (Life терминал)</b>. Для СБП нужно <b>заранее</b> подготовить QR-код и передать курьеру через Телетрек. Для карты — ничего готовить не нужно: Life пришлёт уведомление после оплаты, и Back модулем матчинга сопоставит платёж с заказом по сумме / времени / курьеру.</p>
+</div>
+
+<div class="note">
+  <b>Скидка и промокод применяются автоматически.</b> Клиент не выбирает «применить скидку» — она либо доступна (и применилась), либо нет. Единственное действие клиента по лояльности — это <b>решение по бонусам</b> (всё или 0).
+</div>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">03 ·</span> Sequence-диаграмма</h2>
+
+<div class="diagram-sticky-wrap">
+  <div class="diagram-legend-sticky">
+    <span class="legend-item"><span class="legend-chip actor-chip">👤 Клиент</span></span>
+    <span class="legend-item"><span class="legend-chip chip app">Norma App</span></span>
+    <span class="legend-item"><span class="legend-chip chip back">Norma Back</span></span>
+    <span class="legend-item"><span class="legend-chip chip maxma">Maxma</span></span>
+    <span class="legend-item"><span class="legend-chip chip cloud">Cloud</span></span>
+    <span class="legend-item"><span class="legend-chip chip tele">Телетрек</span></span>
+    <span class="legend-item"><span class="legend-chip chip agbis">АГБИС</span></span>
+    <span class="legend-item"><span class="legend-chip actor-chip">🧑‍🔧 Технолог</span></span>
+  </div>
+
+<div class="diagram-wrap">
+<div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor Client as Клиент
+    participant App as Norma App
+    participant Back as Norma Back
+    participant Maxma as Maxma
+    participant Cloud as Cloud
+    participant Tele as Телетрек
+    participant AGBIS as АГБИС
+    actor Tech as Технолог
+
+    Note over Client,Tech: Статусы BACK-5 / APP-5 не меняются · Меняются только признаки оплаты
+
+    Note over Client,Maxma: Фаза 1 · Получение лояльности (запрашиваем скидки и бонусы из Maxma)
+
+    Back->>Maxma: 
+    Maxma->>Maxma: Возвращаем по клиенту:<br/>• доступную скидку (авто)<br/>• баланс бонусов
+    Maxma->>Back: 
+    Back->>App: 
+    App->>App: Показываем клиенту:<br/>• сумму со скидкой<br/>• баланс бонусов<br/>• поле промокода<br/>• варианты оплаты
+
+    alt ВАРИАНТ · Клиент вводит промокод (опциональный шаг)
+        Client->>App: Вводит промокод
+        App->>Back: 
+        Back->>Maxma: 
+        Maxma->>Maxma: Проверяем валидность<br/>и сумму промокода
+        Maxma->>Back: 
+        Back->>App: 
+        App->>App: Показываем:<br/>промокод валиден / нет,<br/>новая сумма
+    end
+
+    Note over Client,Maxma: Фаза 2 · Выбор конфигурации и применение (клиент выбирает бонусы и способ оплаты)
+
+    Client->>App: Выбирает:<br/>• списать бонусы (всё / 0)<br/>• способ оплаты остатка
+
+    App->>Back: 
+    Back->>Maxma: 
+    Maxma->>Maxma: Применяем одним действием:<br/>• скидку (авто)<br/>• промокод (авто, если валиден)<br/>• списание бонусов (по выбору)
+    Maxma->>Back: 
+    Back->>Back: Фиксируем итоги:<br/>• скидка = Y руб<br/>• промокод = P руб<br/>• бонусы = X руб<br/>• остаток = R руб
+    Back->>App: 
+    App->>App: Показываем финальную сумму<br/>и выбранный способ
+
+    Note over Client,Tech: Фаза 3 · Оплата остатка (один из трёх сценариев ниже)
+
+    alt СЦЕНАРИЙ A · Онлайн сейчас (клиент платит в приложении)
+        App->>Back: 
+        Back->>Cloud: 
+        Cloud->>Cloud: Генерируем ссылку,<br/>проводим платёж
+        Cloud->>Back: Колбэк "заказ оплачен"
+        Back->>Back: Признак оплаты: Оплачено<br/>Источники: скидка + промокод +<br/>бонусы + Cloud
+        Back->>App: 
+        App->>App: Показываем "Заказ оплачен"
+        Back->>AGBIS: 
+        AGBIS->>AGBIS: Признак оплаты: Оплачено<br/>Разбивка источников
+        Back->>Maxma: 
+        Maxma->>Maxma: MAX-1 "В работе" →<br/>MAX-2 "Завершённый"<br/>Признак оплаты: Оплачено
+        Back->>Tele: 
+        Tele->>Tele: Признак оплаты: Оплачено<br/>(курьер НЕ принимает оплату)
+
+    else СЦЕНАРИЙ B · Ссылка от технолога (технолог отправляет клиенту ссылку вне приложения)
+        Tech->>Back: Запрашивает ссылку<br/>на оплату
+        Back->>Cloud: 
+        Cloud->>Cloud: Генерируем ссылку
+        Cloud->>Back: 
+        Back->>Tech: Возвращаем ссылку
+        Tech->>Client: Отправляет ссылку<br/>(смс / мессенджер / email)
+        Client->>Cloud: Оплачивает по ссылке
+        Cloud->>Back: Колбэк "заказ оплачен"
+        Back->>Back: Признак оплаты: Оплачено<br/>Источники: скидка + промокод +<br/>бонусы + Cloud (ссылка)
+        Back->>App: 
+        App->>App: Показываем "Заказ оплачен"
+        Back->>AGBIS: 
+        AGBIS->>AGBIS: Признак оплаты: Оплачено<br/>Разбивка источников
+        Back->>Maxma: 
+        Maxma->>Maxma: MAX-1 "В работе" →<br/>MAX-2 "Завершённый"<br/>Признак оплаты: Оплачено
+        Back->>Tele: 
+        Tele->>Tele: Признак оплаты: Оплачено<br/>(курьер НЕ принимает оплату)
+
+    else СЦЕНАРИЙ C · При доставке (клиент оплатит курьеру на месте)
+        App->>Back: 
+        Back->>Cloud: 
+        Cloud->>Cloud: Генерируем QR СБП<br/>для курьера
+        Cloud->>Back: 
+        Back->>Tele: 
+        Tele->>Tele: Сохраняем QR в задаче<br/>на отдачу + признак<br/>"курьер ПРИНИМАЕТ оплату"<br/>(Life · не готовим,<br/>матчим на Этапе 6)
+        Back->>Back: Признак оплаты: Не оплачено<br/>Остаток к оплате при доставке
+        Back->>App: 
+        App->>App: Показываем<br/>"Оплата при получении"
+        Back->>AGBIS: 
+        AGBIS->>AGBIS: Признак оплаты: Не оплачено<br/>Частичная оплата передана<br/>(скидка + промокод + бонусы)
+        Back->>Maxma: 
+        Maxma->>Maxma: Признак оплаты: Не оплачено<br/>частичное применение лояльности<br/>(статус MAX-1 "В работе"<br/>не меняется)
+    end
+
+    Note over Client,Tech: Этап 4 завершён · Оплата оформлена или отложена до доставки
+</div>
+</div>
+</div>
+
+<h3>Изменения по фазам</h3>
+
+<table>
+  <colgroup>
+    <col style="width:14%">
+    <col style="width:24%">
+    <col style="width:26%">
+    <col style="width:13%">
+    <col style="width:23%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Система</th>
+      <th>Было</th>
+      <th>Стало</th>
+      <th>Триггер</th>
+      <th>Что меняется</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr><td colspan="5" class="cat">Фаза 1 · Получение лояльности</td></tr>
+    <tr>
+      <td><span class="sys">Maxma</span></td>
+      <td colspan="2">Скидка и баланс бонусов возвращены клиенту</td>
+      <td><span class="sys">Back</span></td>
+<td>чтение (без записи)</td>
+    </tr>
+
+    <tr><td colspan="5" class="cat">Фаза 2 · Применение лояльности одним действием</td></tr>
+    <tr>
+      <td><span class="sys">Maxma</span></td>
+      <td>Бонусы: X руб доступно</td>
+      <td>Бонусы: 0 руб (если списаны)</td>
+      <td><span class="sys">Back</span></td>
+<td>баланс бонусов</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Maxma</span></td>
+      <td>Промокод: не применён</td>
+      <td>Промокод: применён</td>
+      <td><span class="sys">Back</span></td>
+<td>статус промокода</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Maxma</span></td>
+      <td>Скидка: доступна</td>
+      <td>Скидка: применена</td>
+      <td><span class="sys">Back</span></td>
+<td>статус скидки</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back</span></td>
+      <td>Итоги не зафиксированы</td>
+      <td>Скидка = Y · Промокод = P · Бонусы = X · Остаток = R</td>
+      <td><span class="sys">Maxma</span></td>
+<td>внутренний расчёт</td>
+    </tr>
+
+    <tr><td colspan="5" class="cat">Фаза 3 · Сценарий A — оплата онлайн сейчас</td></tr>
+    <tr>
+      <td><span class="sys">Back</span></td>
+      <td>Признак оплаты: <span class="chip gray">Не оплачено</span></td>
+      <td>Признак оплаты: <span class="chip green">Оплачено</span> · источник Cloud</td>
+      <td><span class="sys">Cloud</span></td>
+<td>признак оплаты</td>
+    </tr>
+    <tr>
+      <td><span class="sys">App</span></td>
+      <td>Экран оплаты</td>
+      <td>Экран «Заказ оплачен»</td>
+      <td><span class="sys">Back</span></td>
+<td>UI</td>
+    </tr>
+    <tr>
+      <td><span class="sys">АГБИС</span></td>
+      <td>Признак оплаты: <span class="chip gray">Не оплачено</span></td>
+      <td>Признак оплаты: <span class="chip green">Оплачено</span> · разбивка источников</td>
+      <td><span class="sys">Back</span></td>
+<td>признак оплаты</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Maxma</span></td>
+      <td><span class="chip maxma">MAX-1</span> «В работе»</td>
+      <td><span class="chip maxma">MAX-2</span> «Завершённый» · признак оплаты: Оплачено</td>
+      <td><span class="sys">Back</span></td>
+<td>статус</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Телетрек</span></td>
+      <td>Признак оплаты не проставлен</td>
+      <td>Признак оплаты: <span class="chip green">Оплачено</span> · курьер НЕ принимает оплату</td>
+      <td><span class="sys">Back</span></td>
+<td>признак в задаче</td>
+    </tr>
+
+    <tr><td colspan="5" class="cat">Фаза 3 · Сценарий B — оплата по ссылке от технолога</td></tr>
+    <tr>
+      <td><span class="sys">Back</span></td>
+      <td>Ссылка на оплату не создана</td>
+      <td>Ссылка на оплату сгенерирована Cloud и возвращена технологу</td>
+      <td><span class="sys">Технолог</span></td>
+<td>генерация ссылки</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back</span></td>
+      <td>Признак оплаты: <span class="chip gray">Не оплачено</span></td>
+      <td>Признак оплаты: <span class="chip green">Оплачено</span> · источник Cloud (ссылка)</td>
+      <td><span class="sys">Cloud</span></td>
+<td>признак оплаты</td>
+    </tr>
+    <tr>
+      <td><span class="sys">App</span></td>
+      <td>Экран «Ожидает оплаты»</td>
+      <td>Экран «Заказ оплачен»</td>
+      <td><span class="sys">Back</span></td>
+<td>UI</td>
+    </tr>
+    <tr>
+      <td><span class="sys">АГБИС</span></td>
+      <td>Признак оплаты: <span class="chip gray">Не оплачено</span></td>
+      <td>Признак оплаты: <span class="chip green">Оплачено</span> · разбивка источников</td>
+      <td><span class="sys">Back</span></td>
+<td>признак оплаты</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Maxma</span></td>
+      <td><span class="chip maxma">MAX-1</span> «В работе»</td>
+      <td><span class="chip maxma">MAX-2</span> «Завершённый» · признак оплаты: Оплачено</td>
+      <td><span class="sys">Back</span></td>
+<td>статус</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Телетрек</span></td>
+      <td>Признак оплаты не проставлен</td>
+      <td>Признак оплаты: <span class="chip green">Оплачено</span> · курьер НЕ принимает оплату</td>
+      <td><span class="sys">Back</span></td>
+<td>признак в задаче</td>
+    </tr>
+
+    <tr><td colspan="5" class="cat">Фаза 3 · Сценарий C — оплата при доставке</td></tr>
+    <tr>
+      <td><span class="sys">Back</span></td>
+      <td>Способ оплаты не выбран</td>
+      <td>Способ: «при доставке»</td>
+      <td><span class="sys">Клиент</span></td>
+<td>признак оплаты</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Cloud</span></td>
+      <td>QR СБП не сгенерирован</td>
+      <td>QR СБП сгенерирован для курьера</td>
+      <td><span class="sys">Back</span></td>
+<td>подготовка QR</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Телетрек</span></td>
+      <td>В задаче на отдачу нет QR и признака оплаты</td>
+      <td>QR СБП сохранён · признак: <span class="chip orange">курьер ПРИНИМАЕТ оплату</span></td>
+      <td><span class="sys">Back</span></td>
+<td>QR и признак в задаче</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Life</span></td>
+      <td>—</td>
+      <td>—</td>
+      <td><span class="sys">Back</span></td>
+<td>не используется · матчинг на Этапе 6</td>
+    </tr>
+    <tr>
+      <td><span class="sys">App</span></td>
+      <td>Экран оплаты</td>
+      <td>Экран «Оплата при получении»</td>
+      <td><span class="sys">Back</span></td>
+<td>UI</td>
+    </tr>
+    <tr>
+      <td><span class="sys">АГБИС</span></td>
+      <td>Признак оплаты: <span class="chip gray">Не оплачено</span></td>
+      <td>Признак оплаты: <span class="chip orange">Не оплачено</span> · частичная (скидка + промокод + бонусы) передана</td>
+      <td><span class="sys">Back</span></td>
+<td>признак оплаты</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Maxma</span></td>
+      <td><span class="chip maxma">MAX-1</span> «В работе»</td>
+      <td><span class="chip maxma">MAX-1</span> «В работе» · частичное применение лояльности</td>
+      <td><span class="sys">Back</span></td>
+<td>без изменения статуса</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<div class="note">
+  <b>АГБИС на диаграмме.</b> АГБИС получает признак оплаты и разбивку источников в конце всех сценариев. Отправка идёт быстро, без задержки 15–45 минут — она действует только на обратное направление АГБИС → Back.
+</div>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">04 ·</span> Интеграции на этапе</h2>
+
+<table>
+  <colgroup>
+    <col style="width:24%">
+    <col style="width:20%">
+    <col style="width:28%">
+    <col style="width:28%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Направление</th>
+      <th>Режим</th>
+      <th>Когда вызывается</th>
+      <th>Зачем</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="sys">Back → Maxma</span></td>
+      <td><span class="chip green">реалтайм</span></td>
+      <td>Фаза 1 · старт этапа</td>
+      <td>Получить скидку и баланс бонусов одним запросом</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back → Maxma</span></td>
+      <td><span class="chip green">реалтайм</span></td>
+      <td>При вводе промокода</td>
+      <td>Проверить валидность</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back → Maxma</span></td>
+      <td><span class="chip green">реалтайм</span></td>
+      <td>Фаза 2 · применение конфигурации</td>
+      <td>Применить одним действием: скидку + промокод + бонусы</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back → Cloud</span></td>
+      <td><span class="chip green">реалтайм</span></td>
+      <td>Сценарии A, B, C</td>
+      <td>Сгенерировать ссылку / QR для оплаты</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Cloud → Back</span></td>
+      <td><span class="chip green">реалтайм</span></td>
+      <td>После оплаты (A и B)</td>
+      <td>Колбэк «заказ оплачен»</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back → Телетрек</span></td>
+      <td><span class="chip green">быстро</span></td>
+      <td>Сценарий C</td>
+      <td>Передать QR для оплаты курьеру</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back → АГБИС</span></td>
+      <td><span class="chip green">быстро</span></td>
+      <td>После оплаты (A и B) или при выборе C</td>
+      <td>Передать признак оплаты и разбивку источников</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Технолог → Back</span></td>
+      <td><span class="chip green">реалтайм</span></td>
+      <td>Сценарий B</td>
+      <td>Запросить ссылку на оплату для клиента</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note">
+  <b>АГБИС → Back не используется на этом этапе.</b> Поток идёт только в одну сторону: Back → АГБИС. Поэтому задержки 15–45 минут здесь нет.
+</div>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">05 ·</span> Заметки</h2>
+
+<div class="note">
+  <b>Статусы заказа (BACK / APP / AGBIS) — не меняются.</b> Весь этап оплаты происходит «поверх» стабильного статуса <code class="inline">BACK-5 "Подтверждён клиентом"</code> / <code class="inline">APP-5 "Вещи приняты"</code> / <code class="inline">AG-1 "Новый"</code>. Меняются только <b>признаки оплаты</b>.
+</div>
+
+<div class="note">
+  <b>Порядок применения лояльности: скидка → промокод → бонусы → остаток.</b> Сначала от суммы заказа отнимается скидка (если есть), потом промокод (если валиден), потом списываются бонусы (всё или 0). То, что осталось — денежный остаток, который оплачивается одним из трёх сценариев.
+</div>
+
+<div class="note">
+  <b>Бонусы — всё или ничего.</b> Клиент не может выбрать «списать N рублей из M». Либо списываем все доступные бонусы, либо ноль. Это упрощает UX и логику расчётов.
+</div>
+
+<div class="note">
+  <b>Сценарий C · Life работает через матчинг.</b> В отличие от Cloud, которому нужен QR для курьера, Life не требует предварительной регистрации платежа. На Этапе 6, когда клиент приложит карту к терминалу, Life пришлёт нам уведомление «пришёл платёж N руб в T часов», и Back модулем матчинга найдёт подходящий заказ по сумме / времени / курьеру.
+</div>
+
+<div class="warn">
+  <b>Время жизни ссылок / QR-кодов.</b> Ссылки Cloud для сценариев A и B живут достаточно долго, чтобы клиент успел оплатить. QR для Сценария C генерируется на Этапе 4, но реально используется только на Этапе 6 (через несколько дней). Если Cloud-ссылки имеют короткий срок жизни — возможно, на Сценарии C их нужно будет регенерировать перед передачей курьеру. Уточнить у Cloud.
+</div>
+
+<div class="warn">
+  <b>Unhappy path не покрыт.</b> Cloud-платёж упал, промокод устарел между проверкой и применением, клиент бросил оплату на полпути — отдельные сценарии.
+</div>
+
+<!-- ========================================================== -->
+<div class="toc-links">
+  <span>← <a href="stage-3.html">Этап 3 — Приёмка и подтверждение</a></span>
+  <span><a href="index.html">↑ К оглавлению</a></span>
+  <span>Следующий: <a href="stage-5.html">Этап 5 — Чистка →</a></span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#fafbfc',
+      primaryTextColor: '#111',
+      primaryBorderColor: '#111',
+      lineColor: '#333',
+      secondaryColor: '#eaf1f9',
+      tertiaryColor: '#fff',
+      actorBkg: '#fafbfc',
+      actorBorder: '#222',
+      actorTextColor: '#111',
+      actorLineColor: '#333',
+      signalColor: '#333',
+      signalTextColor: '#111',
+      labelBoxBkgColor: '#2b6cb0',
+      labelBoxBorderColor: '#1e4d84',
+      labelTextColor: '#fff',
+      loopTextColor: '#111',
+      noteBorderColor: '#cfdcee',
+      noteBkgColor: '#eaf1f9',
+      noteTextColor: '#1e4d84',
+      activationBorderColor: '#2b6cb0',
+      activationBkgColor: '#eaf1f9',
+      sequenceNumberColor: '#fff',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif'
+    },
+    sequence: {
+      diagramMarginX: 40,
+      diagramMarginY: 20,
+      actorMargin: 80,
+      boxMargin: 12,
+      boxTextMargin: 6,
+      messageMargin: 38,
+      messageFontSize: 13,
+      noteFontSize: 13,
+      actorFontSize: 14,
+      labelBoxWidth: 60,
+      labelFontSize: 15,
+      labelFontWeight: 700,
+      mirrorActors: true,
+      bottomMarginAdj: 40
+    }
+  });
+</script>
+
+
+<script>
+(function() {
+  // Цвет линии — плотный, контрастный
+  const LINE_COLOR = {
+    'Клиент': '#555',
+    'Технолог': '#555',
+    'Norma App': '#111',
+    'Norma Back': '#111',
+    'АГБИС': '#a42c2c',
+    'Телетрек': '#0d6c64',
+    'Maxma': '#512da8',
+    'Cloud': '#0d47a1',
+    'Life': '#bf5f00',
+  };
+
+  const BOX_COLOR = {
+    'Клиент':     { fill: '#f4f4f6', stroke: '#cbd0d6', text: '#555' },
+    'Технолог':   { fill: '#f4f4f6', stroke: '#cbd0d6', text: '#555' },
+    'Norma App':  { fill: '#ffffff', stroke: '#111',    text: '#111' },
+    'Norma Back': { fill: '#111',    stroke: '#111',    text: '#ffffff' },
+    'АГБИС':      { fill: '#fde8e8', stroke: '#f0c4c4', text: '#a42c2c' },
+    'Телетрек':   { fill: '#d7f5f2', stroke: '#9fddd5', text: '#0d6c64' },
+    'Maxma':      { fill: '#ede7f6', stroke: '#b39ddb', text: '#512da8' },
+    'Cloud':      { fill: '#e3f2fd', stroke: '#90caf9', text: '#0d47a1' },
+    'Life':       { fill: '#fff3e0', stroke: '#ffcc80', text: '#bf5f00' },
+  };
+
+  function colorizeDiagram() {
+    const diagrams = document.querySelectorAll('.mermaid svg');
+    diagrams.forEach(function(svg) {
+      const nameToX = {};
+      svg.querySelectorAll('text.actor').forEach(function(t) {
+        const name = (t.textContent || '').trim();
+        if (!name) return;
+        const x = parseFloat(t.getAttribute('x'));
+        if (!isNaN(x) && !(name in nameToX)) {
+          nameToX[name] = x;
+        }
+      });
+
+      svg.querySelectorAll('line').forEach(function(line) {
+        const x1 = parseFloat(line.getAttribute('x1'));
+        const x2 = parseFloat(line.getAttribute('x2'));
+        const y1 = parseFloat(line.getAttribute('y1'));
+        const y2 = parseFloat(line.getAttribute('y2'));
+        if (isNaN(x1) || isNaN(x2) || isNaN(y1) || isNaN(y2)) return;
+        if (Math.abs(x1 - x2) > 2) return;
+        if (Math.abs(y2 - y1) < 50) return;
+
+        let nearestName = null;
+        let minDist = Infinity;
+        for (const name in nameToX) {
+          const dist = Math.abs(nameToX[name] - x1);
+          if (dist < minDist) { minDist = dist; nearestName = name; }
+        }
+        if (minDist > 5) return;
+
+        if (nearestName && LINE_COLOR[nearestName]) {
+          const color = LINE_COLOR[nearestName];
+          line.setAttribute('stroke', color);
+          line.setAttribute('stroke-width', '2.5');
+          line.style.stroke = color;
+          line.style.strokeWidth = '2.5px';
+        }
+      });
+
+      svg.querySelectorAll('rect.actor').forEach(function(rect) {
+        const rectX = parseFloat(rect.getAttribute('x'));
+        const rectW = parseFloat(rect.getAttribute('width'));
+        if (isNaN(rectX) || isNaN(rectW)) return;
+        const centerX = rectX + rectW / 2;
+
+        let nearestName = null;
+        let minDist = Infinity;
+        for (const name in nameToX) {
+          const dist = Math.abs(nameToX[name] - centerX);
+          if (dist < minDist) { minDist = dist; nearestName = name; }
+        }
+        if (!nearestName || minDist > 5 || !BOX_COLOR[nearestName]) return;
+
+        const colors = BOX_COLOR[nearestName];
+
+        rect.setAttribute('fill', colors.fill);
+        rect.setAttribute('stroke', colors.stroke);
+        rect.setAttribute('stroke-width', '1.5');
+        rect.style.fill = colors.fill;
+        rect.style.stroke = colors.stroke;
+        rect.style.strokeWidth = '1.5px';
+
+        const parentG = rect.parentNode;
+        if (parentG) {
+          parentG.querySelectorAll('text.actor').forEach(function(t) {
+            const tx = parseFloat(t.getAttribute('x'));
+            if (!isNaN(tx) && Math.abs(tx - centerX) < 5) {
+              t.setAttribute('fill', colors.text);
+              t.style.fill = colors.text;
+              t.style.fontWeight = '700';
+              t.querySelectorAll('tspan').forEach(function(tspan) {
+                tspan.setAttribute('fill', colors.text);
+                tspan.style.fill = colors.text;
+              });
+            }
+          });
+        }
+      });
+
+      svg.querySelectorAll('g.actor-man').forEach(function(manG) {
+        const nameText = manG.querySelector('text.actor') ||
+                         manG.parentNode.querySelector('text.actor');
+        if (!nameText) return;
+        const name = (nameText.textContent || '').trim();
+        if (!name || !BOX_COLOR[name]) return;
+        const colors = BOX_COLOR[name];
+
+        manG.querySelectorAll('line').forEach(function(l) {
+          l.setAttribute('stroke', colors.text);
+          l.setAttribute('stroke-width', '2');
+          l.style.stroke = colors.text;
+          l.style.strokeWidth = '2px';
+        });
+        manG.querySelectorAll('circle').forEach(function(c) {
+          c.setAttribute('stroke', colors.text);
+          c.setAttribute('fill', colors.fill);
+          c.style.stroke = colors.text;
+          c.style.fill = colors.fill;
+        });
+
+        if (nameText) {
+          nameText.setAttribute('fill', colors.text);
+          nameText.style.fill = colors.text;
+          nameText.style.fontWeight = '700';
+          nameText.querySelectorAll('tspan').forEach(function(tspan) {
+            tspan.setAttribute('fill', colors.text);
+            tspan.style.fill = colors.text;
+          });
+        }
+      });
+    });
+  }
+
+  function waitForDiagrams(attempts) {
+    attempts = attempts || 0;
+    const svgs = document.querySelectorAll('.mermaid svg');
+    if (svgs.length > 0) { setTimeout(colorizeDiagram, 100); return; }
+    if (attempts > 100) return;
+    setTimeout(function() { waitForDiagrams(attempts + 1); }, 100);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { waitForDiagrams(0); });
+  } else {
+    waitForDiagrams(0);
+  }
+})();
+</script>
+
+</body>
+</html>

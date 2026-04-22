@@ -1,0 +1,1580 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Норма · Бизнес-флоу заказа химчистки · Документация</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 24px;
+    color: #111;
+    line-height: 1.55;
+    font-size: 17px;
+  }
+  h1 { font-size: 52px; margin-bottom: 12px; line-height: 1.1; letter-spacing: -0.5px; }
+  h2 {
+    font-size: 28px;
+    margin-top: 56px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+    line-height: 1.25;
+  }
+  h2 .h2-count { color: #9aa0a6; font-weight: 500; }
+
+  /* Collapsible section */
+  details.section-collapsible { margin: 0; padding: 0; }
+  details.section-collapsible > summary {
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+  details.section-collapsible > summary::-webkit-details-marker { display: none; }
+  details.section-collapsible > summary > h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  details.section-collapsible > summary > h2::after {
+    content: "▸";
+    color: #9aa0a6;
+    font-size: 20px;
+    margin-left: auto;
+    transition: transform 0.15s ease;
+    font-weight: 400;
+  }
+  details.section-collapsible[open] > summary > h2::after {
+    transform: rotate(90deg);
+  }
+  details.section-collapsible > summary:hover > h2 { color: #2b6cb0; }
+  details.section-collapsible > summary:hover > h2::after { color: #2b6cb0; }
+  h3 { font-size: 18px; margin-top: 26px; margin-bottom: 8px; }
+
+  .lead {
+    color: #444;
+    font-size: 18px;
+    margin-bottom: 22px;
+    line-height: 1.55;
+    max-width: 900px;
+  }
+  .lead b { color: #111; }
+
+  .doc-meta {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 12px;
+    color: #888;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  ul { padding-left: 22px; }
+  li { margin-bottom: 4px; }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 10px;
+    font-size: 15px;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    padding: 9px 11px;
+    vertical-align: top;
+    text-align: left;
+  }
+  th { background: #f4f4f6; font-weight: 600; }
+  tbody tr { transition: background-color 0.12s ease; }
+  tbody tr:hover:not(.cat) { background: #f6f9fc; }
+
+  .chip {
+    display: inline-block;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 6px;
+    background: #eaf1f9;
+    color: #2b6cb0;
+    border-radius: 4px;
+    margin: 1px 2px 1px 0;
+    white-space: nowrap;
+  }
+  .chip.gray { background: #f4f4f6; color: #555; }
+  .chip.green { background: #e6f4ea; color: #1e7a3c; }
+  .chip.orange { background: #fff3d6; color: #8a5a00; }
+  .chip.red { background: #fde8e8; color: #a42c2c; }
+  .chip.purple { background: #f3ebf7; color: #6b3696; }
+
+  /* ===== System-coded chip colors (Variant B) ===== */
+  .chip.app {
+    background: #ffffff;
+    color: #111;
+    border: 1.5px solid #111;
+  }
+  .chip.back {
+    background: #111;
+    color: #fff;
+    border: 1.5px solid #111;
+  }
+  .chip.agbis {
+    background: #fde8e8;
+    color: #a42c2c;
+    border: 1.5px solid #f0c4c4;
+  }
+  .chip.tele {
+    background: #d7f5f2;
+    color: #0d6c64;
+    border: 1.5px solid #9fddd5;
+  }
+  .chip.maxma {
+    background: #ede7f6;
+    color: #512da8;
+    border: 1.5px solid #b39ddb;
+  }
+
+  code.inline {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 13.5px;
+    background: #f4f4f6;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: #222;
+  }
+
+  .warn {
+    color: #5c3a00;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    background: #fff8e6;
+    border-left: 3px solid #d97706;
+    margin: 14px 0;
+  }
+  .warn b { color: #5c3a00; }
+
+  a {
+    color: #2b6cb0;
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px dashed #a8c3e2;
+  }
+  a:hover { color: #1e4d84; border-bottom-color: #2b6cb0; }
+
+  /* TOC */
+  .toc {
+    background: #fafbfc;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 20px 0 30px;
+  }
+  .toc h3 {
+    margin-top: 0;
+    font-size: 13px;
+    color: #888;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-weight: 700;
+  }
+  .toc ol { padding-left: 24px; margin: 8px 0 0 0; }
+  .toc li { padding: 3px 0; font-size: 15px; }
+  .toc a { border-bottom: none; }
+  .toc a:hover { color: #1e4d84; text-decoration: underline; }
+
+  /* Stage cards */
+  .stage-detail {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin: 14px 0;
+    background: #fff;
+    overflow: hidden;
+  }
+  .stage-row-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 14px 0;
+  }
+  .stage-row-split .stage-detail {
+    margin: 0;
+  }
+  .stage-row-split .stage-head {
+    padding: 16px 18px;
+    gap: 12px;
+  }
+  .stage-row-split .stage-head-title {
+    font-size: 18px;
+  }
+  .stage-row-split .stage-head-goal {
+    font-size: 13.5px;
+  }
+  .stage-row-split .stage-body {
+    padding: 14px 18px 16px;
+  }
+  .stage-row-split .state-pair {
+    grid-template-columns: 1fr;
+  }
+  @media (max-width: 768px) {
+    .stage-row-split { grid-template-columns: 1fr; }
+  }
+  .stage-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 18px 22px;
+    gap: 20px;
+  }
+  .stage-head-main { flex: 1; min-width: 0; }
+  .stage-head-num {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: #2b6cb0;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .stage-head-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .stage-head-title a { color: #111; border-bottom: none; }
+  .stage-head-title a:hover { color: #2b6cb0; }
+  .stage-head-goal {
+    font-size: 14.5px;
+    color: #444;
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+  .stage-head-systems {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 8px;
+  }
+  .stage-head-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+    flex-shrink: 0;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 7px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 4px;
+    border: 1px solid #cfdcee;
+    background: #fff;
+    color: #2b6cb0;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .btn.primary {
+    background: #2b6cb0;
+    color: #fff;
+    border-color: #2b6cb0;
+  }
+  .btn.primary:hover {
+    background: #1e4d84;
+    border-color: #1e4d84;
+    color: #fff;
+    border-bottom: 1px solid #1e4d84;
+  }
+
+  details.stage-details {
+    border-top: 1px solid #ececec;
+    background: #fafbfc;
+  }
+  details.stage-details summary {
+    padding: 10px 22px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #6b7280;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.12s ease;
+  }
+  details.stage-details summary:hover { background: #f1f5fa; color: #2b6cb0; }
+  details.stage-details[open] summary {
+    background: #eaf1f9;
+    color: #1e4d84;
+    border-bottom: 1px solid #cfdcee;
+  }
+  details.stage-details summary::marker { color: #9aa0a6; }
+
+  .stage-body { padding: 18px 22px 20px; background: #fafbfc; }
+  .stage-body h4 {
+    margin-top: 18px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #888;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+  }
+  .stage-body h4:first-child { margin-top: 0; }
+  .stage-body .desc {
+    font-size: 14.5px;
+    color: #333;
+    line-height: 1.55;
+    margin-bottom: 14px;
+  }
+
+  .phases-list { list-style: none; padding: 0; margin: 0; }
+  .phases-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #ececec;
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    gap: 10px;
+  }
+  .phases-list li:last-child { border-bottom: none; }
+  .phases-list .phase-label {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #2b6cb0;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding-top: 1px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: 72px;
+  }
+  .phases-list .phase-body b { color: #111; margin-right: 4px; }
+  .phases-list .phase-body .ctrl {
+    display: inline-block;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 1px 5px;
+    background: #f3ebf7;
+    color: #6b3696;
+    border-radius: 3px;
+    margin: 0 3px;
+    vertical-align: 1px;
+  }
+
+  .state-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .state-col {
+    background: #fff;
+    border: 1px solid #ececec;
+    padding: 10px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #444;
+    line-height: 1.5;
+  }
+  .state-col.entry { border-left: 3px solid #6b7280; }
+  .state-col.exit { border-left: 3px solid #1e7a3c; }
+  .state-col .label {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: #6b7280;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .state-col.exit .label { color: #1e7a3c; }
+
+  @media (max-width: 640px) {
+    .stage-head { flex-direction: column; gap: 10px; }
+    .stage-head-actions { flex-direction: row; align-items: flex-start; }
+    .state-pair { grid-template-columns: 1fr; }
+  }
+
+  /* Actors */
+  .actors-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 14px 0 24px;
+  }
+  .actor-card {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 16px 18px;
+    background: #fafbfc;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .actor-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eaf1f9;
+    border-radius: 50%;
+  }
+  .actor-icon svg {
+    width: 28px;
+    height: 28px;
+    color: #2b6cb0;
+  }
+  .actor-body h3 { margin: 0 0 4px 0; font-size: 17px; color: #1e4d84; }
+  .actor-body .role { font-size: 13px; color: #888; font-style: italic; margin-bottom: 6px; }
+  .actor-body ul { margin: 4px 0 0 0; padding-left: 18px; font-size: 14px; color: #444; }
+  @media (max-width: 640px) { .actors-grid { grid-template-columns: 1fr; } }
+
+  /* System cards (collapsible) */
+  .sys-card {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin: 10px 0;
+    background: #fafbfc;
+    overflow: hidden;
+  }
+  .sys-card summary {
+    padding: 12px 18px;
+    cursor: pointer;
+    user-select: none;
+    font-weight: 600;
+    font-size: 16px;
+    color: #1e4d84;
+    background: #fafbfc;
+    transition: background 0.12s ease;
+    list-style: none;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 14px;
+  }
+  .sys-card summary::-webkit-details-marker { display: none; }
+  .sys-card summary::before {
+    content: "▸";
+    color: #9aa0a6;
+    font-size: 14px;
+    display: inline-block;
+    transition: transform 0.15s ease;
+    flex-shrink: 0;
+  }
+  .sys-card[open] summary::before { transform: rotate(90deg); }
+  .sys-card summary:hover { background: #f1f5fa; }
+  .sys-card[open] summary {
+    background: #eaf1f9;
+    border-bottom: 1px solid #cfdcee;
+  }
+  .sys-card .sys-title {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.2px;
+    flex-shrink: 0;
+  }
+  .sys-card .sys-title.app {
+    background: #ffffff;
+    color: #111;
+    border: 1.5px solid #111;
+  }
+  .sys-card .sys-title.back {
+    background: #111;
+    color: #fff;
+    border: 1.5px solid #111;
+  }
+  .sys-card .sys-title.agbis {
+    background: #fde8e8;
+    color: #a42c2c;
+    border: 1.5px solid #f0c4c4;
+  }
+  .sys-card .sys-title.tele {
+    background: #d7f5f2;
+    color: #0d6c64;
+    border: 1.5px solid #9fddd5;
+  }
+  .sys-card .sys-title.maxma {
+    background: #ede7f6;
+    color: #512da8;
+    border: 1.5px solid #b39ddb;
+  }
+  .sys-card .sys-title.cloud {
+    background: #e3f2fd;
+    color: #0d47a1;
+    border: 1.5px solid #90caf9;
+  }
+  .sys-card .sys-title.life {
+    background: #fff3e0;
+    color: #bf5f00;
+    border: 1.5px solid #ffcc80;
+  }
+  .sys-card .sys-role {
+    font-size: 13px;
+    color: #666;
+    font-weight: 500;
+    font-style: italic;
+    font-family: -apple-system, sans-serif;
+    flex: 1;
+    min-width: 0;
+  }
+  .sys-card-body {
+    padding: 14px 18px 16px;
+    background: #fff;
+    font-size: 14.5px;
+    color: #333;
+  }
+  .sys-card-body ul { margin: 0; padding-left: 20px; }
+  .sys-card-body li { margin-bottom: 4px; }
+
+  /* Risk cards — collapsible */
+  details.risk-item {
+    border: 1px solid #e5d4d4;
+    border-left: 4px solid #c4453c;
+    margin: 8px 0;
+    background: #fff8f8;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  details.risk-item > summary {
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    padding: 12px 18px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    transition: background 0.12s ease;
+  }
+  details.risk-item > summary::-webkit-details-marker { display: none; }
+  details.risk-item > summary::before {
+    content: "▸";
+    color: #c4453c;
+    font-size: 13px;
+    flex-shrink: 0;
+    transition: transform 0.15s ease;
+    font-weight: 700;
+    line-height: 1;
+    margin-top: 2px;
+  }
+  details.risk-item[open] > summary::before {
+    transform: rotate(90deg);
+  }
+  details.risk-item > summary:hover {
+    background: #fef2f2;
+  }
+  details.risk-item .risk-impact {
+    font-size: 11px;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    color: #7a1f1f;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding: 2px 8px;
+    background: #fdeeee;
+    border: 1px solid #f0c4c4;
+    border-radius: 3px;
+  }
+  details.risk-item h4 {
+    margin: 0;
+    font-size: 15px;
+    color: #7a1f1f;
+    font-weight: 600;
+    flex: 1;
+    line-height: 1.35;
+  }
+  details.risk-item > .risk-body {
+    padding: 0 18px 14px 18px;
+    border-top: 1px dashed #e5d4d4;
+    padding-top: 12px;
+  }
+  details.risk-item p { margin: 6px 0; font-size: 14.5px; color: #444; }
+  details.risk-item .mitigation {
+    font-size: 13.5px;
+    color: #555;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed #e5d4d4;
+  }
+  details.risk-item .mitigation b { color: #7a1f1f; }
+
+  hr { border: none; border-top: 1px solid #ddd; margin: 40px 0; }
+  .anchor-offset { scroll-margin-top: 20px; }
+</style>
+</head>
+<body>
+
+<div class="doc-meta">Norma · Dry Cleaning · Business Flow Documentation · v0.1</div>
+<h1>Бизнес-флоу заказа химчистки</h1>
+
+<!-- ========================================================== -->
+<h2 id="stages" class="anchor-offset"><span class="h2-count">01 ·</span> Этапы флоу</h2>
+
+<!-- STAGE 1А + 1Б (split row) -->
+<div class="stage-row-split">
+
+<!-- STAGE 1А -->
+<div class="stage-detail">
+  <div class="stage-head">
+    <div class="stage-head-main">
+      <div class="stage-head-num">ЭТАП 1А · СОЗДАНИЕ В ПРИЛОЖЕНИИ</div>
+      <div class="stage-head-title"><a href="stage-1a.html">Создание заказа на сайте / в приложении</a></div>
+      <div class="stage-head-goal">Клиент оформил заказ в приложении, Back зарегистрировал его во всех смежных системах.</div>
+      <div class="stage-head-systems">
+        <span class="chip app">App</span><span class="chip back">Back</span><span class="chip agbis">АГБИС</span><span class="chip tele">Телетрек</span><span class="chip maxma">Maxma</span>
+      </div>
+    </div>
+    <div class="stage-head-actions">
+      <a class="btn primary" href="stage-1a.html">Открыть →</a>
+    </div>
+  </div>
+  <details class="stage-details">
+    <summary>Подробнее</summary>
+    <div class="stage-body">
+      <h4>Описание</h4>
+      <div class="desc">
+        Три блока в одном UI-сценарии: корзина с реалтайм-скидками из Maxma, ввод адреса забора с получением зоны и слотов из Телетрека (адрес отдачи опциональный), финальное создание заказа параллельно во всех системах.
+      </div>
+      <h4>Фазы</h4>
+      <ul class="phases-list">
+        <li><span class="phase-label">Блок A</span><span class="phase-body"><b>Корзина и реалтайм-скидки.</b> Клиент собирает вещи, Back запрашивает скидки у Maxma на каждое изменение корзины.</span></li>
+        <li><span class="phase-label">Блок B</span><span class="phase-body"><b>Адреса и слоты.</b> Клиент вводит адрес забора (обязательный); Back идёт в Телетрек за зоной, считает слоты. Адрес отдачи опциональный.</span></li>
+        <li><span class="phase-label">Блок C</span><span class="phase-body"><b>Создание во всех системах.</b> Клиент нажимает «Оформить»; Back параллельно регистрирует заказ в АГБИС, задачу в Телетреке, заказ в Maxma.</span></li>
+      </ul>
+      <h4>Состояние</h4>
+      <div class="state-pair">
+        <div class="state-col entry">
+          <div class="label">На входе</div>
+          Заказ не существует ни в одной системе.
+        </div>
+        <div class="state-col exit">
+          <div class="label">На выходе</div>
+          <span class="chip app">APP-1</span> · <span class="chip back">BACK-1</span> · <span class="chip agbis">AG-1</span> · <span class="chip tele">TELE-1</span> · <span class="chip maxma">MAX-1</span>
+        </div>
+      </div>
+    </div>
+  </details>
+</div>
+
+<!-- STAGE 1Б -->
+<div class="stage-detail">
+  <div class="stage-head">
+    <div class="stage-head-main">
+      <div class="stage-head-num">ЭТАП 1Б · АЛЬТЕРНАТИВА · СОЗДАНИЕ В ПП</div>
+      <div class="stage-head-title"><a href="stage-1b.html">Создание заказа в пункте приёма</a></div>
+      <div class="stage-head-goal">Клиент пришёл в ПП с вещами, технолог создаёт заказ в АГБИС. Тип получения не выбран, решает клиент в приложении.</div>
+      <div class="stage-head-systems">
+        <span class="chip agbis">АГБИС</span><span class="chip back">Back</span><span class="chip maxma">Maxma</span><span class="chip app">App</span><span class="chip red">задержка 15–45 мин</span>
+      </div>
+    </div>
+    <div class="stage-head-actions">
+      <a class="btn primary" href="stage-1b.html">Открыть →</a>
+    </div>
+  </div>
+  <details class="stage-details">
+    <summary>Подробнее</summary>
+    <div class="stage-body">
+      <h4>Описание</h4>
+      <div class="desc">
+        Альтернатива Этапу 1. Ведущая система — АГБИС. Технолог оформляет заказ прямо в ПП (клиент с вещами физически здесь). Адрес доставки не заполняется — клиент выберет в приложении. Подтверждение «фабрика = Да / клиент = Да» ставится сразу. Лояльность (скидки, бонусы, промокоды) применяется в АГБИС (локальная копия), затем Back синхронизирует с Maxma. Оплата возможна в ПП сразу — либо отложить до приложения или при получении.
+      </div>
+      <h4>Фазы</h4>
+      <ul class="phases-list">
+        <li><span class="phase-label">Фаза 1</span><span class="phase-body"><b>Технолог оформляет заказ в АГБИС.</b> Состав, цена, опционально фото. Адрес не заполняется.</span></li>
+        <li><span class="phase-label">Фаза 2</span><span class="phase-body"><b>Лояльность и оплата в ПП.</b> <span class="ctrl">ALT</span> оплатил в ПП (наличные / карта / СБП АГБИС) · <span class="ctrl">ELSE</span> отложил оплату.</span></li>
+        <li><span class="phase-label">Фаза 3</span><span class="phase-body"><b>Подтверждение сразу.</b> Технолог ставит <code class="inline">фабрика = Да</code> и <code class="inline">клиент = Да</code> одновременно.</span></li>
+        <li><span class="phase-label">Фаза 4</span><span class="phase-body"><b>Синхронизация в Back с задержкой 15–45 мин.</b> Заказ приходит в Back со всеми признаками. Сразу в <code class="inline">BACK-5</code>. Back катит в Maxma: скидку и списание бонусов.</span></li>
+      </ul>
+      <h4>Влияние на другие этапы</h4>
+      <div class="desc">
+        <b>Этап 2</b> пропускается (вещи уже в ПП). <b>Этап 3</b> пропускается (уже подтверждено). <b>Этап 4</b> частично (если оплатил — пропускается). <b>Этапы 5, 7</b> идентичны. <b>Этап 6</b> — выбирается 6А или 6В в приложении (или устно в ПП).
+      </div>
+      <h4>Состояние</h4>
+      <div class="state-pair">
+        <div class="state-col entry">
+          <div class="label">На входе</div>
+          Заказ не существует. Клиент может не иметь приложения.
+        </div>
+        <div class="state-col exit">
+          <div class="label">На выходе</div>
+          <span class="chip agbis">AG-1</span> · <span class="chip back">BACK-5</span> · <span class="chip maxma">MAX-1</span> · <span class="chip green">фабрика = Да</span> · <span class="chip green">клиент = Да</span>
+        </div>
+      </div>
+    </div>
+  </details>
+</div>
+
+</div>
+<!-- end STAGE 1А + 1Б split row -->
+
+<!-- STAGE 2 -->
+<div class="stage-detail">
+  <div class="stage-head">
+    <div class="stage-head-main">
+      <div class="stage-head-num">ЭТАП 2 из 7</div>
+      <div class="stage-head-title"><a href="stage-2.html">Сбор вещей</a></div>
+      <div class="stage-head-goal">Курьер забрал вещи у клиента и привёз на фабрику.</div>
+      <div class="stage-head-systems">
+        <span class="chip app">App</span><span class="chip back">Back</span><span class="chip tele">Телетрек</span>
+      </div>
+    </div>
+    <div class="stage-head-actions">
+      <a class="btn primary" href="stage-2.html">Открыть →</a>
+    </div>
+  </div>
+  <details class="stage-details">
+    <summary>Подробнее</summary>
+    <div class="stage-body">
+      <h4>Описание</h4>
+      <div class="desc">
+        Ведущая система — Телетрек. Он сам принимает задачу, назначает курьера и проводит его по статусам. Back только слушает события и реагирует: обновляет свой статус и триггерит виджеты / уведомления в приложении клиента.
+      </div>
+      <h4>Фазы</h4>
+      <ul class="phases-list">
+        <li><span class="phase-label">Фаза 1</span><span class="phase-body"><b>Телетрек принимает задачу.</b> <code class="inline">TELE-1</code> → <code class="inline">TELE-2</code>. Для Back тихо.</span></li>
+        <li><span class="phase-label">Фаза 2</span><span class="phase-body"><b>Назначен курьер.</b> Back: <code class="inline">BACK-2</code> «Назначен курьер (приём)», виджет <code class="inline">W-1</code> включается, App: <code class="inline">APP-1</code> → <code class="inline">APP-3</code> «Сбор вещей».</span></li>
+        <li><span class="phase-label">Фаза 3</span><span class="phase-body"><b>Курьер выехал.</b> <code class="inline">TELE-3</code>. Back: <code class="inline">BACK-3</code> «Сбор вещей (приём)», push <code class="inline">N-1</code>. Статус App не меняется.</span></li>
+        <li><span class="phase-label">Фаза 4</span><span class="phase-body"><b>Курьер в пути к клиенту.</b> <code class="inline">TELE-4</code>. Мы игнорируем — у Back и App ничего не меняется.</span></li>
+        <li><span class="phase-label">Фаза 5</span><span class="phase-body"><b>Курьер забрал вещи.</b> <code class="inline">TELE-5</code>. Виджет <code class="inline">W-1</code> выключается. Статус App остаётся <code class="inline">APP-3</code> (дальше меняет АГБИС на Этапе 3).</span></li>
+      </ul>
+      <h4>Состояние</h4>
+      <div class="state-pair">
+        <div class="state-col entry">
+          <div class="label">На входе</div>
+          <span class="chip app">APP-1</span> · <span class="chip back">BACK-1</span> · <span class="chip tele">TELE-1</span>
+        </div>
+        <div class="state-col exit">
+          <div class="label">На выходе</div>
+          <span class="chip app">APP-3</span> · <span class="chip back">BACK-3</span> · <span class="chip tele">TELE-5</span>
+        </div>
+      </div>
+    </div>
+  </details>
+</div>
+
+<!-- STAGE 3 -->
+<div class="stage-detail">
+  <div class="stage-head">
+    <div class="stage-head-main">
+      <div class="stage-head-num">ЭТАП 3 из 7</div>
+      <div class="stage-head-title"><a href="stage-3.html">Приёмка и подтверждение</a></div>
+      <div class="stage-head-goal">Технолог принял заказ и подтвердил; клиент в приложении подтвердил состав и цену.</div>
+      <div class="stage-head-systems">
+        <span class="chip gray">Технолог</span><span class="chip agbis">АГБИС</span><span class="chip back">Back</span><span class="chip app">App</span><span class="chip red">задержка 15–45 мин</span>
+      </div>
+    </div>
+    <div class="stage-head-actions">
+      <a class="btn primary" href="stage-3.html">Открыть →</a>
+    </div>
+  </div>
+  <details class="stage-details">
+    <summary>Подробнее</summary>
+    <div class="stage-body">
+      <h4>Описание</h4>
+      <div class="desc">
+        АГБИС — ведущая система, но с задержкой 15–45 минут на отправку данных в Back (отправка в АГБИС быстрая). Технолог фотографирует вещи, добавляет комментарии и доп. реквизиты, корректирует цену, подтверждает. Клиент видит обновлённый заказ и тоже подтверждает.
+      </div>
+      <h4>Фазы</h4>
+      <ul class="phases-list">
+        <li><span class="phase-label">Фаза 1</span><span class="phase-body"><b>Технолог готовит заказ в АГБИС.</b> Фото, комментарии, реквизиты, корректировка цены. Данные с задержкой долетают до Back → App.</span></li>
+        <li><span class="phase-label">Фаза 2</span><span class="phase-body"><b>Технолог подтверждает.</b> Признак «фабрика = Да» в АГБИС. С задержкой в Back: <code class="inline">BACK-4</code>, App: <code class="inline">APP-4</code>, виджет <code class="inline">W-2</code> «Подтвердите заказ» включён.</span></li>
+        <li><span class="phase-label">Фаза 3</span><span class="phase-body"><b>Клиент подтверждает в приложении.</b> App: <code class="inline">APP-5</code>, Back: <code class="inline">BACK-5</code>, признак «клиент = Да» быстро уходит в АГБИС.</span></li>
+      </ul>
+      <h4>Состояние</h4>
+      <div class="state-pair">
+        <div class="state-col entry">
+          <div class="label">На входе</div>
+          <span class="chip app">APP-1</span> · <span class="chip back">BACK-3</span> · <span class="chip agbis">AG-1</span> · <span class="chip gray">фабрика = Нет</span> · <span class="chip gray">клиент = Нет</span>
+        </div>
+        <div class="state-col exit">
+          <div class="label">На выходе</div>
+          <span class="chip app">APP-5</span> · <span class="chip back">BACK-5</span> · <span class="chip agbis">AG-1</span> (не меняется) · <span class="chip green">фабрика = Да</span> · <span class="chip green">клиент = Да</span>
+        </div>
+      </div>
+    </div>
+  </details>
+</div>
+
+<!-- STAGE 4 -->
+<div class="stage-detail">
+  <div class="stage-head">
+    <div class="stage-head-main">
+      <div class="stage-head-num">ЭТАП 4 из 7</div>
+      <div class="stage-head-title"><a href="stage-4.html">Оплата и лояльность</a></div>
+      <div class="stage-head-goal">Применить лояльность (скидка + промокод + бонусы) и оплатить остаток — сейчас или при доставке.</div>
+      <div class="stage-head-systems">
+        <span class="chip app">App</span><span class="chip back">Back</span><span class="chip maxma">Maxma</span><span class="chip cloud">Cloud</span><span class="chip tele">Телетрек</span><span class="chip agbis">АГБИС</span>
+      </div>
+    </div>
+    <div class="stage-head-actions">
+      <a class="btn primary" href="stage-4.html">Открыть →</a>
+    </div>
+  </div>
+  <details class="stage-details">
+    <summary>Подробнее</summary>
+    <div class="stage-body">
+      <h4>Описание</h4>
+      <div class="desc">
+        Статусы заказа не меняются. Меняются только <b>признаки оплаты</b>. Оплата собирается из скидки, промокода, бонусов и денежного остатка. Остаток — один из трёх сценариев. Если сценарий C (при доставке) — готовим QR Cloud для курьера, Life готовить не надо (работает через матчинг).
+      </div>
+      <h4>Фазы</h4>
+      <ul class="phases-list">
+        <li><span class="phase-label">Фаза 1</span><span class="phase-body"><b>Получение лояльности.</b> Back запрашивает скидки и бонусы из Maxma, показывает клиенту.</span></li>
+        <li><span class="phase-label">Фаза 2</span><span class="phase-body"><b>Выбор конфигурации и применение.</b> Клиент выбирает бонусы и способ оплаты. Back применяет лояльность одним действием в Maxma. <span class="ctrl">ALT</span> промокод (опционально).</span></li>
+        <li><span class="phase-label">Фаза 3</span><span class="phase-body"><b>Оплата остатка.</b> <span class="ctrl">ALT A</span> онлайн сейчас через Cloud · <span class="ctrl">ALT B</span> ссылка от технолога · <span class="ctrl">ALT C</span> при доставке (готовим QR для Телетрека).</span></li>
+      </ul>
+      <h4>Состояние</h4>
+      <div class="state-pair">
+        <div class="state-col entry">
+          <div class="label">На входе</div>
+          <span class="chip app">APP-5</span> · <span class="chip back">BACK-5</span> · <span class="chip agbis">AG-1</span> · <span class="chip maxma">MAX-1</span> · <span class="chip gray">Не оплачено</span>
+        </div>
+        <div class="state-col exit">
+          <div class="label">На выходе</div>
+          Статусы заказа не меняются · <span class="chip maxma">MAX-2</span> (A, B) или <span class="chip maxma">MAX-1</span> (C) · <span class="chip green">Оплачено</span> (A, B) или <span class="chip orange">Не оплачено</span> (C)
+        </div>
+      </div>
+    </div>
+  </details>
+</div>
+
+<!-- STAGE 5 -->
+<div class="stage-detail">
+  <div class="stage-head">
+    <div class="stage-head-main">
+      <div class="stage-head-num">ЭТАП 5 из 7</div>
+      <div class="stage-head-title"><a href="stage-5.html">Чистка</a></div>
+      <div class="stage-head-goal">Технолог обработал все услуги заказа; АГБИС автоматически вывел заказ в «Исполненный».</div>
+      <div class="stage-head-systems">
+        <span class="chip gray">Технолог</span><span class="chip agbis">АГБИС</span><span class="chip back">Back</span><span class="chip app">App</span><span class="chip red">задержка 15–45 мин</span>
+      </div>
+    </div>
+    <div class="stage-head-actions">
+      <a class="btn primary" href="stage-5.html">Открыть →</a>
+    </div>
+  </div>
+  <details class="stage-details">
+    <summary>Подробнее</summary>
+    <div class="stage-body">
+      <h4>Описание</h4>
+      <div class="desc">
+        АГБИС — ведущая система. Технолог проводит услуги заказа через статусы (<code class="inline">AG-I-*</code>), АГБИС автоматически выводит общий статус заказа (<code class="inline">AG-*</code>). Back с задержкой 15–45 мин синхронизирует статусы. Клиент видит в App детализацию по каждой услуге.
+      </div>
+      <h4>Фазы</h4>
+      <ul class="phases-list">
+        <li><span class="phase-label">Фаза 1</span><span class="phase-body"><b>Первая услуга в работу.</b> <code class="inline">AG-I-1</code> → <code class="inline">AG-I-2</code>, авто-вывод заказа в <code class="inline">AG-2</code>. Back: <code class="inline">BACK-6</code>, App: <code class="inline">APP-6</code>.</span></li>
+        <li><span class="phase-label">Фаза 2</span><span class="phase-body"><b>Цикл по услугам.</b> <span class="ctrl">LOOP</span> каждая услуга независимо в <code class="inline">AG-I-2</code> → <code class="inline">AG-I-3</code> или <code class="inline">AG-I-6</code>. Статус APP не меняется, только детализация.</span></li>
+        <li><span class="phase-label">Фаза 3</span><span class="phase-body"><b>Все услуги завершены.</b> Авто-вывод заказа в <code class="inline">AG-3</code>. Back: <code class="inline">BACK-7</code>, App: <code class="inline">APP-7</code>.</span></li>
+      </ul>
+      <h4>Состояние</h4>
+      <div class="state-pair">
+        <div class="state-col entry">
+          <div class="label">На входе</div>
+          <span class="chip app">APP-5</span> · <span class="chip back">BACK-5</span> · <span class="chip agbis">AG-1</span> · Все услуги в <span class="chip agbis">AG-I-1</span>
+        </div>
+        <div class="state-col exit">
+          <div class="label">На выходе</div>
+          <span class="chip app">APP-7</span> · <span class="chip back">BACK-7</span> · <span class="chip agbis">AG-3</span> · Все услуги в <span class="chip agbis">AG-I-3</span> или <span class="chip agbis">AG-I-6</span>
+        </div>
+      </div>
+    </div>
+  </details>
+</div>
+
+<!-- STAGE 6А + 6В (split row) -->
+<div class="stage-row-split">
+
+<!-- STAGE 6А -->
+<div class="stage-detail">
+  <div class="stage-head">
+    <div class="stage-head-main">
+      <div class="stage-head-num">ЭТАП 6А · ДОСТАВКА КУРЬЕРОМ</div>
+      <div class="stage-head-title"><a href="stage-6a.html">Доставка домой и оплата</a></div>
+      <div class="stage-head-goal">Курьер доставил вещи клиенту домой; если оплата была отложена — получили её на месте.</div>
+      <div class="stage-head-systems">
+        <span class="chip app">App</span><span class="chip back">Back</span><span class="chip tele">Телетрек</span><span class="chip cloud">Cloud</span><span class="chip life">Life</span><span class="chip agbis">АГБИС</span>
+      </div>
+    </div>
+    <div class="stage-head-actions">
+      <a class="btn primary" href="stage-6a.html">Открыть →</a>
+    </div>
+  </div>
+  <details class="stage-details">
+    <summary>Подробнее</summary>
+    <div class="stage-body">
+      <h4>Описание</h4>
+      <div class="desc">
+        Курьерский цикл зеркалит Этап 2. Дополнительно, если на Этапе 4 был сценарий C — приходит асинхронный колбэк: Cloud (если клиент оплатил СБП по QR) или Life (если картой через терминал). Опционально курьер загружает фотоотчёт и подпись клиента — только в Back.
+      </div>
+      <h4>Фазы</h4>
+      <ul class="phases-list">
+        <li><span class="phase-label">Фаза 0</span><span class="phase-body"><b>Проверка адреса отдачи.</b> <span class="ctrl">ALT</span> если не указан на Этапе 1 — запрашиваем (зона, слоты, выбор).</span></li>
+        <li><span class="phase-label">Фаза 1</span><span class="phase-body"><b>Курьерский цикл.</b> Создание <code class="inline">TELE-1</code>, назначение курьера (Back: <code class="inline">BACK-8</code>, виджет <code class="inline">W-1</code>), <code class="inline">TELE-3</code> (Back: <code class="inline">BACK-9</code>, App: <code class="inline">APP-8</code>, push <code class="inline">N-1</code>), <code class="inline">TELE-4</code> игнорируем.</span></li>
+        <li><span class="phase-label">Фаза 2</span><span class="phase-body"><b>Оплата на месте (сценарий C).</b> <span class="ctrl">ALT C-СБП</span> клиент сканит QR → Cloud колбэк · <span class="ctrl">ALT C-КАРТА</span> Life → матчинг · <span class="ctrl">ELSE</span> уже оплачено (A, B).</span></li>
+        <li><span class="phase-label">Фаза 3</span><span class="phase-body"><b>Завершение доставки.</b> <code class="inline">TELE-5</code>, <code class="inline">W-1</code> выкл. Back: <code class="inline">BACK-11</code>, App: <code class="inline">APP-10</code>, АГБИС: <code class="inline">AG-4</code>. <span class="ctrl">ALT</span> опциональный фотоотчёт и подпись в Back.</span></li>
+      </ul>
+      <h4>Состояние</h4>
+      <div class="state-pair">
+        <div class="state-col entry">
+          <div class="label">На входе</div>
+          <span class="chip app">APP-7</span> · <span class="chip back">BACK-7</span> · <span class="chip agbis">AG-3</span> · Задача на отдачу ещё не создана
+        </div>
+        <div class="state-col exit">
+          <div class="label">На выходе</div>
+          <span class="chip app">APP-10</span> · <span class="chip back">BACK-11</span> · <span class="chip agbis">AG-4</span> · <span class="chip tele">TELE-5</span> · <span class="chip maxma">MAX-2</span> · <span class="chip green">Оплачено</span>
+        </div>
+      </div>
+    </div>
+  </details>
+</div>
+
+<!-- STAGE 6В -->
+<div class="stage-detail">
+  <div class="stage-head">
+    <div class="stage-head-main">
+      <div class="stage-head-num">ЭТАП 6В · САМОВЫВОЗ ИЗ ПП</div>
+      <div class="stage-head-title"><a href="stage-6v.html">Доставка в ПП и оплата</a></div>
+      <div class="stage-head-goal">Клиент пришёл в пункт приёма за вещами; при необходимости оплатил на месте через АГБИС.</div>
+      <div class="stage-head-systems">
+        <span class="chip app">App</span><span class="chip back">Back</span><span class="chip agbis">АГБИС</span><span class="chip maxma">Maxma</span><span class="chip red">задержка 15–45 мин</span>
+      </div>
+    </div>
+    <div class="stage-head-actions">
+      <a class="btn primary" href="stage-6v.html">Открыть →</a>
+    </div>
+  </div>
+  <details class="stage-details">
+    <summary>Подробнее</summary>
+    <div class="stage-body">
+      <h4>Описание</h4>
+      <div class="desc">
+        Альтернатива Этапу 6А. Телетрек, Cloud, Life не задействованы. Ведущая система — АГБИС, события приходят с задержкой 15–45 мин. <b>Событие «готов к выдаче в ПП» приходит из АГБИС</b> — конкретный механизм (какой статус/флаг/событие) на сегодня не определён и требует уточнения с командой АГБИС. Факт выдачи тоже приходит из АГБИС. Используются «спящие» статусы <code class="inline">BACK-10</code> и <code class="inline">APP-9</code>.
+      </div>
+      <h4>Фазы</h4>
+      <ul class="phases-list">
+        <li><span class="phase-label">Фаза 1</span><span class="phase-body"><b>Уведомление о готовности (триггер из АГБИС).</b> АГБИС фиксирует прибытие вещей в ПП, сигнал с задержкой приходит в Back. Back: <code class="inline">BACK-7</code> → <code class="inline">BACK-10 "Ожидает самовывоз"</code>. App: <code class="inline">APP-7</code> → <code class="inline">APP-9 "Готов к выдаче"</code>, push клиенту.</span></li>
+        <li><span class="phase-label">Фаза 2</span><span class="phase-body"><b>Клиент приходит в ПП.</b> Технолог находит заказ в АГБИС по номеру / QR / телефону.</span></li>
+        <li><span class="phase-label">Фаза 3</span><span class="phase-body"><b>Оплата в ПП (если не было онлайн).</b> <span class="ctrl">ALT</span> уже оплачено — пропускаем · <span class="ctrl">ELSE</span> наличные / карта терминал АГБИС / СБП через АГБИС. Life не используется.</span></li>
+        <li><span class="phase-label">Фаза 4</span><span class="phase-body"><b>Выдача и завершение (триггер из АГБИС).</b> Технолог помечает в АГБИС: <code class="inline">AG-3</code> → <code class="inline">AG-4 "Выданный"</code>. С задержкой Back: <code class="inline">BACK-10</code> → <code class="inline">BACK-11</code>, App: <code class="inline">APP-9</code> → <code class="inline">APP-10</code>.</span></li>
+      </ul>
+      <h4>Состояние</h4>
+      <div class="state-pair">
+        <div class="state-col entry">
+          <div class="label">На входе</div>
+          <span class="chip app">APP-7</span> · <span class="chip back">BACK-7</span> · <span class="chip agbis">AG-3</span> · Телетрек не задействован
+        </div>
+        <div class="state-col exit">
+          <div class="label">На выходе</div>
+          <span class="chip app">APP-10</span> · <span class="chip back">BACK-11</span> · <span class="chip agbis">AG-4</span> · <span class="chip maxma">MAX-2</span> · <span class="chip green">Оплачено</span>
+        </div>
+      </div>
+    </div>
+  </details>
+</div>
+
+</div>
+<!-- end STAGE 6А + 6В split row -->
+
+<!-- STAGE 7 -->
+<div class="stage-detail">
+  <div class="stage-head">
+    <div class="stage-head-main">
+      <div class="stage-head-num">ЭТАП 7 из 7</div>
+      <div class="stage-head-title"><a href="stage-7.html">Завершение и отзыв</a></div>
+      <div class="stage-head-goal">Клиенту предлагаем оценить заказ; отзыв сохраняется только в Back.</div>
+      <div class="stage-head-systems">
+        <span class="chip app">App</span><span class="chip back">Back</span>
+      </div>
+    </div>
+    <div class="stage-head-actions">
+      <a class="btn primary" href="stage-7.html">Открыть →</a>
+    </div>
+  </div>
+  <details class="stage-details">
+    <summary>Подробнее</summary>
+    <div class="stage-body">
+      <h4>Описание</h4>
+      <div class="desc">
+        Все статусы уже в финальных значениях после Этапа 6. Приложение показывает экран оценки. Клиент может пропустить — заказ и так закрыт. Отзыв хранится только в Back, в Maxma/АГБИС не передаётся. Статус <code class="inline">AG-5 "Закрытый"</code> не используется.
+      </div>
+      <h4>Фазы</h4>
+      <ul class="phases-list">
+        <li><span class="phase-label">Фаза 1</span><span class="phase-body"><b>Предложение оставить отзыв.</b> Back триггерит в App экран оценки.</span></li>
+        <li><span class="phase-label">Фаза 2</span><span class="phase-body"><b>Клиент оставляет отзыв.</b> <span class="ctrl">ALT</span> отзыв оставлен (сохраняем в Back) · <span class="ctrl">ELSE</span> пропущен (без изменений).</span></li>
+      </ul>
+      <h4>Состояние</h4>
+      <div class="state-pair">
+        <div class="state-col entry">
+          <div class="label">На входе</div>
+          <span class="chip app">APP-10</span> · <span class="chip back">BACK-11</span> · <span class="chip agbis">AG-4</span> · <span class="chip maxma">MAX-2</span> · отзыв отсутствует
+        </div>
+        <div class="state-col exit">
+          <div class="label">На выходе</div>
+          Статусы не меняются · отзыв оставлен или пропущен
+        </div>
+      </div>
+    </div>
+  </details>
+</div>
+
+<!-- ========================================================== -->
+<h2 id="actors" class="anchor-offset"><span class="h2-count">02 ·</span> Акторы</h2>
+
+<p>Два типа пользователей, взаимодействующих с флоу.</p>
+
+<div class="actors-grid">
+  <div class="actor-card">
+    <div class="actor-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+    </div>
+    <div class="actor-body">
+      <h3>Клиент</h3>
+      <div class="role">Конечный пользователь химчистки</div>
+      <ul>
+        <li>Взаимодействует с флоу только через <b>Norma App</b></li>
+        <li>Оформляет заказ, выбирает слоты, подтверждает приёмку, оплачивает, оставляет отзыв</li>
+        <li>Не видит: статусы АГБИС (только детализацию услуг), фотоотчёты курьера, внутренние признаки</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="actor-card">
+    <div class="actor-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="7" r="4"/>
+        <path d="M5 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/>
+        <path d="M9 11l1.5 1.5L15 8"/>
+      </svg>
+    </div>
+    <div class="actor-body">
+      <h3>Технолог</h3>
+      <div class="role">Сотрудник фабрики</div>
+      <ul>
+        <li>Работает только через <b>АГБИС</b></li>
+        <li>Принимает заказ (фото, комментарии, коррекция цены), подтверждает</li>
+        <li>Ведёт услуги через статусы (в работу / завершить / отменить)</li>
+        <li>Может сгенерировать ссылку на оплату для клиента (Сценарий B, Этап 4)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================== -->
+<h2 id="systems" class="anchor-offset"><span class="h2-count">03 ·</span> Системы</h2>
+
+<p>Семь технических систем, задействованных во флоу. Нажмите на название — развернётся описание.</p>
+
+<details class="sys-card">
+  <summary><span class="sys-title app">Norma App</span><span class="sys-role">Клиентский UI</span></summary>
+  <div class="sys-card-body">
+    <ul>
+      <li>Единственная точка взаимодействия клиента с флоу</li>
+      <li>Статусы <code class="inline">APP-1</code>…<code class="inline">APP-10</code>, виджеты <code class="inline">W-1</code>, <code class="inline">W-2</code>, уведомления <code class="inline">N-1</code></li>
+      <li>Оформление, выбор адреса / слота, конфигурация оплаты, отзыв</li>
+      <li>Все данные — только через Norma Back</li>
+    </ul>
+  </div>
+</details>
+
+<details class="sys-card">
+  <summary><span class="sys-title back">Norma Back</span><span class="sys-role">Оркестратор · источник правды по заказу</span></summary>
+  <div class="sys-card-body">
+    <ul>
+      <li>Центральная точка всего флоу. Все остальные системы общаются через Back</li>
+      <li>Основной статус заказа <code class="inline">BACK-1</code>…<code class="inline">BACK-11</code>, признаки оплаты и подтверждения</li>
+      <li>Синхронизирует статусы между всеми системами</li>
+      <li>Содержит <b>модуль матчинга Life</b>: сопоставляет платежи с заказами по сумме / времени / курьеру</li>
+      <li>Хранит фотоотчёты курьера и отзывы клиентов</li>
+    </ul>
+  </div>
+</details>
+
+<details class="sys-card">
+  <summary><span class="sys-title agbis">АГБИС</span><span class="sys-role">Фабричная учётная система</span></summary>
+  <div class="sys-card-body">
+    <ul>
+      <li>Технолог ведёт заказ через АГБИС</li>
+      <li>Отслеживает статусы <b>услуг</b> (<code class="inline">AG-I-1</code>…<code class="inline">AG-I-6</code>) отдельно по каждой вещи</li>
+      <li>Автоматически выводит статус <b>заказа</b> (<code class="inline">AG-1</code>…<code class="inline">AG-6</code>) из статусов услуг</li>
+      <li>Хранит признаки подтверждения (фабрика / клиент) и оплаты</li>
+      <li><span class="chip red">задержка 15–45 мин</span> при отправке данных в Back. Отправка <b>в</b> АГБИС — быстрая</li>
+    </ul>
+  </div>
+</details>
+
+<details class="sys-card">
+  <summary><span class="sys-title tele">Телетрек</span><span class="sys-role">Курьерская система</span></summary>
+  <div class="sys-card-body">
+    <ul>
+      <li>Управляет курьерами и задачами доставки (забор и отдача)</li>
+      <li>Определяет зону по адресу и выдаёт доступные слоты</li>
+      <li>Ведёт задачу через <code class="inline">TELE-1</code>…<code class="inline">TELE-5</code>, сама назначает исполнителя</li>
+      <li>Хранит QR-коды для оплаты СБП курьеру</li>
+      <li>Передаёт фотоотчёты и подписи клиентов</li>
+      <li>Реалтайм-интеграция с Back</li>
+    </ul>
+  </div>
+</details>
+
+<details class="sys-card">
+  <summary><span class="sys-title maxma">Maxma</span><span class="sys-role">CRM и программа лояльности</span></summary>
+  <div class="sys-card-body">
+    <ul>
+      <li>Баланс бонусов клиента, история скидок, промокоды</li>
+      <li>Рассчитывает скидки по количеству / сумме в корзине (реалтайм)</li>
+      <li>Списывает бонусы, применяет скидки и промокоды одним вызовом</li>
+      <li>Статусы заказа <code class="inline">MAX-1</code>…<code class="inline">MAX-3</code> для собственного учёта</li>
+      <li>Отзывы клиентов <b>не передаются</b> (хранятся только в Back)</li>
+    </ul>
+  </div>
+</details>
+
+<details class="sys-card">
+  <summary><span class="sys-title cloud">Cloud · CloudPayments</span><span class="sys-role">Онлайн-оплата</span></summary>
+  <div class="sys-card-body">
+    <ul>
+      <li>Генерирует ссылки на оплату (карта / СБП) по запросу Back</li>
+      <li>Проводит платёж, присылает колбэк «заказ оплачен»</li>
+      <li>Используется в трёх местах: онлайн сейчас, ссылка от технолога, QR курьеру</li>
+    </ul>
+  </div>
+</details>
+
+<details class="sys-card">
+  <summary><span class="sys-title life">Life · LifePay</span><span class="sys-role">Терминальная оплата картой</span></summary>
+  <div class="sys-card-body">
+    <ul>
+      <li>Принимает оплату картой через терминал курьера</li>
+      <li>Присылает в Back уведомление о платеже (сумма, время, терминал / курьер)</li>
+      <li><b>Не знает о заказе</b> — Back сам сопоставляет через модуль матчинга</li>
+      <li>Используется только в сценарии C-КАРТА при доставке</li>
+    </ul>
+  </div>
+</details>
+
+<!-- ========================================================== -->
+<h2 id="statuses" class="anchor-offset"><span class="h2-count">04 ·</span> Справочник статусов</h2>
+
+<p>Все статусы всех систем с указанием, где и когда они устанавливаются.</p>
+
+<h3>Norma App · <code class="inline">APP-*</code></h3>
+<table>
+  <colgroup><col style="width:12%"><col style="width:38%"><col style="width:50%"></colgroup>
+  <thead><tr><th>Код</th><th>Название</th><th>Когда устанавливается</th></tr></thead>
+  <tbody>
+    <tr><td><span class="chip app">APP-1</span></td><td>Заказ создан</td><td>Этап 1 · после оформления</td></tr>
+    <tr><td><span class="chip app">APP-2</span></td><td>Заказ создан (ждём подтверждения)</td><td>Этап 1А · после оформления, до назначения курьера <br><span style="color:#8a5a00; font-size:12px;">⚠️ в sequence-диаграмме Этапа 1А пока не отражено</span></td></tr>
+    <tr><td><span class="chip app">APP-3</span></td><td>Сбор вещей</td><td>Этап 2 · после назначения курьера, до приёмки на фабрике</td></tr>
+    <tr><td><span class="chip app">APP-4</span></td><td>Приёмка вещей</td><td>Этап 3 · после подтверждения технологом</td></tr>
+    <tr><td><span class="chip app">APP-5</span></td><td>Вещи приняты</td><td>Этап 3 · после подтверждения клиентом</td></tr>
+    <tr><td><span class="chip app">APP-6</span></td><td>Чистим</td><td>Этап 5 · первая услуга в работе</td></tr>
+    <tr><td><span class="chip app">APP-7</span></td><td>Готово к отправке</td><td>Этап 5 · все услуги завершены</td></tr>
+    <tr><td><span class="chip app">APP-8</span></td><td>Доставка</td><td>Этап 6 · курьер выехал</td></tr>
+    <tr><td><span class="chip app">APP-9</span></td><td>Готов к выдаче</td><td>Этап 6В · клиент выбрал самовывоз, вещи в ПП</td></tr>
+    <tr><td><span class="chip app">APP-10</span></td><td>Выдан</td><td>Этап 6 · финальный</td></tr>
+  </tbody>
+</table>
+
+<h3>Norma App · Виджеты <code class="inline">W-*</code> и уведомления <code class="inline">N-*</code></h3>
+<table>
+  <colgroup><col style="width:12%"><col style="width:38%"><col style="width:50%"></colgroup>
+  <thead><tr><th>Код</th><th>Название</th><th>Жизненный цикл</th></tr></thead>
+  <tbody>
+    <tr><td><span class="chip app">W-1</span></td><td>Курьер в пути</td><td>Вкл. при назначении курьера (Этапы 2 и 6), выкл. при <code class="inline">TELE-5</code></td></tr>
+    <tr><td><span class="chip app">W-2</span></td><td>Подтвердите заказ</td><td>Вкл. на Этапе 3 после подтверждения технологом, выкл. после клиента</td></tr>
+    <tr><td><span class="chip app">N-1</span></td><td>Курьер в пути (push)</td><td>Этапы 2 и 6, в момент <code class="inline">TELE-3</code></td></tr>
+  </tbody>
+</table>
+
+<h3>Norma Back · <code class="inline">BACK-*</code> · Happy Path</h3>
+<table>
+  <colgroup><col style="width:12%"><col style="width:38%"><col style="width:50%"></colgroup>
+  <thead><tr><th>Код</th><th>Название</th><th>Когда устанавливается</th></tr></thead>
+  <tbody>
+    <tr><td><span class="chip back">BACK-1</span></td><td>Новый заказ</td><td>Этап 1</td></tr>
+    <tr><td><span class="chip back">BACK-2</span></td><td>Назначен курьер (приём)</td><td>Этап 2 · назначен исполнитель</td></tr>
+    <tr><td><span class="chip back">BACK-3</span></td><td>Сбор вещей (приём)</td><td>Этап 2 · курьер выехал</td></tr>
+    <tr><td><span class="chip back">BACK-4</span></td><td>Приём на фабрике</td><td>Этап 3 · после подтверждения технологом</td></tr>
+    <tr><td><span class="chip back">BACK-5</span></td><td>Подтверждён клиентом</td><td>Этап 3 · после подтверждения клиентом</td></tr>
+    <tr><td><span class="chip back">BACK-6</span></td><td>В работе</td><td>Этап 5 · первая услуга в работе</td></tr>
+    <tr><td><span class="chip back">BACK-7</span></td><td>Готов к отправке (отдача)</td><td>Этап 5 · все услуги завершены</td></tr>
+    <tr><td><span class="chip back">BACK-8</span></td><td>Назначен курьер (отдача)</td><td>Этап 6 · назначен исполнитель</td></tr>
+    <tr><td><span class="chip back">BACK-9</span></td><td>Доставка вещей (отдача)</td><td>Этап 6 · курьер выехал</td></tr>
+    <tr><td><span class="chip back">BACK-10</span></td><td>Ожидает самовывоз</td><td>Этап 6В · клиент выбрал самовывоз, ждём прихода в ПП</td></tr>
+    <tr><td><span class="chip back">BACK-11</span></td><td>Завершён</td><td>Этап 6 · финальный</td></tr>
+  </tbody>
+</table>
+
+<h3>Norma Back · <code class="inline">BACK-*</code> · Unhappy Path (не описаны)</h3>
+<table>
+  <colgroup><col style="width:12%"><col style="width:38%"><col style="width:50%"></colgroup>
+  <thead><tr><th>Код</th><th>Название</th><th>Статус</th></tr></thead>
+  <tbody>
+    <tr><td><span class="chip orange back">BACK-12</span></td><td>Ошибка</td><td><b>Не описан в текущем флоу</b></td></tr>
+    <tr><td><span class="chip orange back">BACK-13</span></td><td>Готовим возврат</td><td><b>Не описан в текущем флоу</b></td></tr>
+    <tr><td><span class="chip orange back">BACK-14</span></td><td>Возврат вещей (курьером)</td><td><b>Не описан в текущем флоу</b></td></tr>
+    <tr><td><span class="chip orange back">BACK-15</span></td><td>Возврат (пункт приёма)</td><td>Не используется</td></tr>
+    <tr><td><span class="chip orange back">BACK-16</span></td><td>Отменён</td><td><b>Не описан в текущем флоу</b></td></tr>
+  </tbody>
+</table>
+
+<h3>АГБИС · <code class="inline">AG-*</code> · Статус заказа</h3>
+<table>
+  <colgroup><col style="width:12%"><col style="width:38%"><col style="width:50%"></colgroup>
+  <thead><tr><th>Код</th><th>Название</th><th>Когда устанавливается</th></tr></thead>
+  <tbody>
+    <tr><td><span class="chip agbis">AG-1</span></td><td>Новый</td><td>Этап 1 · создание заказа в АГБИС</td></tr>
+    <tr><td><span class="chip agbis">AG-2</span></td><td>В исполнении</td><td>Этап 5 · первая услуга в работу (авто-вывод)</td></tr>
+    <tr><td><span class="chip agbis">AG-3</span></td><td>Исполненный</td><td>Этап 5 · все услуги завершены (авто-вывод)</td></tr>
+    <tr><td><span class="chip agbis">AG-4</span></td><td>Выданный</td><td>Этап 6 · курьер вручил клиенту</td></tr>
+    <tr><td><span class="chip gray agbis">AG-5</span></td><td>Закрытый</td><td>Не используется в текущем флоу</td></tr>
+    <tr><td><span class="chip orange agbis">AG-6</span></td><td>Отменённый</td><td><b>Не описан (unhappy path)</b></td></tr>
+  </tbody>
+</table>
+
+<h3>АГБИС · <code class="inline">AG-I-*</code> · Статусы услуг</h3>
+<table>
+  <colgroup><col style="width:12%"><col style="width:38%"><col style="width:50%"></colgroup>
+  <thead><tr><th>Код</th><th>Название</th><th>Когда устанавливается</th></tr></thead>
+  <tbody>
+    <tr><td><span class="chip agbis">AG-I-1</span></td><td>Новый</td><td>Этап 1А или 1Б · создание услуги вместе с заказом</td></tr>
+    <tr><td><span class="chip agbis">AG-I-2</span></td><td>В исполнении</td><td>Этап 5 · технолог взял услугу в работу</td></tr>
+    <tr><td><span class="chip agbis">AG-I-3</span></td><td>Исполненный</td><td>Этап 5 · технолог завершил услугу</td></tr>
+    <tr><td><span class="chip gray agbis">AG-I-4</span></td><td>Выданный</td><td>Не используется отдельно</td></tr>
+    <tr><td><span class="chip gray agbis">AG-I-5</span></td><td>Закрытый</td><td>Не используется</td></tr>
+    <tr><td><span class="chip orange agbis">AG-I-6</span></td><td>Отменённый</td><td>Этап 5 · технолог отменил услугу (unhappy path не покрыт)</td></tr>
+  </tbody>
+</table>
+
+<h3>Телетрек · <code class="inline">TELE-*</code></h3>
+<table>
+  <colgroup><col style="width:12%"><col style="width:38%"><col style="width:50%"></colgroup>
+  <thead><tr><th>Код</th><th>Название</th><th>Когда устанавливается</th></tr></thead>
+  <tbody>
+    <tr><td><span class="chip tele">TELE-1</span></td><td>Новая</td><td>Создание задачи (забор или отдача)</td></tr>
+    <tr><td><span class="chip tele">TELE-2</span></td><td>Принята</td><td>Телетрек принял задачу</td></tr>
+    <tr><td><span class="chip tele">TELE-3</span></td><td>В работе</td><td>Курьер выехал</td></tr>
+    <tr><td><span class="chip orange tele">TELE-4</span></td><td>В пути</td><td>Промежуточный, <b>мы его игнорируем</b></td></tr>
+    <tr><td><span class="chip tele">TELE-5</span></td><td>Выполнена</td><td>Курьер завершил задачу</td></tr>
+    <tr><td><span class="chip orange tele">TELE-6</span></td><td>Отклонена</td><td><b>Не описан в текущем флоу</b></td></tr>
+  </tbody>
+</table>
+
+<h3>Maxma · <code class="inline">MAX-*</code></h3>
+<table>
+  <colgroup><col style="width:12%"><col style="width:38%"><col style="width:50%"></colgroup>
+  <thead><tr><th>Код</th><th>Название</th><th>Когда устанавливается</th></tr></thead>
+  <tbody>
+    <tr><td><span class="chip maxma">MAX-1</span></td><td>В работе</td><td>Этап 1 · создание заказа</td></tr>
+    <tr><td><span class="chip maxma">MAX-2</span></td><td>Завершённый</td><td>Этап 4 (A, B) или Этап 6 (C) · после получения оплаты</td></tr>
+    <tr><td><span class="chip orange maxma">MAX-3</span></td><td>Отменённый</td><td><b>Не описан в текущем флоу</b></td></tr>
+  </tbody>
+</table>
+
+<h3>Признаки (без префикса)</h3>
+<table>
+  <colgroup><col style="width:22%"><col style="width:28%"><col style="width:50%"></colgroup>
+  <thead><tr><th>Признак</th><th>Значения</th><th>Где хранится · синхронизация</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>Признак оплаты</td>
+      <td>Оплачено / Не оплачено</td>
+      <td>
+        <span class="chip back">Back</span> · <span class="chip agbis">АГБИС</span> · <span class="chip maxma">Maxma</span> · <span class="chip tele">Телетрек</span><br>
+        <span style="color:#666; font-size:13px;">синхронизируются между собой через Back</span>
+      </td>
+    </tr>
+    <tr>
+      <td>Источник оплаты</td>
+      <td>Скидка, Промокод, Бонусы, Cloud, Life, касса АГБИС</td>
+      <td>
+        <span class="chip back">Back</span> (разбивка) · <span class="chip agbis">АГБИС</span> (разбивка)<br>
+        <span style="color:#666; font-size:13px;">только там где оплата производилась</span>
+      </td>
+    </tr>
+    <tr>
+      <td>Признак подтверждения</td>
+      <td>Фабрика: Да/Нет · Клиент: Да/Нет</td>
+      <td>
+        <span class="chip back">Back</span> · <span class="chip agbis">АГБИС</span><br>
+        <span style="color:#666; font-size:13px;">синхронизируются между собой</span>
+      </td>
+    </tr>
+    <tr>
+      <td>Признак «Быстрый заказ»</td>
+      <td>Да / Нет</td>
+      <td>
+        <span class="chip back">Back</span><br>
+        <span style="color:#666; font-size:13px;">влияет на приоритеты (реализация отдельно)</span>
+      </td>
+    </tr>
+    <tr>
+      <td>Тип получения</td>
+      <td>Курьер / ПП / не выбран</td>
+      <td>
+        <span class="chip back">Back</span> · <span class="chip app">App</span> (если выбран через приложение) · <span class="chip agbis">АГБИС</span> (если выбран через ПП)<br>
+        <span style="color:#666; font-size:13px;">определяет выбор между Этапом 6А и 6В</span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ========================================================== -->
+<h2 id="weak-points" class="anchor-offset"><span class="h2-count">05 ·</span> Слабые места</h2>
+
+<p>Технические и продуктовые риски текущего дизайна флоу. Нажмите на заголовок чтобы развернуть детали.</p>
+
+<details class="risk-item">
+  <summary>
+  <span class="risk-impact">Критическое · UX + надёжность</span>
+  <h4>Задержка синхронизации с АГБИС 15–45 минут</h4>
+  </summary>
+  <div class="risk-body">
+  <p>АГБИС возвращает данные в Back с задержкой 15–45 минут (внутренний цикл АГБИС). Это влияет на Этапы 3 и 5:</p>
+  <ul>
+    <li>Клиент может ждать до 45 минут появления факта «технолог принял заказ»</li>
+    <li>Виджет <code class="inline">W-2 "Подтвердите заказ"</code> появляется с большим лагом</li>
+    <li>Переход <code class="inline">APP-6</code> → <code class="inline">APP-7</code> тоже с задержкой</li>
+  </ul>
+  <div class="mitigation">
+    <b>Что делать:</b> продуктово — пояснять клиенту в UI («данные обновляются в течение часа»). Технически — мониторинг задержек, SLA на стороне АГБИС, промежуточный кэш или polling чаще. Долгосрочно — договариваться с АГБИС об ускорении выгрузки или webhooks.
+  </div>
+  </div>
+</details>
+
+<details class="risk-item">
+  <summary>
+  <span class="risk-impact">Критическое · Консистентность данных</span>
+  <h4>Два источника правды по бонусам — Maxma vs АГБИС</h4>
+  </summary>
+  <div class="risk-body">
+  <p>Maxma — <b>глобальный мастер</b> программы лояльности. АГБИС ведёт <b>локальную копию</b> балансов для работы в ПП (<a href="stage-1b.html">Этап 1Б</a>) и оплат на месте. Между системами происходит синхронизация через Back, но она <b>асинхронная</b> и с задержкой 15–45 мин (цикл АГБИС). Это реальный риск, не гипотетический — в сценарии с оплатой в ПП балансы фактически списываются из АГБИС и только потом катятся в Maxma.</p>
+  <p><b>Возможные проблемы:</b></p>
+  <ul>
+    <li><b>Двойное списание бонусов:</b> клиент оплатил бонусами в ПП и одновременно (или сразу после) в приложении, пока синхронизация не дошла. Два раза списали одни и те же бонусы.</li>
+    <li><b>Рассинхрон балансов:</b> в Maxma баланс 500, в АГБИС 450 (последнее списание ещё не синхронизировано). Клиент в приложении думает что может списать 500, но АГБИС говорит «только 450».</li>
+    <li><b>Промокод использован дважды:</b> одноразовый промокод применён в АГБИС в ПП и в Maxma через приложение до синхронизации.</li>
+    <li><b>Акции по количеству заказов:</b> рассинхрон счётчиков может дать клиенту лишнюю акцию или отобрать заслуженную.</li>
+  </ul>
+  <div class="mitigation">
+    <b>Что делать:</b> мониторинг рассинхронов (метрика «расхождение баланса Maxma vs АГБИС»), ручная политика разрешения конфликтов (Maxma — победитель, АГБИС подстраивается), блокировки одновременного использования бонусов (lock в Back на время открытой транзакции). Для промокодов — сразу после применения в одной системе помечать как использованный в обеих через Back. Нельзя исключить полностью при текущей архитектуре АГБИС — нужно жить с этим и мониторить.
+  </div>
+  </div>
+</details>
+
+<details class="risk-item">
+  <summary>
+  <span class="risk-impact">Высокое · Консистентность данных</span>
+  <h4>Два источника правды по скидкам</h4>
+  </summary>
+  <div class="risk-body">
+  <p>Аналогично бонусам: Maxma рассчитывает скидки по количеству / сумме, но в АГБИС есть свои скидки, которые технолог может применить вручную. Если он это сделает, в Back и Maxma не узнают.</p>
+  <div class="mitigation">
+    <b>Что делать:</b> запретить применение скидок АГБИС напрямую в текущем флоу. Все скидки — через Maxma на Этапе 4. Или наладить обратную синхронизацию АГБИС → Back → Maxma.
+  </div>
+  </div>
+</details>
+
+<details class="risk-item">
+  <summary>
+  <span class="risk-impact">Критическое · Качество продукта</span>
+  <h4>Слабая проработка отмен и unhappy paths</h4>
+  </summary>
+  <div class="risk-body">
+  <p>Текущий флоу описывает только happy path. Отсутствуют:</p>
+  <ul>
+    <li>Клиент не подтверждает на Этапе 3 → возврат вещей</li>
+    <li>Одна или несколько услуг отменены на Этапе 5 → возврат разницы</li>
+    <li>Cloud-платёж упал / клиент бросил оплату → повторная попытка или откат</li>
+    <li>Промокод устарел между проверкой и применением</li>
+    <li>Клиент отказывается на доставке → возврат на фабрику + возврат денег</li>
+    <li>Курьер не смог забрать или вручить</li>
+    <li>Терминал Life не работает / СБП не проходит</li>
+  </ul>
+  <div class="mitigation">
+    <b>Что делать:</b> отдельный документ «Unhappy paths» с матрицей: что где может сломаться, какие статусы (<code class="inline">BACK-12</code>…<code class="inline">BACK-16</code>) использовать, как возвращать деньги, как восстанавливать состояние.
+  </div>
+  </div>
+</details>
+
+<details class="risk-item">
+  <summary>
+  <span class="risk-impact">Высокое · Финансы</span>
+  <h4>Возврат денег при отмене или частичной отмене заказа</h4>
+  </summary>
+  <div class="risk-body">
+  <p>Не описан механизм возврата средств:</p>
+  <ul>
+    <li>Клиент отменил заказ после оплаты → полный возврат Cloud</li>
+    <li>Технолог отменил одну из услуг → частичный возврат</li>
+    <li>Заказ отменён после списания бонусов → возврат в Maxma</li>
+    <li>Промокод использован, но заказ отменён → восстановление промокода?</li>
+  </ul>
+  <div class="mitigation">
+    <b>Что делать:</b> определить политику возвратов — кто инициирует, через какие системы (Cloud refund API, Maxma rollback, АГБИС корректировка). Критично для продакшена.
+  </div>
+  </div>
+</details>
+
+<details class="risk-item">
+  <summary>
+  <span class="risk-impact">Среднее · Надёжность интеграций</span>
+  <h4>Отказы внешних систем: АГБИС, Телетрек, Cloud, Life, Maxma</h4>
+  </summary>
+  <div class="risk-body">
+  <p>Что делать если:</p>
+  <ul>
+    <li><b>АГБИС недоступен</b> → Этап 1: создание упадёт. Этапы 3 и 5 встанут. Фабричный флоу блокирован.</li>
+    <li><b>Телетрек недоступен</b> → Этап 1: нет зоны и слотов. Этапы 2 и 6: курьер не назначится.</li>
+    <li><b>Cloud недоступен</b> → Этап 4 A/B: нет онлайн-оплаты. Этап 6 C-СБП: нет QR.</li>
+    <li><b>Life недоступен</b> → Этап 6 C-КАРТА: терминал не примет, но можно перейти на СБП.</li>
+    <li><b>Maxma недоступна</b> → Этап 1: нет скидок в корзине. Этап 4: нет применения лояльности.</li>
+  </ul>
+  <div class="mitigation">
+    <b>Что делать:</b> retry-политика, таймауты, fallback. Критичные операции (создание заказа, оплата) — транзакционная семантика или идемпотентность. Менее критичные — деградация UX с предупреждением.
+  </div>
+  </div>
+</details>
+
+<details class="risk-item">
+  <summary>
+  <span class="risk-impact">Среднее · Идемпотентность</span>
+  <h4>Гонки и дубликаты колбэков Cloud / Life</h4>
+  </summary>
+  <div class="risk-body">
+  <p>На Этапе 6 могут прилететь дубликаты или оба колбэка (клиент начал СБП, передумал, оплатил картой). Без идемпотентности заказ может быть «оплачен дважды» или зависнуть.</p>
+  <div class="mitigation">
+    <b>Что делать:</b> в Back — проверка «заказ уже Оплачено» перед обработкой колбэка. В матчинге Life — дедупликация по сумме / времени / курьеру. Cloud-колбэки — по payment_id.
+  </div>
+  </div>
+</details>
+
+<details class="risk-item">
+  <summary>
+  <span class="risk-impact">Высокое · Блокирующий вопрос</span>
+  <h4>Неопределённый механизм триггера АГБИС для Этапа 6В (самовывоз)</h4>
+  </summary>
+  <div class="risk-body">
+  <p>
+    На Этапе 6В событие «вещи прибыли в ПП, готовы к выдаче» приходит из АГБИС. Но <b>конкретный механизм на сегодня не определён</b> — это может быть: отдельный статус заказа, статус услуги, специальный флаг, отдельное событие в API, либо что-то другое. Без уточнения этот этап нельзя имплементировать.
+  </p>
+  <p>Аналогично — факт физической выдачи вещей клиенту в ПП тоже приходит из АГБИС, с тем же вопросом.</p>
+  <div class="mitigation">
+    <b>Что делать:</b> зафиксировать конкретный механизм с командой АГБИС (статус / флаг / webhook / polling). До этого — Этап 6В остаётся на бумаге.
+  </div>
+  </div>
+</details>
+
+<details class="risk-item">
+  <summary>
+  <span class="risk-impact">Низкое · UX</span>
+  <h4>Зависимость UX от задержек АГБИС на Этапе 3</h4>
+  </summary>
+  <div class="risk-body">
+  <p>Клиент может долго ждать появления фото и комментариев технолога, потом ещё раз — появления кнопки «Подтвердить». До 1.5 часов ожидания от реальных действий технолога до возможности клиента отреагировать.</p>
+  <div class="mitigation">
+    <b>Что делать:</b> прозрачный индикатор «обновление в течение часа» в UI. Push-уведомление когда данные долетели.
+  </div>
+  </div>
+</details>
+
+<!-- ========================================================== -->
+<h2 id="not-covered" class="anchor-offset"><span class="h2-count">06 ·</span> Что не учтено</h2>
+
+<p>Сценарии и расширения, <b>осознанно не описанные</b> в текущей версии.</p>
+
+<h3>Unhappy paths</h3>
+<div class="warn">
+  <b>Статусы <code class="inline">BACK-12</code>…<code class="inline">BACK-16</code>, <code class="inline">AG-6</code>, <code class="inline">AG-I-6</code>, <code class="inline">TELE-6</code>, <code class="inline">MAX-3</code> не задействованы.</b> Все эти статусы есть в справочниках, но текущий флоу их не использует. Нужен отдельный документ «Unhappy paths».
+</div>
+<ul>
+  <li>Клиент не согласен с ценой → отмена на Этапе 3 → возврат вещей</li>
+  <li>Услуга отменена технологом на Этапе 5 → пересчёт → возврат разницы</li>
+  <li>Заказ полностью отменён → возврат всех денег + откат бонусов и промокода</li>
+  <li>Курьер не смог забрать / доставить → перенос, отмена, возврат</li>
+  <li>Платёж не прошёл → повторная попытка / отмена</li>
+  <li>Клиент отказывается принимать вещи на доставке → возврат на фабрику</li>
+  <li>Претензии по качеству после получения → отдельный процесс</li>
+</ul>
+
+<h3>Возврат денег</h3>
+<div class="warn">
+  <b>Механизм возврата не описан.</b> Cloud refund, Maxma rollback, коррекция в АГБИС — нужна отдельная документация.
+</div>
+
+<h3>Оформление в пункте приёма</h3>
+<div class="note">
+  <b>Покрыт как <a href="stage-1b.html">Этап 1Б</a>.</b> Клиент пришёл с вещами в ПП, технолог оформил заказ в АГБИС. Дальше заказ проходит по стандартным этапам с упрощениями: Этап 2 (сбор вещей) пропускается, Этап 3 (приёмка) пропускается, Этап 4 (оплата) — частично в зависимости от выбора клиента.
+</div>
+
+<h3>Получение заказа в пункте приёма</h3>
+<div class="note">
+  <b>Самовывоз реализован как <a href="stage-6v.html">Этап 6В</a>.</b> Использует «спящие» статусы <code class="inline">BACK-10 "Ожидает самовывоз"</code> и <code class="inline">APP-9 "Готов к выдаче"</code>. Триггеры (готовность + факт выдачи) приходят из АГБИС. Конкретный механизм триггера готовности в АГБИС — <b>пока не определён</b>, требует уточнения с командой АГБИС.
+</div>
+
+<h3>Быстрый заказ</h3>
+<div class="warn">
+  <b>Признак «Быстрый заказ» есть в Back, но не влияет на флоу.</b> Логика приоритизации не описана.
+</div>
+
+<h3>Мониторинг, логирование, аудит</h3>
+<div class="warn">
+  <b>Нефункциональные требования не описаны.</b> Как логировать переходы, какие метрики, как обеспечить аудит — отдельная документация.
+</div>
+
+<h3>Офлайн-режим приложения</h3>
+<div class="warn">
+  <b>Что видит клиент без интернета не описано.</b> Какие данные кэшируются, что происходит при потере связи во время оплаты или подтверждения.
+</div>
+
+<!-- ========================================================== -->
+<h2 id="terminology" class="anchor-offset"><span class="h2-count">07 ·</span> Терминология</h2>
+
+<p>Соглашения по именованию, которых мы придерживаемся во всей документации.</p>
+
+<table>
+  <colgroup><col style="width:22%"><col style="width:78%"></colgroup>
+  <thead><tr><th>Термин</th><th>Значение</th></tr></thead>
+  <tbody>
+    <tr><td><b>Заказ</b></td><td>Единица работы с клиентом. Состоит из одной или нескольких <b>услуг</b>. Имеет общий статус в каждой системе (<code class="inline">APP-*</code>, <code class="inline">BACK-*</code>, <code class="inline">AG-*</code>, <code class="inline">MAX-*</code>).</td></tr>
+    <tr><td><b>Услуга</b></td><td>Конкретная работа над конкретной вещью (чистка пальто, глажка рубашки). Свой статус в АГБИС (<code class="inline">AG-I-*</code>). Клиент видит услуги как <b>детализацию</b> заказа.</td></tr>
+    <tr><td><b>Задача</b></td><td>Работа для курьера в Телетреке (<code class="inline">TELE-*</code>). Каждый заказ — две задачи: забор (Этап 1) и отдача (Этап 6).</td></tr>
+    <tr><td><b>Признак</b></td><td>Булевский или категориальный флаг на заказе, отдельный от статуса. Примеры: признак оплаты, признак подтверждения (фабрика / клиент), признак быстрого заказа.</td></tr>
+    <tr><td><b>Виджет</b></td><td>UI-элемент в приложении, временный. <code class="inline">W-1</code>, <code class="inline">W-2</code>. Имеет жизненный цикл: включается на событии, выключается на другом.</td></tr>
+    <tr><td><b>Уведомление (Push)</b></td><td>Одноразовое push-сообщение. <code class="inline">N-1</code>.</td></tr>
+    <tr><td><b>Адрес забора</b></td><td><b>Обязательный</b> адрес, откуда курьер забирает вещи. Указывается на Этапе 1.</td></tr>
+    <tr><td><b>Адрес отдачи</b></td><td><b>Опциональный</b>. Можно указать на Этапе 1 или отложить до Этапа 6.</td></tr>
+    <tr><td><b>Слот</b></td><td>Временное окно для курьерской операции. Рассчитывается по зоне адреса (Телетрек).</td></tr>
+    <tr><td><b>Зона</b></td><td>Географический регион обслуживания. Определяется Телетреком по адресу.</td></tr>
+    <tr><td><b>Модуль матчинга Life</b></td><td>Компонент в Back. Получает от Life уведомления о платежах и сопоставляет с заказами по сумме / времени / курьеру. Нужен потому что Life не знает о заказе.</td></tr>
+    <tr><td><b>Лояльность</b></td><td>Три компонента: <b>скидка</b> (авто), <b>промокод</b> (вводит клиент, применяется авто), <b>бонусы</b> (списываются по решению клиента: всё или 0).</td></tr>
+    <tr><td><b>Остаток к оплате</b></td><td>Сумма к доплате деньгами после скидки + промокода + бонусов.</td></tr>
+    <tr><td><b>Ведущая система (на этапе)</b></td><td>Система, инициирующая переходы статусов на данном этапе. Этап 2 — Телетрек; Этапы 3, 5 — АГБИС; Этап 4 — Back.</td></tr>
+    <tr><td><b>ALT / LOOP</b></td><td>Конструкции управления на диаграммах. <code class="inline">ALT</code> — альтернативные ветки (если / иначе). <code class="inline">LOOP</code> — повторение для каждого элемента.</td></tr>
+  </tbody>
+</table>
+
+<hr>
+
+<p style="color:#888; font-size:13px; text-align:center; margin-top:40px;">
+  Norma · Dry Cleaning · Business Flow Documentation · v0.1
+</p>
+
+</body>
+</html>

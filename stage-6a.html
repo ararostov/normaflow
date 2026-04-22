@@ -1,0 +1,1060 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Норма · Этап 6А — Доставка домой и оплата</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 24px;
+    color: #111;
+    line-height: 1.55;
+    font-size: 17px;
+  }
+  h1 { font-size: 42px; margin-bottom: 6px; line-height: 1.2; }
+  h2 {
+    font-size: 28px;
+    margin-top: 48px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+    line-height: 1.25;
+  }
+  h2 .h2-count { color: #9aa0a6; font-weight: 500; }
+  h3 { font-size: 18px; margin-top: 26px; margin-bottom: 8px; }
+
+  .meta {
+    color: #444;
+    font-size: 16px;
+    margin-bottom: 22px;
+    line-height: 1.55;
+  }
+  .meta b { color: #111; }
+
+  .stage-pill {
+    display: inline-block;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: #2b6cb0;
+    background: #eaf1f9;
+    border: 1px solid #cfdcee;
+    border-radius: 4px;
+    padding: 3px 8px;
+    margin-bottom: 14px;
+    letter-spacing: 0.5px;
+  }
+
+  ul { padding-left: 22px; }
+  li { margin-bottom: 4px; }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 10px;
+    font-size: 15px;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    padding: 9px 11px;
+    vertical-align: top;
+    text-align: left;
+  }
+  th { background: #f4f4f6; font-weight: 600; }
+  tbody tr { transition: background-color 0.12s ease; }
+  tbody tr:hover:not(.cat) { background: #f6f9fc; }
+
+  tr.cat td,
+  td.cat {
+    background: #e8f0fa !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 12.5px;
+    letter-spacing: 0.8px;
+    color: #1e4d84 !important;
+    padding: 9px 11px;
+    border-color: #cfdcee !important;
+  }
+
+  .chip {
+    display: inline-block;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 6px;
+    background: #eaf1f9;
+    color: #2b6cb0;
+    border-radius: 4px;
+    margin: 1px 2px 1px 0;
+    white-space: nowrap;
+  }
+  .chip.gray { background: #f4f4f6; color: #555; }
+  .chip.green { background: #e6f4ea; color: #1e7a3c; }
+  .chip.orange { background: #fff3d6; color: #8a5a00; }
+  .chip.red { background: #fde8e8; color: #a42c2c; }
+  .chip.purple { background: #f3ebf7; color: #6b3696; }
+
+  /* ===== System-coded chip colors (Variant B) ===== */
+  .chip.app {
+    background: #ffffff;
+    color: #111;
+    border: 1.5px solid #111;
+  }
+  .chip.back {
+    background: #111;
+    color: #fff;
+    border: 1.5px solid #111;
+  }
+  .chip.agbis {
+    background: #fde8e8;
+    color: #a42c2c;
+    border: 1.5px solid #f0c4c4;
+  }
+  .chip.tele {
+    background: #d7f5f2;
+    color: #0d6c64;
+    border: 1.5px solid #9fddd5;
+  }
+  .chip.maxma {
+    background: #ede7f6;
+    color: #512da8;
+    border: 1.5px solid #b39ddb;
+  }
+  .chip.cloud {
+    background: #e3f2fd;
+    color: #0d47a1;
+    border: 1.5px solid #90caf9;
+  }
+  .chip.life {
+    background: #fff3e0;
+    color: #bf5f00;
+    border: 1.5px solid #ffcc80;
+  }
+
+  .arrow { color: #9aa0a6; margin: 0 4px; font-weight: 600; }
+
+  .sys { font-weight: 600; font-size: 14px; color: #222; }
+
+  code.inline {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 13.5px;
+    background: #f4f4f6;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: #222;
+  }
+
+  .note {
+    color: #555;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    background: #fafbfc;
+    border-left: 3px solid #2b6cb0;
+    margin: 14px 0;
+  }
+  .note b { color: #111; }
+
+  .warn {
+    color: #5c3a00;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    background: #fff8e6;
+    border-left: 3px solid #d97706;
+    margin: 14px 0;
+  }
+
+  .delay {
+    color: #7a1f1f;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    background: #fdeeee;
+    border-left: 3px solid #c4453c;
+    margin: 14px 0;
+  }
+  .delay b { color: #7a1f1f; }
+
+  .scenario-box {
+    border: 1px solid #cfdcee;
+    background: #f6f9fc;
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 4px;
+  }
+  .scenario-box h3 {
+    margin-top: 0;
+    color: #1e4d84;
+    font-size: 16px;
+  }
+  .scenario-box .scenario-label {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: #2b6cb0;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .diagram-wrap {
+    border: 1px solid #ddd;
+    background: #fff;
+    padding: 18px;
+    margin-top: 14px;
+    overflow-x: auto;
+  }
+
+
+  /* ===== Sticky header legend for long sequence diagrams ===== */
+  .diagram-sticky-wrap {
+    position: relative;
+  }
+  .diagram-legend-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    padding: 10px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    margin-top: 14px;
+  }
+  .diagram-legend-sticky + .diagram-wrap {
+    margin-top: 0;
+    border-top: 1px solid #eee;
+  }
+  .legend-chip {
+    font-size: 12.5px;
+    padding: 4px 9px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-weight: 600;
+  }
+  .actor-chip {
+    background: #f4f4f6;
+    color: #555;
+    border: 1.5px solid #cbd0d6;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  /* State-on-entry / state-on-exit blocks */
+  .state-blocks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 14px 0 24px;
+  }
+  .state-block {
+    border: 1px solid #ddd;
+    padding: 14px 16px;
+    background: #fafbfc;
+  }
+  .state-block.entry { border-left: 3px solid #6b7280; }
+  .state-block.exit  { border-left: 3px solid #1e7a3c; }
+  .state-block h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #555;
+    font-weight: 700;
+  }
+  .state-block.entry h3 { color: #555; }
+  .state-block.exit h3  { color: #1e7a3c; }
+  .state-block ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .state-block li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+  }
+  .state-block li:last-child { border-bottom: none; }
+  .state-block .sname {
+    min-width: 100px;
+    font-weight: 600;
+    color: #222;
+    font-size: 13px;
+  }
+  .state-block .sval {
+    color: #444;
+    flex: 1;
+  }
+
+  @media (max-width: 720px) {
+    .state-blocks { grid-template-columns: 1fr; }
+  }
+
+  .mermaid { font-family: ui-monospace, Menlo, Consolas, monospace; }
+  .mermaid svg { max-width: 100% !important; height: auto !important; }
+
+  .mermaid .labelText,
+  .mermaid .loopText,
+  .mermaid text.loopText,
+  .mermaid text.labelText {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+  }
+  .mermaid .labelBox { rx: 3; ry: 3; }
+
+  hr { border: none; border-top: 1px solid #ddd; margin: 32px 0; }
+
+  ol.steps { padding-left: 22px; margin-top: 8px; }
+  ol.steps li { margin-bottom: 10px; }
+  ol.steps li b { color: #111; }
+
+  .toc-links {
+    font-size: 14px;
+    color: #555;
+    margin-top: 30px;
+    padding-top: 16px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+  }
+  .toc-links a {
+    color: #2b6cb0;
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px dashed #a8c3e2;
+  }
+  .toc-links a:hover { color: #1e4d84; border-bottom-color: #2b6cb0; }
+</style>
+</head>
+<body>
+
+<div class="stage-pill">ЭТАП 6А · ДОСТАВКА КУРЬЕРОМ</div>
+<h1>Доставка домой и оплата</h1>
+
+<p class="meta">
+  Заказ готов. Курьер забирает вещи с фабрики и везёт их клиенту домой. Логика Телетрека зеркалит Этап 2 (сбор вещей), только в обратную сторону — теперь отдача. Если клиент выбрал оплату при доставке, во время вручения срабатывает асинхронный колбэк от <b>Cloud</b> (если оплатил СБП по QR) или <b>Life</b> (если картой через терминал). После успешного вручения курьер может загрузить фотоотчёт и подпись клиента — это хранится в Back для отчётности.
+</p>
+
+<div class="note">
+  <b>Альтернативный сценарий:</b> если клиент выбрал <b>самовывоз</b> (получение в пункте приёма), вместо этого этапа срабатывает <a href="stage-6v.html">Этап 6В — Доставка в ПП и оплата</a>. Телетрек тогда не задействован.
+</div>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">01 ·</span> Переходы статусов и признаков</h2>
+
+<h3>Состояние на входе и на выходе</h3>
+
+<div class="state-blocks">
+  <div class="state-block entry">
+    <h3>На входе в этап</h3>
+    <ul>
+      <li><span class="sname">App</span><span class="sval"><span class="chip app">APP-7</span> «Готово к отправке»</span></li>
+      <li><span class="sname">Back</span><span class="sval"><span class="chip back">BACK-7</span> «Готов к отправке (отдача)»</span></li>
+      <li><span class="sname">АГБИС · заказ</span><span class="sval"><span class="chip agbis">AG-3</span> «Исполненный»</span></li>
+      <li><span class="sname">Телетрек</span><span class="sval">Задача на отдачу ещё не создана</span></li>
+      <li><span class="sname">Признак оплаты</span><span class="sval"><span class="chip green">Оплачено</span> (Сценарии A, B с Этапа 4) или <span class="chip orange">Не оплачено</span> (Сценарий C) <span style="color:#888; font-size:12px;">(в Back, АГБИС, Maxma, Телетрек)</span></span></li>
+      <li><span class="sname">Виджеты</span><span class="sval"><span class="chip gray">нет активных</span></span></li>
+    </ul>
+  </div>
+
+  <div class="state-block exit">
+    <h3>На выходе из этапа</h3>
+    <ul>
+      <li><span class="sname">App</span><span class="sval"><span class="chip app">APP-10</span> «Выдан»</span></li>
+      <li><span class="sname">Back</span><span class="sval"><span class="chip back">BACK-11</span> «Завершён»</span></li>
+      <li><span class="sname">АГБИС · заказ</span><span class="sval"><span class="chip agbis">AG-4</span> «Выданный»</span></li>
+      <li><span class="sname">Телетрек</span><span class="sval"><span class="chip tele">TELE-5</span> «Выполнена» · задача на отдачу</span></li>
+      <li><span class="sname">Maxma</span><span class="sval"><span class="chip maxma">MAX-2</span> «Завершённый» (для всех сценариев — оплата получена)</span></li>
+      <li><span class="sname">Признак оплаты</span><span class="sval"><span class="chip green">Оплачено</span> · источник финализирован</span></li>
+      <li><span class="sname">Виджеты</span><span class="sval"><span class="chip gray app">W-1 «Курьер в пути» выключен после завершения</span></span></li>
+      <li><span class="sname">Отчётность</span><span class="sval">Фотоотчёт и подпись клиента (если загружены) — в Back</span></li>
+    </ul>
+  </div>
+</div>
+
+<div class="note">
+  <b>Адрес отдачи — опциональный на Этапе 1.</b> Если клиент указал адрес и слот при оформлении заказа — этот этап начинается сразу с создания задачи в Телетрек. Если адрес не указан — перед этим запрашиваем у клиента (Фаза 0).
+</div>
+
+<div class="note">
+  <b>Оплата на месте — только для Сценария C с Этапа 4.</b> Если клиент уже оплатил онлайн (Сценарии A и B), никаких колбэков от Cloud / Life во время доставки не приходит — курьер просто вручает вещи.
+</div>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">02 ·</span> Как это работает</h2>
+
+<p>
+  Этап делится на четыре фазы. Первая — проверка адреса отдачи (может быть пропущена, если адрес уже указан на Этапе 1). Вторая — курьерский цикл в Телетреке, зеркальный Этапу 2. Третья — оплата на месте, срабатывает только если на Этапе 4 клиент выбрал «при доставке». Четвёртая — завершение доставки: финальные статусы, опционально фотоотчёт и подпись клиента.
+</p>
+
+<ol class="steps">
+  <li>
+    <b>Фаза 0 · Проверка адреса отдачи.</b>
+    Если клиент указал адрес и слот на Этапе 1 — пропускаем. Если нет — приложение запрашивает адрес, Back идёт в Телетрек за зоной, считает слоты, клиент выбирает слот.
+  </li>
+  <li>
+    <b>Фаза 1 · Курьерский цикл.</b>
+    Back создаёт задачу на отдачу в Телетреке <code class="inline">TELE-1 "Новая"</code>. Дальше Телетрек ведёт задачу сам: принимает <code class="inline">TELE-2 "Принята"</code>, назначает курьера (Back переходит в <code class="inline">BACK-8 "Назначен курьер (отдача)"</code>, включается виджет <code class="inline">W-1 "Курьер в пути"</code>), курьер выезжает <code class="inline">TELE-3 "В работе"</code> (Back: <code class="inline">BACK-9 "Доставка вещей (отдача)"</code>, App: <code class="inline">APP-8 "Доставка"</code>, push <code class="inline">N-1</code>). Промежуточный <code class="inline">TELE-4 "В пути"</code> игнорируем.
+  </li>
+  <li>
+    <b>Фаза 2 · Оплата на месте (только Сценарий C с Этапа 4).</b>
+    Клиент выбирает способ на месте. <b>СБП</b>: курьер показывает QR (он уже в задаче Телетрека с Этапа 4), клиент сканирует, Cloud присылает нам колбэк «оплачено». <b>Карта</b>: курьер прикладывает карту к терминалу, Life принимает платёж и присылает уведомление «пришёл платёж N руб в T часов» — Back модулем матчинга сопоставляет платёж с заказом по сумме / времени / курьеру. В обоих случаях признак оплаты становится «Оплачено» в Back, App, АГБИС, Maxma (<code class="inline">MAX-1</code> → <code class="inline">MAX-2 "Завершённый"</code>).
+  </li>
+  <li>
+    <b>Фаза 3 · Завершение доставки.</b>
+    Курьер вручил вещи. Телетрек: <code class="inline">TELE-4</code> → <code class="inline">TELE-5 "Выполнена"</code>. Back: <code class="inline">BACK-9</code> → <code class="inline">BACK-11 "Завершён"</code>. App: <code class="inline">APP-8 "Доставка"</code> → <code class="inline">APP-10 "Выдан"</code>, виджет <code class="inline">W-1</code> выключается. Back передаёт в АГБИС: <code class="inline">AG-3 "Исполненный"</code> → <code class="inline">AG-4 "Выданный"</code>.
+  </li>
+  <li>
+    <b>Опционально · Фотоотчёт и подпись.</b>
+    Если курьер в своём приложении загрузил фото вручения и подпись клиента, Телетрек передаёт их в Back. Back хранит как артефакты заказа для внутренней отчётности. Клиенту это в приложении <b>не показывается</b>.
+  </li>
+</ol>
+
+<div class="delay">
+  <b>Задержки здесь нет (в отличие от АГБИС).</b> Все обмены с Телетреком, Cloud, Life работают в реальном времени. Единственная отправка в АГБИС (перевод заказа в <code class="inline">AG-4 "Выданный"</code>) — быстрая, без задержки.
+</div>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">03 ·</span> Sequence-диаграмма</h2>
+
+<div class="diagram-sticky-wrap">
+  <div class="diagram-legend-sticky">
+    <span class="legend-item"><span class="legend-chip actor-chip">👤 Клиент</span></span>
+    <span class="legend-item"><span class="legend-chip chip app">Norma App</span></span>
+    <span class="legend-item"><span class="legend-chip chip back">Norma Back</span></span>
+    <span class="legend-item"><span class="legend-chip chip tele">Телетрек</span></span>
+    <span class="legend-item"><span class="legend-chip chip cloud">Cloud</span></span>
+    <span class="legend-item"><span class="legend-chip chip life">Life</span></span>
+    <span class="legend-item"><span class="legend-chip chip agbis">АГБИС</span></span>
+  </div>
+
+<div class="diagram-wrap">
+<div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor Client as Клиент
+    participant App as Norma App
+    participant Back as Norma Back
+    participant Tele as Телетрек
+    participant Cloud as Cloud
+    participant Life as Life
+    participant AGBIS as АГБИС
+
+    Note over Client,AGBIS: Фаза 0 · Проверка адреса отдачи (если не указан на Этапе 1)
+
+    alt ВАРИАНТ · Адрес отдачи ещё не указан
+        Client->>App: Вводит адрес отдачи
+        App->>Back: 
+        Back->>Tele: 
+        Tele->>Tele: Определяем зону<br/>по адресу отдачи
+        Tele->>Back: 
+        Back->>Back: Считаем слоты отдачи
+        Back->>App: 
+        App->>App: Показываем слоты отдачи
+        Client->>App: Выбирает слот отдачи
+        App->>Back: 
+        Back->>Back: Фиксируем адрес и слот
+    end
+
+    Note over Client,AGBIS: Фаза 1 · Курьерский цикл (зеркало Этапа 2)
+
+    Back->>Tele: 
+    Tele->>Tele: Создаём задачу на отдачу<br/>со статусом TELE-1 "Новая"<br/>(QR СБП уже внутри, если Сценарий C)
+
+    Tele->>Tele: TELE-1 "Новая" →<br/>TELE-2 "Принята"
+    Tele->>Back: 
+    Back->>Back: Статус не меняется
+
+    Tele->>Tele: Назначен исполнитель<br/>(курьер)
+    Tele->>Back: 
+    Back->>Back: BACK-7 "Готов к отправке (отдача)" →<br/>BACK-8 "Назначен курьер (отдача)"
+    Back->>App: 
+    App->>App: Включаем виджет<br/>W-1 "Курьер в пути"
+
+    Tele->>Tele: TELE-2 "Принята" →<br/>TELE-3 "В работе"
+    Tele->>Back: 
+    Back->>Back: BACK-8 "Назначен курьер (отдача)" →<br/>BACK-9 "Доставка вещей (отдача)"
+    Back->>App: 
+    App->>App: APP-7 "Готово к отправке" →<br/>APP-8 "Доставка"
+    Back->>App: 
+    App->>App: Отправляем уведомление<br/>N-1 "Курьер в пути"
+
+    Tele->>Tele: TELE-3 "В работе" →<br/>TELE-4 "В пути" · игнорируем
+
+    Note over Client,AGBIS: Фаза 2 · Оплата на месте (только Сценарий C с Этапа 4)
+
+    alt СЦЕНАРИЙ C-СБП · Клиент оплачивает СБП по QR
+        Client->>Cloud: Сканирует QR у курьера,<br/>платит по СБП
+        Cloud->>Back: Колбэк "заказ оплачен"
+        Back->>Back: Признак оплаты:<br/>Не оплачено → Оплачено<br/>Источник: Cloud СБП
+        Back->>App: 
+        App->>App: Показываем "Заказ оплачен"
+        Back->>AGBIS: 
+        AGBIS->>AGBIS: Признак оплаты: Оплачено
+        Back->>Maxma: 
+        Maxma->>Maxma: MAX-1 "В работе" →<br/>MAX-2 "Завершённый"
+
+    else СЦЕНАРИЙ C-КАРТА · Клиент оплачивает картой через терминал
+        Client->>Life: Прикладывает карту<br/>к терминалу курьера
+        Life->>Back: Уведомление:<br/>"пришёл платёж N руб<br/>в T часов"
+        Back->>Back: Модуль матчинга:<br/>сопоставляем платёж с заказом<br/>по сумме / времени / курьеру
+        Back->>Back: Признак оплаты:<br/>Не оплачено → Оплачено<br/>Источник: Life карта
+        Back->>App: 
+        App->>App: Показываем "Заказ оплачен"
+        Back->>AGBIS: 
+        AGBIS->>AGBIS: Признак оплаты: Оплачено
+        Back->>Maxma: 
+        Maxma->>Maxma: MAX-1 "В работе" →<br/>MAX-2 "Завершённый"
+
+    else ОПЛАТА УЖЕ БЫЛА (Сценарии A и B с Этапа 4)
+        Note right of Back: Ничего не делаем —<br/>признак оплаты уже "Оплачено"<br/>с Этапа 4
+    end
+
+    Note over Client,AGBIS: Фаза 3 · Завершение доставки
+
+    Tele->>Tele: TELE-4 "В пути" →<br/>TELE-5 "Выполнена"
+    Tele->>Back: 
+    Back->>App: 
+    App->>App: Выключаем виджет<br/>W-1 "Курьер в пути"
+
+    Back->>Back: BACK-9 "Доставка вещей (отдача)" →<br/>BACK-11 "Завершён"
+    Back->>App: 
+    App->>App: APP-8 "Доставка" →<br/>APP-10 "Выдан"
+
+    Back->>AGBIS: 
+    AGBIS->>AGBIS: AG-3 "Исполненный" →<br/>AG-4 "Выданный"
+
+    alt ВАРИАНТ · Курьер загружает фотоотчёт и подпись
+        Tele->>Back: Передаёт фото вручения<br/>и подпись клиента
+        Back->>Back: Сохраняем артефакты<br/>в заказе (клиенту не показываем)
+    end
+
+    Note over Client,AGBIS: Этап 6А завершён · Заказ выдан клиенту
+</div>
+</div>
+</div>
+
+<h3>Изменения по фазам</h3>
+
+<table>
+  <colgroup>
+    <col style="width:14%">
+    <col style="width:24%">
+    <col style="width:26%">
+    <col style="width:13%">
+    <col style="width:23%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Система</th>
+      <th>Было</th>
+      <th>Стало</th>
+      <th>Триггер</th>
+      <th>Что меняется</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr><td colspan="5" class="cat">Фаза 0 · Проверка адреса отдачи (опционально)</td></tr>
+    <tr>
+      <td><span class="sys">App</span></td>
+      <td>Адрес отдачи не указан</td>
+      <td>Адрес и слот отдачи зафиксированы</td>
+      <td><span class="sys">Клиент</span></td>
+      <td>данные заказа</td>
+    </tr>
+
+    <tr><td colspan="5" class="cat">Фаза 1 · Курьерский цикл</td></tr>
+    <tr>
+      <td><span class="sys">Телетрек</span></td>
+      <td><span class="chip gray">—</span></td>
+      <td><span class="chip tele">TELE-1</span> «Новая» · задача на отдачу</td>
+      <td><span class="sys">Back</span></td>
+      <td>статус задачи</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Телетрек</span></td>
+      <td><span class="chip tele">TELE-1</span> «Новая»</td>
+      <td><span class="chip tele">TELE-2</span> «Принята»</td>
+      <td><span class="sys">Телетрек</span></td>
+      <td>статус задачи</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back</span></td>
+      <td><span class="chip back">BACK-7</span> «Готов к отправке (отдача)»</td>
+      <td><span class="chip back">BACK-8</span> «Назначен курьер (отдача)»</td>
+      <td><span class="sys">Телетрек</span></td>
+      <td>статус</td>
+    </tr>
+    <tr>
+      <td><span class="sys">App</span></td>
+      <td>Виджет W-1 выключен</td>
+      <td>Виджет <span class="chip app">W-1</span> «Курьер в пути» <span class="chip green">включён</span></td>
+      <td><span class="sys">Back</span></td>
+      <td>виджет</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Телетрек</span></td>
+      <td><span class="chip tele">TELE-2</span> «Принята»</td>
+      <td><span class="chip tele">TELE-3</span> «В работе»</td>
+      <td><span class="sys">Телетрек</span></td>
+      <td>статус задачи</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back</span></td>
+      <td><span class="chip back">BACK-8</span> «Назначен курьер (отдача)»</td>
+      <td><span class="chip back">BACK-9</span> «Доставка вещей (отдача)»</td>
+      <td><span class="sys">Телетрек</span></td>
+      <td>статус</td>
+    </tr>
+    <tr>
+      <td><span class="sys">App</span></td>
+      <td><span class="chip app">APP-7</span> «Готово к отправке»</td>
+      <td><span class="chip app">APP-8</span> «Доставка»</td>
+      <td><span class="sys">Back</span></td>
+      <td>статус</td>
+    </tr>
+    <tr>
+      <td><span class="sys">App</span></td>
+      <td>—</td>
+      <td>Push <span class="chip app">N-1</span> «Курьер в пути» <span class="chip green">отправлен</span></td>
+      <td><span class="sys">Back</span></td>
+      <td>уведомление</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Телетрек</span></td>
+      <td><span class="chip tele">TELE-3</span> «В работе»</td>
+      <td><span class="chip orange tele">TELE-4</span> «В пути» <span class="chip gray">ignore</span></td>
+      <td><span class="sys">Телетрек</span></td>
+      <td>статус задачи · не триггерит</td>
+    </tr>
+
+    <tr><td colspan="5" class="cat">Фаза 2 · Сценарий C-СБП — оплата СБП по QR</td></tr>
+    <tr>
+      <td><span class="sys">Back</span></td>
+      <td>Признак: <span class="chip orange">Не оплачено</span></td>
+      <td>Признак: <span class="chip green">Оплачено</span> · источник Cloud СБП</td>
+      <td><span class="sys">Cloud</span></td>
+      <td>признак оплаты</td>
+    </tr>
+    <tr>
+      <td><span class="sys">App</span></td>
+      <td>Экран оплаты при получении</td>
+      <td>Экран «Заказ оплачен»</td>
+      <td><span class="sys">Back</span></td>
+      <td>UI</td>
+    </tr>
+    <tr>
+      <td><span class="sys">АГБИС</span></td>
+      <td>Признак: <span class="chip orange">Не оплачено</span></td>
+      <td>Признак: <span class="chip green">Оплачено</span></td>
+      <td><span class="sys">Back</span></td>
+      <td>признак оплаты</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Maxma</span></td>
+      <td><span class="chip maxma">MAX-1</span> «В работе»</td>
+      <td><span class="chip maxma">MAX-2</span> «Завершённый»</td>
+      <td><span class="sys">Back</span></td>
+      <td>статус</td>
+    </tr>
+
+    <tr><td colspan="5" class="cat">Фаза 2 · Сценарий C-КАРТА — оплата картой через терминал</td></tr>
+    <tr>
+      <td><span class="sys">Back</span></td>
+      <td>Матчинг: платёж не сопоставлен с заказом</td>
+      <td>Матчинг: платёж сопоставлен по сумме / времени / курьеру</td>
+      <td><span class="sys">Life</span></td>
+      <td>модуль матчинга</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back</span></td>
+      <td>Признак: <span class="chip orange">Не оплачено</span></td>
+      <td>Признак: <span class="chip green">Оплачено</span> · источник Life карта</td>
+      <td><span class="sys">Life</span></td>
+      <td>признак оплаты</td>
+    </tr>
+    <tr>
+      <td><span class="sys">App</span></td>
+      <td>Экран оплаты при получении</td>
+      <td>Экран «Заказ оплачен»</td>
+      <td><span class="sys">Back</span></td>
+      <td>UI</td>
+    </tr>
+    <tr>
+      <td><span class="sys">АГБИС</span></td>
+      <td>Признак: <span class="chip orange">Не оплачено</span></td>
+      <td>Признак: <span class="chip green">Оплачено</span></td>
+      <td><span class="sys">Back</span></td>
+      <td>признак оплаты</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Maxma</span></td>
+      <td><span class="chip maxma">MAX-1</span> «В работе»</td>
+      <td><span class="chip maxma">MAX-2</span> «Завершённый»</td>
+      <td><span class="sys">Back</span></td>
+      <td>статус</td>
+    </tr>
+
+    <tr><td colspan="5" class="cat">Фаза 3 · Завершение доставки</td></tr>
+    <tr>
+      <td><span class="sys">Телетрек</span></td>
+      <td><span class="chip orange tele">TELE-4</span> «В пути»</td>
+      <td><span class="chip tele">TELE-5</span> «Выполнена»</td>
+      <td><span class="sys">Телетрек</span></td>
+      <td>статус задачи</td>
+    </tr>
+    <tr>
+      <td><span class="sys">App</span></td>
+      <td>Виджет <span class="chip app">W-1</span> «Курьер в пути» <span class="chip green">включён</span></td>
+      <td>Виджет <span class="chip gray app">W-1 выключен</span></td>
+      <td><span class="sys">Back</span></td>
+      <td>виджет</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back</span></td>
+      <td><span class="chip back">BACK-9</span> «Доставка вещей (отдача)»</td>
+      <td><span class="chip back">BACK-11</span> «Завершён»</td>
+      <td><span class="sys">Телетрек</span></td>
+      <td>статус</td>
+    </tr>
+    <tr>
+      <td><span class="sys">App</span></td>
+      <td><span class="chip app">APP-8</span> «Доставка»</td>
+      <td><span class="chip app">APP-10</span> «Выдан»</td>
+      <td><span class="sys">Back</span></td>
+      <td>статус</td>
+    </tr>
+    <tr>
+      <td><span class="sys">АГБИС</span></td>
+      <td><span class="chip agbis">AG-3</span> «Исполненный»</td>
+      <td><span class="chip agbis">AG-4</span> «Выданный»</td>
+      <td><span class="sys">Back</span></td>
+      <td>статус заказа</td>
+    </tr>
+
+    <tr><td colspan="5" class="cat">Опционально · Фотоотчёт и подпись</td></tr>
+    <tr>
+      <td><span class="sys">Back</span></td>
+      <td>Фото и подпись отсутствуют</td>
+      <td>Фото и подпись сохранены в заказе (клиенту не показываем)</td>
+      <td><span class="sys">Телетрек</span></td>
+      <td>артефакты отчётности</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">04 ·</span> Интеграции на этапе</h2>
+
+<table>
+  <colgroup>
+    <col style="width:24%">
+    <col style="width:20%">
+    <col style="width:28%">
+    <col style="width:28%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Направление</th>
+      <th>Режим</th>
+      <th>Когда вызывается</th>
+      <th>Зачем</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="sys">Back → Телетрек</span></td>
+      <td><span class="chip green">реалтайм</span></td>
+      <td>Фаза 0 (зона / слоты), Фаза 1 (создание задачи)</td>
+      <td>Получить зону и слоты отдачи, создать задачу на отдачу курьеру</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Телетрек → Back</span></td>
+      <td><span class="chip green">реалтайм</span></td>
+      <td>На каждый переход статуса задачи и при назначении курьера</td>
+      <td>Синхронизировать курьерский цикл, получить фотоотчёт и подпись</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Cloud → Back</span></td>
+      <td><span class="chip green">реалтайм</span></td>
+      <td>Сценарий C-СБП · после оплаты клиентом по QR</td>
+      <td>Колбэк «заказ оплачен»</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Life → Back</span></td>
+      <td><span class="chip green">реалтайм</span></td>
+      <td>Сценарий C-КАРТА · после оплаты картой через терминал</td>
+      <td>Уведомление о платеже, требующее матчинга с заказом</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back → АГБИС</span></td>
+      <td><span class="chip green">быстро</span></td>
+      <td>После оплаты (C) и после вручения</td>
+      <td>Передать признак оплаты, перевести заказ в AG-4 «Выданный»</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back → Maxma</span></td>
+      <td><span class="chip green">быстро</span></td>
+      <td>После оплаты (Сценарий C)</td>
+      <td>Перевести заказ в MAX-2 «Завершённый»</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back → App</span></td>
+      <td><span class="chip green">реалтайм</span></td>
+      <td>При смене статуса заказа, при оплате</td>
+      <td>Обновить UI клиента</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note">
+  <b>АГБИС → Back не используется на этом этапе.</b> Задержки 15–45 минут здесь нет, потому что ведущая система — Телетрек, а не АГБИС. Все синхронизации идут быстро.
+</div>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">05 ·</span> Заметки</h2>
+
+<div class="note">
+  <b>Модуль матчинга Life.</b> Life не знает заранее о заказе, на который пришёл платёж. Она просто присылает нам факт: «пришёл платёж N руб в T часов от терминала X». Back сам находит подходящий заказ по трём признакам: сумма платежа совпадает с остатком к оплате, время платежа попадает в окно курьерской доставки, курьер на заказе совпадает с курьером, принявшим платёж. Это отдельный компонент в Back — «модуль матчинга».
+</div>
+
+<div class="note">
+  <b>QR для СБП готовится на Этапе 4.</b> Когда клиент на Этапе 4 выбрал «оплата при доставке», Back сразу сгенерировал QR-код через Cloud и положил его в задачу Телетрека. Курьер видит этот QR в своём приложении и показывает клиенту при вручении. Если клиент на месте решил платить картой — QR просто не используется, вместо него срабатывает Life.
+</div>
+
+<div class="note">
+  <b>Фотоотчёт и подпись клиента — только в Back.</b> Эти артефакты хранятся для внутренней отчётности и спорных случаев (клиент утверждает, что вещи не получил; обмен вещами; претензии по качеству). В приложении клиенту они <b>не показываются</b>.
+</div>
+
+<div class="warn">
+  <b>Возможные гонки на Фазе 2.</b> Если клиент на месте начал платить СБП, потом передумал и приложил карту — теоретически могут прилететь оба колбэка. Back должен быть идемпотентен: если заказ уже в статусе «Оплачено», второй колбэк игнорируется.
+</div>
+
+<div class="warn">
+  <b>Unhappy path не покрыт.</b> Клиент не дома, отказывается принимать, платёж не прошёл, терминал сломан — всё это отдельные сценарии, не описаны.
+</div>
+
+<!-- ========================================================== -->
+<div class="toc-links">
+  <span>← <a href="stage-5.html">Этап 5 — Чистка</a> · <a href="stage-6v.html">Альтернатива: 6В (в ПП)</a></span>
+  <span><a href="index.html">↑ К оглавлению</a></span>
+  <span>Следующий: <a href="stage-7.html">Этап 7 — Завершение и отзыв →</a></span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#fafbfc',
+      primaryTextColor: '#111',
+      primaryBorderColor: '#111',
+      lineColor: '#333',
+      secondaryColor: '#eaf1f9',
+      tertiaryColor: '#fff',
+      actorBkg: '#fafbfc',
+      actorBorder: '#222',
+      actorTextColor: '#111',
+      actorLineColor: '#333',
+      signalColor: '#333',
+      signalTextColor: '#111',
+      labelBoxBkgColor: '#2b6cb0',
+      labelBoxBorderColor: '#1e4d84',
+      labelTextColor: '#fff',
+      loopTextColor: '#111',
+      noteBorderColor: '#cfdcee',
+      noteBkgColor: '#eaf1f9',
+      noteTextColor: '#1e4d84',
+      activationBorderColor: '#2b6cb0',
+      activationBkgColor: '#eaf1f9',
+      sequenceNumberColor: '#fff',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif'
+    },
+    sequence: {
+      diagramMarginX: 40,
+      diagramMarginY: 20,
+      actorMargin: 80,
+      boxMargin: 12,
+      boxTextMargin: 6,
+      messageMargin: 38,
+      messageFontSize: 13,
+      noteFontSize: 13,
+      actorFontSize: 14,
+      labelBoxWidth: 60,
+      labelFontSize: 15,
+      labelFontWeight: 700,
+      mirrorActors: true,
+      bottomMarginAdj: 40
+    }
+  });
+</script>
+
+
+<script>
+(function() {
+  // Цвет линии — плотный, контрастный
+  const LINE_COLOR = {
+    'Клиент': '#555',
+    'Технолог': '#555',
+    'Norma App': '#111',
+    'Norma Back': '#111',
+    'АГБИС': '#a42c2c',
+    'Телетрек': '#0d6c64',
+    'Maxma': '#512da8',
+    'Cloud': '#0d47a1',
+    'Life': '#bf5f00',
+  };
+
+  const BOX_COLOR = {
+    'Клиент':     { fill: '#f4f4f6', stroke: '#cbd0d6', text: '#555' },
+    'Технолог':   { fill: '#f4f4f6', stroke: '#cbd0d6', text: '#555' },
+    'Norma App':  { fill: '#ffffff', stroke: '#111',    text: '#111' },
+    'Norma Back': { fill: '#111',    stroke: '#111',    text: '#ffffff' },
+    'АГБИС':      { fill: '#fde8e8', stroke: '#f0c4c4', text: '#a42c2c' },
+    'Телетрек':   { fill: '#d7f5f2', stroke: '#9fddd5', text: '#0d6c64' },
+    'Maxma':      { fill: '#ede7f6', stroke: '#b39ddb', text: '#512da8' },
+    'Cloud':      { fill: '#e3f2fd', stroke: '#90caf9', text: '#0d47a1' },
+    'Life':       { fill: '#fff3e0', stroke: '#ffcc80', text: '#bf5f00' },
+  };
+
+  function colorizeDiagram() {
+    const diagrams = document.querySelectorAll('.mermaid svg');
+    diagrams.forEach(function(svg) {
+      const nameToX = {};
+      svg.querySelectorAll('text.actor').forEach(function(t) {
+        const name = (t.textContent || '').trim();
+        if (!name) return;
+        const x = parseFloat(t.getAttribute('x'));
+        if (!isNaN(x) && !(name in nameToX)) {
+          nameToX[name] = x;
+        }
+      });
+
+      svg.querySelectorAll('line').forEach(function(line) {
+        const x1 = parseFloat(line.getAttribute('x1'));
+        const x2 = parseFloat(line.getAttribute('x2'));
+        const y1 = parseFloat(line.getAttribute('y1'));
+        const y2 = parseFloat(line.getAttribute('y2'));
+        if (isNaN(x1) || isNaN(x2) || isNaN(y1) || isNaN(y2)) return;
+        if (Math.abs(x1 - x2) > 2) return;
+        if (Math.abs(y2 - y1) < 50) return;
+
+        let nearestName = null;
+        let minDist = Infinity;
+        for (const name in nameToX) {
+          const dist = Math.abs(nameToX[name] - x1);
+          if (dist < minDist) { minDist = dist; nearestName = name; }
+        }
+        if (minDist > 5) return;
+
+        if (nearestName && LINE_COLOR[nearestName]) {
+          const color = LINE_COLOR[nearestName];
+          line.setAttribute('stroke', color);
+          line.setAttribute('stroke-width', '2.5');
+          line.style.stroke = color;
+          line.style.strokeWidth = '2.5px';
+        }
+      });
+
+      svg.querySelectorAll('rect.actor').forEach(function(rect) {
+        const rectX = parseFloat(rect.getAttribute('x'));
+        const rectW = parseFloat(rect.getAttribute('width'));
+        if (isNaN(rectX) || isNaN(rectW)) return;
+        const centerX = rectX + rectW / 2;
+
+        let nearestName = null;
+        let minDist = Infinity;
+        for (const name in nameToX) {
+          const dist = Math.abs(nameToX[name] - centerX);
+          if (dist < minDist) { minDist = dist; nearestName = name; }
+        }
+        if (!nearestName || minDist > 5 || !BOX_COLOR[nearestName]) return;
+
+        const colors = BOX_COLOR[nearestName];
+
+        rect.setAttribute('fill', colors.fill);
+        rect.setAttribute('stroke', colors.stroke);
+        rect.setAttribute('stroke-width', '1.5');
+        rect.style.fill = colors.fill;
+        rect.style.stroke = colors.stroke;
+        rect.style.strokeWidth = '1.5px';
+
+        const parentG = rect.parentNode;
+        if (parentG) {
+          parentG.querySelectorAll('text.actor').forEach(function(t) {
+            const tx = parseFloat(t.getAttribute('x'));
+            if (!isNaN(tx) && Math.abs(tx - centerX) < 5) {
+              t.setAttribute('fill', colors.text);
+              t.style.fill = colors.text;
+              t.style.fontWeight = '700';
+              t.querySelectorAll('tspan').forEach(function(tspan) {
+                tspan.setAttribute('fill', colors.text);
+                tspan.style.fill = colors.text;
+              });
+            }
+          });
+        }
+      });
+
+      svg.querySelectorAll('g.actor-man').forEach(function(manG) {
+        const nameText = manG.querySelector('text.actor') ||
+                         manG.parentNode.querySelector('text.actor');
+        if (!nameText) return;
+        const name = (nameText.textContent || '').trim();
+        if (!name || !BOX_COLOR[name]) return;
+        const colors = BOX_COLOR[name];
+
+        manG.querySelectorAll('line').forEach(function(l) {
+          l.setAttribute('stroke', colors.text);
+          l.setAttribute('stroke-width', '2');
+          l.style.stroke = colors.text;
+          l.style.strokeWidth = '2px';
+        });
+        manG.querySelectorAll('circle').forEach(function(c) {
+          c.setAttribute('stroke', colors.text);
+          c.setAttribute('fill', colors.fill);
+          c.style.stroke = colors.text;
+          c.style.fill = colors.fill;
+        });
+
+        if (nameText) {
+          nameText.setAttribute('fill', colors.text);
+          nameText.style.fill = colors.text;
+          nameText.style.fontWeight = '700';
+          nameText.querySelectorAll('tspan').forEach(function(tspan) {
+            tspan.setAttribute('fill', colors.text);
+            tspan.style.fill = colors.text;
+          });
+        }
+      });
+    });
+  }
+
+  function waitForDiagrams(attempts) {
+    attempts = attempts || 0;
+    const svgs = document.querySelectorAll('.mermaid svg');
+    if (svgs.length > 0) { setTimeout(colorizeDiagram, 100); return; }
+    if (attempts > 100) return;
+    setTimeout(function() { waitForDiagrams(attempts + 1); }, 100);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { waitForDiagrams(0); });
+  } else {
+    waitForDiagrams(0);
+  }
+})();
+</script>
+
+</body>
+</html>

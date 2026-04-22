@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Норма · Этап 5 — Чистка</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 24px;
+    color: #111;
+    line-height: 1.55;
+    font-size: 17px;
+  }
+  h1 { font-size: 42px; margin-bottom: 6px; line-height: 1.2; }
+  h2 {
+    font-size: 28px;
+    margin-top: 48px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+    line-height: 1.25;
+  }
+  h2 .h2-count { color: #9aa0a6; font-weight: 500; }
+  h3 { font-size: 18px; margin-top: 26px; margin-bottom: 8px; }
+
+  .meta {
+    color: #444;
+    font-size: 16px;
+    margin-bottom: 22px;
+    line-height: 1.55;
+  }
+  .meta b { color: #111; }
+
+  .stage-pill {
+    display: inline-block;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: #2b6cb0;
+    background: #eaf1f9;
+    border: 1px solid #cfdcee;
+    border-radius: 4px;
+    padding: 3px 8px;
+    margin-bottom: 14px;
+    letter-spacing: 0.5px;
+  }
+
+  ul { padding-left: 22px; }
+  li { margin-bottom: 4px; }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 10px;
+    font-size: 15px;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    padding: 9px 11px;
+    vertical-align: top;
+    text-align: left;
+  }
+  th { background: #f4f4f6; font-weight: 600; }
+  tbody tr { transition: background-color 0.12s ease; }
+  tbody tr:hover:not(.cat) { background: #f6f9fc; }
+
+  tr.cat td,
+  td.cat {
+    background: #e8f0fa !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 12.5px;
+    letter-spacing: 0.8px;
+    color: #1e4d84 !important;
+    padding: 9px 11px;
+    border-color: #cfdcee !important;
+  }
+
+  .chip {
+    display: inline-block;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 6px;
+    background: #eaf1f9;
+    color: #2b6cb0;
+    border-radius: 4px;
+    margin: 1px 2px 1px 0;
+    white-space: nowrap;
+  }
+  .chip.gray { background: #f4f4f6; color: #555; }
+  .chip.green { background: #e6f4ea; color: #1e7a3c; }
+  .chip.orange { background: #fff3d6; color: #8a5a00; }
+  .chip.red { background: #fde8e8; color: #a42c2c; }
+  .chip.purple { background: #f3ebf7; color: #6b3696; }
+
+  /* ===== System-coded chip colors (Variant B) ===== */
+  .chip.app {
+    background: #ffffff;
+    color: #111;
+    border: 1.5px solid #111;
+  }
+  .chip.back {
+    background: #111;
+    color: #fff;
+    border: 1.5px solid #111;
+  }
+  .chip.agbis {
+    background: #fde8e8;
+    color: #a42c2c;
+    border: 1.5px solid #f0c4c4;
+  }
+  .chip.tele {
+    background: #d7f5f2;
+    color: #0d6c64;
+    border: 1.5px solid #9fddd5;
+  }
+  .chip.maxma {
+    background: #ede7f6;
+    color: #512da8;
+    border: 1.5px solid #b39ddb;
+  }
+
+  .arrow { color: #9aa0a6; margin: 0 4px; font-weight: 600; }
+
+  .sys { font-weight: 600; font-size: 14px; color: #222; }
+
+  code.inline {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 13.5px;
+    background: #f4f4f6;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: #222;
+  }
+
+  .note {
+    color: #555;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    background: #fafbfc;
+    border-left: 3px solid #2b6cb0;
+    margin: 14px 0;
+  }
+  .note b { color: #111; }
+
+  .warn {
+    color: #5c3a00;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    background: #fff8e6;
+    border-left: 3px solid #d97706;
+    margin: 14px 0;
+  }
+
+  .delay {
+    color: #7a1f1f;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    background: #fdeeee;
+    border-left: 3px solid #c4453c;
+    margin: 14px 0;
+  }
+  .delay b { color: #7a1f1f; }
+
+  .diagram-wrap {
+    border: 1px solid #ddd;
+    background: #fff;
+    padding: 18px;
+    margin-top: 14px;
+    overflow-x: auto;
+  }
+
+
+  /* ===== Sticky header legend for long sequence diagrams ===== */
+  .diagram-sticky-wrap {
+    position: relative;
+  }
+  .diagram-legend-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    padding: 10px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    margin-top: 14px;
+  }
+  .diagram-legend-sticky + .diagram-wrap {
+    margin-top: 0;
+    border-top: 1px solid #eee;
+  }
+  .legend-chip {
+    font-size: 12.5px;
+    padding: 4px 9px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-weight: 600;
+  }
+  .actor-chip {
+    background: #f4f4f6;
+    color: #555;
+    border: 1.5px solid #cbd0d6;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  /* State-on-entry / state-on-exit blocks */
+  .state-blocks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 14px 0 24px;
+  }
+  .state-block {
+    border: 1px solid #ddd;
+    padding: 14px 16px;
+    background: #fafbfc;
+  }
+  .state-block.entry { border-left: 3px solid #6b7280; }
+  .state-block.exit  { border-left: 3px solid #1e7a3c; }
+  .state-block h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #555;
+    font-weight: 700;
+  }
+  .state-block.entry h3 { color: #555; }
+  .state-block.exit h3  { color: #1e7a3c; }
+  .state-block ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .state-block li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+  }
+  .state-block li:last-child { border-bottom: none; }
+  .state-block .sname {
+    min-width: 82px;
+    font-weight: 600;
+    color: #222;
+    font-size: 13px;
+  }
+  .state-block .sval {
+    color: #444;
+    flex: 1;
+  }
+
+  @media (max-width: 720px) {
+    .state-blocks { grid-template-columns: 1fr; }
+  }
+
+  .mermaid { font-family: ui-monospace, Menlo, Consolas, monospace; }
+  .mermaid svg { max-width: 100% !important; height: auto !important; }
+
+  .mermaid .labelText,
+  .mermaid .loopText,
+  .mermaid text.loopText,
+  .mermaid text.labelText {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+  }
+  .mermaid .labelBox { rx: 3; ry: 3; }
+
+  hr { border: none; border-top: 1px solid #ddd; margin: 32px 0; }
+
+  ol.steps { padding-left: 22px; margin-top: 8px; }
+  ol.steps li { margin-bottom: 10px; }
+  ol.steps li b { color: #111; }
+
+  .toc-links {
+    font-size: 14px;
+    color: #555;
+    margin-top: 30px;
+    padding-top: 16px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+  }
+  .toc-links a {
+    color: #2b6cb0;
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px dashed #a8c3e2;
+  }
+  .toc-links a:hover { color: #1e4d84; border-bottom-color: #2b6cb0; }
+</style>
+</head>
+<body>
+
+<div class="stage-pill">ЭТАП 5 из 7</div>
+<h1>Чистка</h1>
+
+<p class="meta">
+  Технолог на фабрике поочерёдно берёт услуги заказа в работу и завершает их. АГБИС — ведущая система на этапе: она отслеживает статусы отдельных <b>услуг</b> (<code class="inline">AG-I-1</code>…<code class="inline">AG-I-6</code>) и автоматически выводит из них общий статус <b>заказа</b> (<code class="inline">AG-1</code>…<code class="inline">AG-6</code>). Back слушает изменения и синхронизирует статусы у себя и в приложении клиента. Клиент видит детализацию по каждой вещи.
+</p>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">01 ·</span> Переходы статусов и признаков</h2>
+
+<h3>Состояние на входе и на выходе</h3>
+
+<div class="state-blocks">
+  <div class="state-block entry">
+    <h3>На входе в этап</h3>
+    <ul>
+      <li><span class="sname">App</span><span class="sval"><span class="chip app">APP-5</span> «Вещи приняты»</span></li>
+      <li><span class="sname">Back</span><span class="sval"><span class="chip back">BACK-5</span> «Подтверждён клиентом»</span></li>
+      <li><span class="sname">АГБИС · заказ</span><span class="sval"><span class="chip agbis">AG-1</span> «Новый»</span></li>
+      <li><span class="sname">АГБИС · услуги</span><span class="sval">Все услуги в <span class="chip agbis">AG-I-1</span> «Новый»</span></li>
+      <li><span class="sname">Maxma</span><span class="sval"><span class="chip maxma">MAX-2</span> «Завершённый» (если оплачено) или <span class="chip maxma">MAX-1</span> «В работе» (если оплата при доставке)</span></li>
+    </ul>
+  </div>
+
+  <div class="state-block exit">
+    <h3>На выходе из этапа</h3>
+    <ul>
+      <li><span class="sname">App</span><span class="sval"><span class="chip app">APP-7</span> «Готово к отправке»</span></li>
+      <li><span class="sname">Back</span><span class="sval"><span class="chip back">BACK-7</span> «Готов к отправке (отдача)»</span></li>
+      <li><span class="sname">АГБИС · заказ</span><span class="sval"><span class="chip agbis">AG-3</span> «Исполненный»</span></li>
+      <li><span class="sname">АГБИС · услуги</span><span class="sval">Все услуги в <span class="chip agbis">AG-I-3</span> «Исполненный» или <span class="chip agbis">AG-I-6</span> «Отменённый»</span></li>
+      <li><span class="sname">Maxma</span><span class="sval">без изменений</span></li>
+    </ul>
+  </div>
+</div>
+
+<div class="delay">
+  <b>Задержка АГБИС → Back: 15–45 минут.</b> АГБИС — ведущая система этого этапа, и <b>каждое</b> изменение статуса (первая услуга в работе, завершение услуги, переход заказа в «Исполненный») приходит в Back с задержкой 15–45 минут. Это значит, что клиент в приложении увидит переход в «Чистим» не мгновенно после того, как технолог начал работу, а с паузой. Это ожидаемое поведение.
+</div>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">02 ·</span> Как это работает</h2>
+
+<p>
+  Заказ состоит из нескольких <b>услуг</b> (чистка пальто, глажка рубашки, пятновыведение и т.д.). Технолог в АГБИС работает с каждой услугой отдельно: берёт в работу, завершает, при необходимости отменяет. АГБИС автоматически выводит общий статус заказа из статусов его услуг: если хоть одна «в исполнении» — заказ «в исполнении»; когда все услуги завершены (любым способом) — заказ «исполненный».
+</p>
+
+<ol class="steps">
+  <li>
+    <b>Первая услуга уходит в работу.</b>
+    Как только технолог берёт первую услугу (<code class="inline">AG-I-1 "Новый"</code> → <code class="inline">AG-I-2 "В исполнении"</code>), АГБИС автоматически переводит весь заказ в <code class="inline">AG-2 "В исполнении"</code>. С задержкой 15–45 минут это долетает до Back: <code class="inline">BACK-5 "Подтверждён клиентом"</code> → <code class="inline">BACK-6 "В работе"</code>. App переводится в <code class="inline">APP-6 "Чистим"</code>.
+  </li>
+  <li>
+    <b>Услуги проходят статусы параллельно.</b>
+    Каждая услуга движется независимо от других по маршруту <code class="inline">AG-I-1 "Новый"</code> → <code class="inline">AG-I-2 "В исполнении"</code> → <code class="inline">AG-I-3 "Исполненный"</code>. Технолог может также отменить услугу — тогда она уходит в <code class="inline">AG-I-6 "Отменённый"</code>. Все эти изменения с задержкой синхронизируются в Back и отображаются в приложении клиента как <b>детализация заказа</b>: «рубашка — в работе», «пальто — готово», и т.д.
+  </li>
+  <li>
+    <b>Статус заказа в Back и App остаётся «Чистим».</b>
+    Пока хоть одна услуга в работе, заказ считается «чистящимся». Клиент видит в приложении статус <code class="inline">APP-6 "Чистим"</code> и список услуг с их актуальными состояниями.
+  </li>
+  <li>
+    <b>Все услуги завершены — заказ «Исполненный».</b>
+    Когда последняя услуга уходит в финальный статус (<code class="inline">AG-I-3 "Исполненный"</code> или <code class="inline">AG-I-6 "Отменённый"</code>), АГБИС автоматически переводит заказ: <code class="inline">AG-2 "В исполнении"</code> → <code class="inline">AG-3 "Исполненный"</code>. С задержкой это триггерит Back: <code class="inline">BACK-6 "В работе"</code> → <code class="inline">BACK-7 "Готов к отправке (отдача)"</code>. App: <code class="inline">APP-6 "Чистим"</code> → <code class="inline">APP-7 "Готово к отправке"</code>.
+  </li>
+</ol>
+
+<div class="note">
+  <b>АГБИС автоматически агрегирует статусы.</b> Технолог не «нажимает завершить заказ» — статус заказа в АГБИС выводится автоматически из статусов услуг. Это внутренняя логика АГБИС, мы её не дублируем у себя в Back.
+</div>
+
+<div class="warn">
+  <b>Отменённая услуга не пересчитывает цену.</b> На этом этапе мы не трогаем оплату. Если технолог отменил одну из услуг (например, не смог отчистить пятно) — цена заказа остаётся прежней. Возврат разницы — отдельный unhappy-path сценарий, здесь не описан.
+</div>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">03 ·</span> Sequence-диаграмма</h2>
+
+<div class="diagram-sticky-wrap">
+  <div class="diagram-legend-sticky">
+    <span class="legend-item"><span class="legend-chip actor-chip">🧑‍🔧 Технолог</span></span>
+    <span class="legend-item"><span class="legend-chip chip agbis">АГБИС</span></span>
+    <span class="legend-item"><span class="legend-chip chip back">Norma Back</span></span>
+    <span class="legend-item"><span class="legend-chip chip app">Norma App</span></span>
+    <span class="legend-item"><span class="legend-chip actor-chip">👤 Клиент</span></span>
+  </div>
+
+<div class="diagram-wrap">
+<div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor Tech as Технолог
+    participant AGBIS as АГБИС
+    participant Back as Norma Back
+    participant App as Norma App
+    actor Client as Клиент
+
+    Note over Tech,Client: Фаза 1 · Первая услуга в работу (запускает общий статус заказа)
+
+    Tech->>AGBIS: Берёт первую услугу в работу
+    AGBIS->>AGBIS: Услуга: AG-I-1 "Новый" →<br/>AG-I-2 "В исполнении"
+    AGBIS->>AGBIS: Авто-вывод:<br/>заказ AG-1 "Новый" →<br/>AG-2 "В исполнении"
+
+    Note right of AGBIS: Задержка 15–45 мин<br/>на AGBIS → Back
+
+    AGBIS->>Back: 
+    Back->>Back: BACK-5 "Подтверждён клиентом" →<br/>BACK-6 "В работе"
+    Back->>App: 
+    App->>App: APP-5 "Вещи приняты" →<br/>APP-6 "Чистим"
+
+    Note over Tech,Client: Фаза 2 · Цикл по услугам (каждая движется независимо)
+
+    loop ЦИКЛ · Для каждой услуги заказа
+        Tech->>AGBIS: Меняет статус услуги
+        AGBIS->>AGBIS: Услуга переходит в один из:<br/>• AG-I-2 "В исполнении"<br/>• AG-I-3 "Исполненный"<br/>• AG-I-6 "Отменённый"
+
+        Note right of AGBIS: Задержка 15–45 мин<br/>на AGBIS → Back
+
+        AGBIS->>Back: 
+        Back->>Back: Обновляем статус услуги<br/>в составе заказа
+        Back->>App: 
+        App->>App: Показываем клиенту<br/>актуальный статус услуги<br/>(статус APP не меняется)
+    end
+
+    Note over Tech,Client: Фаза 3 · Все услуги завершены (финальный переход заказа)
+
+    Tech->>AGBIS: Завершает последнюю услугу
+    AGBIS->>AGBIS: Последняя услуга:<br/>AG-I-2 "В исполнении" →<br/>AG-I-3 "Исполненный"
+    AGBIS->>AGBIS: Авто-вывод:<br/>заказ AG-2 "В исполнении" →<br/>AG-3 "Исполненный"
+
+    Note right of AGBIS: Задержка 15–45 мин<br/>на AGBIS → Back
+
+    AGBIS->>Back: 
+    Back->>Back: BACK-6 "В работе" →<br/>BACK-7 "Готов к отправке (отдача)"
+    Back->>App: 
+    App->>App: APP-6 "Чистим" →<br/>APP-7 "Готово к отправке"
+
+    Note over Tech,Client: Этап 5 завершён · Заказ готов к отправке клиенту
+</div>
+</div>
+</div>
+
+<h3>Изменения по фазам</h3>
+
+<table>
+  <colgroup>
+    <col style="width:14%">
+    <col style="width:24%">
+    <col style="width:26%">
+    <col style="width:13%">
+    <col style="width:23%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Система</th>
+      <th>Было</th>
+      <th>Стало</th>
+      <th>Триггер</th>
+      <th>Что меняется</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr><td colspan="5" class="cat">Фаза 1 · Первая услуга в работу</td></tr>
+    <tr>
+      <td><span class="sys">АГБИС · услуга</span></td>
+      <td><span class="chip agbis">AG-I-1</span> «Новый»</td>
+      <td><span class="chip agbis">AG-I-2</span> «В исполнении»</td>
+      <td><span class="sys">Технолог</span></td>
+      <td>статус услуги</td>
+    </tr>
+    <tr>
+      <td><span class="sys">АГБИС · заказ</span></td>
+      <td><span class="chip agbis">AG-1</span> «Новый»</td>
+      <td><span class="chip agbis">AG-2</span> «В исполнении»</td>
+      <td><span class="sys">АГБИС</span></td>
+      <td>статус заказа (авто-вывод)</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back</span></td>
+      <td><span class="chip back">BACK-5</span> «Подтверждён клиентом»</td>
+      <td><span class="chip back">BACK-6</span> «В работе» <span class="chip red">задержка 15–45 мин</span></td>
+      <td><span class="sys">АГБИС</span></td>
+      <td>статус</td>
+    </tr>
+    <tr>
+      <td><span class="sys">App</span></td>
+      <td><span class="chip app">APP-5</span> «Вещи приняты»</td>
+      <td><span class="chip app">APP-6</span> «Чистим»</td>
+      <td><span class="sys">Back</span></td>
+      <td>статус</td>
+    </tr>
+
+    <tr><td colspan="5" class="cat">Фаза 2 · Цикл по услугам</td></tr>
+    <tr>
+      <td><span class="sys">АГБИС · услуги</span></td>
+      <td>Любой промежуточный статус</td>
+      <td>Любой из: <span class="chip agbis">AG-I-2</span> / <span class="chip agbis">AG-I-3</span> / <span class="chip agbis">AG-I-6</span></td>
+      <td><span class="sys">Технолог</span></td>
+      <td>статус услуги</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back</span></td>
+      <td>Старый снимок услуг</td>
+      <td>Обновлённый снимок услуг <span class="chip red">задержка 15–45 мин</span></td>
+      <td><span class="sys">АГБИС</span></td>
+      <td>детали заказа</td>
+    </tr>
+    <tr>
+      <td><span class="sys">App</span></td>
+      <td>Старый список услуг</td>
+      <td>Актуальный список с детализацией (статус APP не меняется)</td>
+      <td><span class="sys">Back</span></td>
+      <td>детализация UI</td>
+    </tr>
+
+    <tr><td colspan="5" class="cat">Фаза 3 · Все услуги завершены</td></tr>
+    <tr>
+      <td><span class="sys">АГБИС · услуга</span></td>
+      <td><span class="chip agbis">AG-I-2</span> «В исполнении»</td>
+      <td><span class="chip agbis">AG-I-3</span> «Исполненный» или <span class="chip agbis">AG-I-6</span> «Отменённый»</td>
+      <td><span class="sys">Технолог</span></td>
+      <td>статус последней услуги</td>
+    </tr>
+    <tr>
+      <td><span class="sys">АГБИС · заказ</span></td>
+      <td><span class="chip agbis">AG-2</span> «В исполнении»</td>
+      <td><span class="chip agbis">AG-3</span> «Исполненный»</td>
+      <td><span class="sys">АГБИС</span></td>
+      <td>статус заказа (авто-вывод)</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back</span></td>
+      <td><span class="chip back">BACK-6</span> «В работе»</td>
+      <td><span class="chip back">BACK-7</span> «Готов к отправке (отдача)» <span class="chip red">задержка 15–45 мин</span></td>
+      <td><span class="sys">АГБИС</span></td>
+      <td>статус</td>
+    </tr>
+    <tr>
+      <td><span class="sys">App</span></td>
+      <td><span class="chip app">APP-6</span> «Чистим»</td>
+      <td><span class="chip app">APP-7</span> «Готово к отправке»</td>
+      <td><span class="sys">Back</span></td>
+      <td>статус</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">04 ·</span> Интеграции на этапе</h2>
+
+<table>
+  <colgroup>
+    <col style="width:24%">
+    <col style="width:20%">
+    <col style="width:28%">
+    <col style="width:28%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Направление</th>
+      <th>Режим</th>
+      <th>Когда вызывается</th>
+      <th>Зачем</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="sys">АГБИС → Back</span></td>
+      <td><span class="chip red">задержка 15–45 мин</span></td>
+      <td>На любое изменение статуса услуги или заказа</td>
+      <td>Синхронизировать актуальные статусы услуг и заказа</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back → App</span></td>
+      <td><span class="chip green">реалтайм</span></td>
+      <td>При обновлении данных заказа</td>
+      <td>Показать клиенту актуальный статус заказа и детализацию услуг</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note">
+  <b>Maxma, Телетрек, Cloud, Life на этом этапе не задействованы.</b> Телетрек проснётся на Этапе 6 (Доставка). Maxma и платёжные системы — только если клиент выбрал оплату при доставке.
+</div>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">05 ·</span> Заметки</h2>
+
+<div class="note">
+  <b>Услуги vs заказ — две разных сущности.</b> В АГБИС это жёстко разделено: <b>услуга</b> — это конкретная работа по конкретной вещи (почистить пальто). <b>Заказ</b> — набор услуг одного клиента. Статус заказа выводится автоматически из статусов услуг. Это важно учитывать в интеграции: если вы подписаны только на апдейты заказа — вы пропустите детализацию по вещам.
+</div>
+
+<div class="note">
+  <b>Клиент видит статусы услуг в приложении.</b> Пока заказ в <code class="inline">APP-6 "Чистим"</code>, приложение показывает список вещей с их индивидуальными статусами. Это даёт клиенту ощущение прогресса даже без смены главного статуса.
+</div>
+
+<div class="warn">
+  <b>Unhappy path не покрыт.</b> Сценарии: услуга отменена и клиент хочет вернуть деньги; все услуги отменены и заказ уходит в возврат; технолог обнаружил что вещь нельзя чистить и нужно согласовать с клиентом — всё это отдельные сценарии и здесь не описаны.
+</div>
+
+<!-- ========================================================== -->
+<div class="toc-links">
+  <span>← <a href="stage-4.html">Этап 4 — Оплата и лояльность</a></span>
+  <span><a href="index.html">↑ К оглавлению</a></span>
+  <span>Следующий: <a href="stage-6a.html">Этап 6А — Доставка домой</a> · <a href="stage-6v.html">или 6В (в ПП) →</a></span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#fafbfc',
+      primaryTextColor: '#111',
+      primaryBorderColor: '#111',
+      lineColor: '#333',
+      secondaryColor: '#eaf1f9',
+      tertiaryColor: '#fff',
+      actorBkg: '#fafbfc',
+      actorBorder: '#222',
+      actorTextColor: '#111',
+      actorLineColor: '#333',
+      signalColor: '#333',
+      signalTextColor: '#111',
+      labelBoxBkgColor: '#2b6cb0',
+      labelBoxBorderColor: '#1e4d84',
+      labelTextColor: '#fff',
+      loopTextColor: '#111',
+      noteBorderColor: '#cfdcee',
+      noteBkgColor: '#eaf1f9',
+      noteTextColor: '#1e4d84',
+      activationBorderColor: '#2b6cb0',
+      activationBkgColor: '#eaf1f9',
+      sequenceNumberColor: '#fff',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif'
+    },
+    sequence: {
+      diagramMarginX: 40,
+      diagramMarginY: 20,
+      actorMargin: 80,
+      boxMargin: 12,
+      boxTextMargin: 6,
+      messageMargin: 38,
+      messageFontSize: 13,
+      noteFontSize: 13,
+      actorFontSize: 14,
+      labelBoxWidth: 60,
+      labelFontSize: 15,
+      labelFontWeight: 700,
+      mirrorActors: true,
+      bottomMarginAdj: 40
+    }
+  });
+</script>
+
+
+<script>
+(function() {
+  // Цвет линии — плотный, контрастный
+  const LINE_COLOR = {
+    'Клиент': '#555',
+    'Технолог': '#555',
+    'Norma App': '#111',
+    'Norma Back': '#111',
+    'АГБИС': '#a42c2c',
+    'Телетрек': '#0d6c64',
+    'Maxma': '#512da8',
+    'Cloud': '#0d47a1',
+    'Life': '#bf5f00',
+  };
+
+  const BOX_COLOR = {
+    'Клиент':     { fill: '#f4f4f6', stroke: '#cbd0d6', text: '#555' },
+    'Технолог':   { fill: '#f4f4f6', stroke: '#cbd0d6', text: '#555' },
+    'Norma App':  { fill: '#ffffff', stroke: '#111',    text: '#111' },
+    'Norma Back': { fill: '#111',    stroke: '#111',    text: '#ffffff' },
+    'АГБИС':      { fill: '#fde8e8', stroke: '#f0c4c4', text: '#a42c2c' },
+    'Телетрек':   { fill: '#d7f5f2', stroke: '#9fddd5', text: '#0d6c64' },
+    'Maxma':      { fill: '#ede7f6', stroke: '#b39ddb', text: '#512da8' },
+    'Cloud':      { fill: '#e3f2fd', stroke: '#90caf9', text: '#0d47a1' },
+    'Life':       { fill: '#fff3e0', stroke: '#ffcc80', text: '#bf5f00' },
+  };
+
+  function colorizeDiagram() {
+    const diagrams = document.querySelectorAll('.mermaid svg');
+    diagrams.forEach(function(svg) {
+      const nameToX = {};
+      svg.querySelectorAll('text.actor').forEach(function(t) {
+        const name = (t.textContent || '').trim();
+        if (!name) return;
+        const x = parseFloat(t.getAttribute('x'));
+        if (!isNaN(x) && !(name in nameToX)) {
+          nameToX[name] = x;
+        }
+      });
+
+      svg.querySelectorAll('line').forEach(function(line) {
+        const x1 = parseFloat(line.getAttribute('x1'));
+        const x2 = parseFloat(line.getAttribute('x2'));
+        const y1 = parseFloat(line.getAttribute('y1'));
+        const y2 = parseFloat(line.getAttribute('y2'));
+        if (isNaN(x1) || isNaN(x2) || isNaN(y1) || isNaN(y2)) return;
+        if (Math.abs(x1 - x2) > 2) return;
+        if (Math.abs(y2 - y1) < 50) return;
+
+        let nearestName = null;
+        let minDist = Infinity;
+        for (const name in nameToX) {
+          const dist = Math.abs(nameToX[name] - x1);
+          if (dist < minDist) { minDist = dist; nearestName = name; }
+        }
+        if (minDist > 5) return;
+
+        if (nearestName && LINE_COLOR[nearestName]) {
+          const color = LINE_COLOR[nearestName];
+          line.setAttribute('stroke', color);
+          line.setAttribute('stroke-width', '2.5');
+          line.style.stroke = color;
+          line.style.strokeWidth = '2.5px';
+        }
+      });
+
+      svg.querySelectorAll('rect.actor').forEach(function(rect) {
+        const rectX = parseFloat(rect.getAttribute('x'));
+        const rectW = parseFloat(rect.getAttribute('width'));
+        if (isNaN(rectX) || isNaN(rectW)) return;
+        const centerX = rectX + rectW / 2;
+
+        let nearestName = null;
+        let minDist = Infinity;
+        for (const name in nameToX) {
+          const dist = Math.abs(nameToX[name] - centerX);
+          if (dist < minDist) { minDist = dist; nearestName = name; }
+        }
+        if (!nearestName || minDist > 5 || !BOX_COLOR[nearestName]) return;
+
+        const colors = BOX_COLOR[nearestName];
+
+        rect.setAttribute('fill', colors.fill);
+        rect.setAttribute('stroke', colors.stroke);
+        rect.setAttribute('stroke-width', '1.5');
+        rect.style.fill = colors.fill;
+        rect.style.stroke = colors.stroke;
+        rect.style.strokeWidth = '1.5px';
+
+        const parentG = rect.parentNode;
+        if (parentG) {
+          parentG.querySelectorAll('text.actor').forEach(function(t) {
+            const tx = parseFloat(t.getAttribute('x'));
+            if (!isNaN(tx) && Math.abs(tx - centerX) < 5) {
+              t.setAttribute('fill', colors.text);
+              t.style.fill = colors.text;
+              t.style.fontWeight = '700';
+              t.querySelectorAll('tspan').forEach(function(tspan) {
+                tspan.setAttribute('fill', colors.text);
+                tspan.style.fill = colors.text;
+              });
+            }
+          });
+        }
+      });
+
+      svg.querySelectorAll('g.actor-man').forEach(function(manG) {
+        const nameText = manG.querySelector('text.actor') ||
+                         manG.parentNode.querySelector('text.actor');
+        if (!nameText) return;
+        const name = (nameText.textContent || '').trim();
+        if (!name || !BOX_COLOR[name]) return;
+        const colors = BOX_COLOR[name];
+
+        manG.querySelectorAll('line').forEach(function(l) {
+          l.setAttribute('stroke', colors.text);
+          l.setAttribute('stroke-width', '2');
+          l.style.stroke = colors.text;
+          l.style.strokeWidth = '2px';
+        });
+        manG.querySelectorAll('circle').forEach(function(c) {
+          c.setAttribute('stroke', colors.text);
+          c.setAttribute('fill', colors.fill);
+          c.style.stroke = colors.text;
+          c.style.fill = colors.fill;
+        });
+
+        if (nameText) {
+          nameText.setAttribute('fill', colors.text);
+          nameText.style.fill = colors.text;
+          nameText.style.fontWeight = '700';
+          nameText.querySelectorAll('tspan').forEach(function(tspan) {
+            tspan.setAttribute('fill', colors.text);
+            tspan.style.fill = colors.text;
+          });
+        }
+      });
+    });
+  }
+
+  function waitForDiagrams(attempts) {
+    attempts = attempts || 0;
+    const svgs = document.querySelectorAll('.mermaid svg');
+    if (svgs.length > 0) { setTimeout(colorizeDiagram, 100); return; }
+    if (attempts > 100) return;
+    setTimeout(function() { waitForDiagrams(attempts + 1); }, 100);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { waitForDiagrams(0); });
+  } else {
+    waitForDiagrams(0);
+  }
+})();
+</script>
+
+</body>
+</html>

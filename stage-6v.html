@@ -1,0 +1,897 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Норма · Этап 6В — Доставка в ПП и оплата</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 24px;
+    color: #111;
+    line-height: 1.55;
+    font-size: 17px;
+  }
+  h1 { font-size: 42px; margin-bottom: 6px; line-height: 1.2; }
+  h2 {
+    font-size: 28px;
+    margin-top: 48px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+    line-height: 1.25;
+  }
+  h2 .h2-count { color: #9aa0a6; font-weight: 500; }
+  h3 { font-size: 18px; margin-top: 26px; margin-bottom: 8px; }
+
+  .meta {
+    color: #444;
+    font-size: 16px;
+    margin-bottom: 22px;
+    line-height: 1.55;
+  }
+  .meta b { color: #111; }
+
+  .stage-pill {
+    display: inline-block;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: #2b6cb0;
+    background: #eaf1f9;
+    border: 1px solid #cfdcee;
+    border-radius: 4px;
+    padding: 3px 8px;
+    margin-bottom: 14px;
+    letter-spacing: 0.5px;
+  }
+  .stage-pill.alt {
+    color: #6b3696;
+    background: #f3ebf7;
+    border-color: #d6bce8;
+  }
+
+  ul { padding-left: 22px; }
+  li { margin-bottom: 4px; }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 10px;
+    font-size: 15px;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    padding: 9px 11px;
+    vertical-align: top;
+    text-align: left;
+  }
+  th { background: #f4f4f6; font-weight: 600; }
+  tbody tr { transition: background-color 0.12s ease; }
+  tbody tr:hover:not(.cat) { background: #f6f9fc; }
+
+  tr.cat td,
+  td.cat {
+    background: #e8f0fa !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 12.5px;
+    letter-spacing: 0.8px;
+    color: #1e4d84 !important;
+    padding: 9px 11px;
+    border-color: #cfdcee !important;
+  }
+
+  .chip {
+    display: inline-block;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 6px;
+    background: #eaf1f9;
+    color: #2b6cb0;
+    border-radius: 4px;
+    margin: 1px 2px 1px 0;
+    white-space: nowrap;
+  }
+  .chip.gray { background: #f4f4f6; color: #555; }
+  .chip.green { background: #e6f4ea; color: #1e7a3c; }
+  .chip.orange { background: #fff3d6; color: #8a5a00; }
+  .chip.red { background: #fde8e8; color: #a42c2c; }
+  .chip.purple { background: #f3ebf7; color: #6b3696; }
+
+  /* System-coded chip colors (Variant 1) */
+  .chip.app {
+    background: #ffffff;
+    color: #111;
+    border: 1.5px solid #111;
+  }
+  .chip.back {
+    background: #111;
+    color: #fff;
+    border: 1.5px solid #111;
+  }
+  .chip.agbis {
+    background: #fde8e8;
+    color: #a42c2c;
+    border: 1.5px solid #f0c4c4;
+  }
+  .chip.tele {
+    background: #d7f5f2;
+    color: #0d6c64;
+    border: 1.5px solid #9fddd5;
+  }
+  .chip.maxma {
+    background: #ede7f6;
+    color: #512da8;
+    border: 1.5px solid #b39ddb;
+  }
+  .chip.cloud {
+    background: #e3f2fd;
+    color: #0d47a1;
+    border: 1.5px solid #90caf9;
+  }
+  .chip.life {
+    background: #fff3e0;
+    color: #bf5f00;
+    border: 1.5px solid #ffcc80;
+  }
+
+  .sys { font-weight: 600; font-size: 14px; color: #222; }
+
+  code.inline {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 13.5px;
+    background: #f4f4f6;
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: #222;
+  }
+
+  .note {
+    color: #555;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    background: #fafbfc;
+    border-left: 3px solid #2b6cb0;
+    margin: 14px 0;
+  }
+  .note b { color: #111; }
+
+  .warn {
+    color: #5c3a00;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    background: #fff8e6;
+    border-left: 3px solid #d97706;
+    margin: 14px 0;
+  }
+
+  .alt-badge {
+    color: #6b3696;
+    font-size: 14.5px;
+    padding: 10px 14px;
+    background: #faf5fd;
+    border-left: 3px solid #6b3696;
+    margin: 14px 0;
+  }
+  .alt-badge b { color: #4a246b; }
+
+  .scenario-box {
+    border: 1px solid #cfdcee;
+    background: #f6f9fc;
+    padding: 14px 18px;
+    margin: 16px 0;
+    border-radius: 4px;
+  }
+  .scenario-box h3 {
+    margin-top: 0;
+    color: #1e4d84;
+    font-size: 16px;
+  }
+  .scenario-box .scenario-label {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: #2b6cb0;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .diagram-wrap {
+    border: 1px solid #ddd;
+    background: #fff;
+    padding: 18px;
+    margin-top: 14px;
+    overflow-x: auto;
+  }
+
+  /* Sticky header legend for long sequence diagrams */
+  .diagram-sticky-wrap {
+    position: relative;
+  }
+  .diagram-legend-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    padding: 10px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    margin-top: 14px;
+  }
+  .diagram-legend-sticky + .diagram-wrap {
+    margin-top: 0;
+    border-top: 1px solid #eee;
+  }
+  .legend-chip {
+    font-size: 12.5px;
+    padding: 4px 9px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-weight: 600;
+  }
+  .actor-chip {
+    background: #f4f4f6;
+    color: #555;
+    border: 1.5px solid #cbd0d6;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  /* State-on-entry / state-on-exit blocks */
+  .state-blocks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 14px 0 24px;
+  }
+  .state-block {
+    border: 1px solid #ddd;
+    padding: 14px 16px;
+    background: #fafbfc;
+  }
+  .state-block.entry { border-left: 3px solid #6b7280; }
+  .state-block.exit  { border-left: 3px solid #1e7a3c; }
+  .state-block h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #555;
+    font-weight: 700;
+  }
+  .state-block.entry h3 { color: #555; }
+  .state-block.exit h3  { color: #1e7a3c; }
+  .state-block ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .state-block li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+  }
+  .state-block li:last-child { border-bottom: none; }
+  .state-block .sname {
+    min-width: 100px;
+    font-weight: 600;
+    color: #222;
+    font-size: 13px;
+  }
+  .state-block .sval {
+    color: #444;
+    flex: 1;
+  }
+
+  @media (max-width: 720px) {
+    .state-blocks { grid-template-columns: 1fr; }
+  }
+
+  .mermaid { font-family: ui-monospace, Menlo, Consolas, monospace; }
+  .mermaid svg { max-width: 100% !important; height: auto !important; }
+
+  .mermaid .labelText,
+  .mermaid .loopText,
+  .mermaid text.loopText,
+  .mermaid text.labelText {
+    font-size: 15px !important;
+    font-weight: 700 !important;
+  }
+  .mermaid .labelBox { rx: 3; ry: 3; }
+
+  hr { border: none; border-top: 1px solid #ddd; margin: 32px 0; }
+
+  ol.steps { padding-left: 22px; margin-top: 8px; }
+  ol.steps li { margin-bottom: 10px; }
+  ol.steps li b { color: #111; }
+
+  .toc-links {
+    font-size: 14px;
+    color: #555;
+    margin-top: 30px;
+    padding-top: 16px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+  }
+  .toc-links a {
+    color: #2b6cb0;
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px dashed #a8c3e2;
+  }
+  .toc-links a:hover { color: #1e4d84; border-bottom-color: #2b6cb0; }
+</style>
+</head>
+<body>
+
+<div class="stage-pill alt">ЭТАП 6В · САМОВЫВОЗ ИЗ ПП</div>
+<h1>Доставка в ПП и оплата</h1>
+
+<p class="meta">
+  Альтернативная версия Этапа 6А. Клиент выбрал получение заказа в пункте приёма (самовывоз) вместо курьерской доставки. Телетрек не задействован. <b>Ключевая особенность:</b> событие «заказ готов к выдаче в ПП» приходит извне — от АГБИС (как триггер/статус, конкретный механизм на стороне АГБИС пока не определён). Back реагирует на этот триггер и переводит заказ в <code class="inline">BACK-10 "Ожидает самовывоз"</code>. Клиент приходит в ПП, технолог находит заказ в АГБИС, принимает оплату если нужно, отдаёт вещи. Финальный факт выдачи — тоже приходит к нам из АГБИС.
+</p>
+
+<div class="alt-badge">
+  <b>Когда применяется.</b> Клиент выбрал «самовывоз» — либо при создании заказа через приложение (на Этапе 1), либо при оформлении в ПП (<a href="stage-1b.html">Этап 1Б</a>). Работает даже если у клиента нет приложения — вся коммуникация идёт через АГБИС, клиент просто приходит за вещами по звонку или SMS.
+</div>
+
+<div class="warn">
+  <b>Триггер готовности — из АГБИС.</b> В отличие от Этапа 6А, где всё инициирует Back (он создаёт задачу в Телетреке), здесь <b>инициатором является АГБИС</b>. Предположительно, когда вещи физически прибывают в ПП — технолог (или процесс в АГБИС) регистрирует это событие. Это событие/статус затем через интеграцию АГБИС → Back триггерит у нас переход в <code class="inline">BACK-10 "Ожидает самовывоз"</code>. <b>Конкретный технический механизм — какой именно статус/событие АГБИС нам присылает — на сегодня не определён.</b> Это точка, требующая уточнения с командой АГБИС.
+</div>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">01 ·</span> Переходы статусов и признаков</h2>
+
+<h3>Состояние на входе и на выходе</h3>
+
+<div class="state-blocks">
+  <div class="state-block entry">
+    <h3>На входе в этап</h3>
+    <ul>
+      <li><span class="sname">App</span><span class="sval"><span class="chip app">APP-7</span> «Готово к отправке»</span></li>
+      <li><span class="sname">Back</span><span class="sval"><span class="chip back">BACK-7</span> «Готов к отправке (отдача)»</span></li>
+      <li><span class="sname">АГБИС · заказ</span><span class="sval"><span class="chip agbis">AG-3</span> «Исполненный»</span></li>
+      <li><span class="sname">Телетрек</span><span class="sval"><span class="chip gray">не задействован</span> (самовывоз)</span></li>
+      <li><span class="sname">Признак оплаты</span><span class="sval"><span class="chip green">Оплачено</span> (если оплатил в приложении) или <span class="chip orange">Не оплачено</span> (оплатит в ПП) <span style="color:#888; font-size:12px;">(в Back, АГБИС, Maxma)</span></span></li>
+      <li><span class="sname">Виджеты</span><span class="sval"><span class="chip gray">нет активных</span></span></li>
+    </ul>
+  </div>
+
+  <div class="state-block exit">
+    <h3>На выходе из этапа</h3>
+    <ul>
+      <li><span class="sname">App</span><span class="sval"><span class="chip app">APP-10</span> «Выдан»</span></li>
+      <li><span class="sname">Back</span><span class="sval"><span class="chip back">BACK-11</span> «Завершён»</span></li>
+      <li><span class="sname">АГБИС · заказ</span><span class="sval"><span class="chip agbis">AG-4</span> «Выданный»</span></li>
+      <li><span class="sname">Телетрек</span><span class="sval"><span class="chip gray">не задействован</span> · без изменений</span></li>
+      <li><span class="sname">Maxma</span><span class="sval"><span class="chip maxma">MAX-2</span> «Завершённый» (для всех сценариев — оплата получена)</span></li>
+      <li><span class="sname">Признак оплаты</span><span class="sval"><span class="chip green">Оплачено</span> · источник финализирован</span></li>
+    </ul>
+  </div>
+</div>
+
+<div class="note">
+  <b>Используются «спящие» статусы.</b> На этом этапе активно работают статусы, которые в основном флоу помечены как «не используется»: <code class="inline">APP-9 "Готов к выдаче"</code> и <code class="inline">BACK-10 "Ожидает самовывоз"</code>. Они специально зарезервированы для самовывоза в ПП.
+</div>
+
+<div class="note">
+  <b>Оплата в ПП — новый канал.</b> В отличие от Этапа 6, где Cloud (СБП через QR) и Life (карта через терминал курьера) — в ПП используется <b>терминал и касса АГБИС</b>: наличные, карта через терминал ПП, СБП через АГБИС. Life не задействован (он привязан к курьеру).
+</div>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">02 ·</span> Как это работает</h2>
+
+<p>
+  Этап делится на три фазы. Первая — уведомление клиента о готовности. Вторая — клиент приходит в ПП, технолог находит заказ и отдаёт вещи. Третья — если оплата была отложена, принимаем её в ПП.
+</p>
+
+<ol class="steps">
+  <li>
+    <b>Фаза 1 · Уведомление о готовности (триггер из АГБИС).</b>
+    Когда вещи физически прибыли в ПП и готовы к выдаче, в АГБИС фиксируется это событие (конкретный механизм — статус услуги, статус заказа, отдельный флаг — на сегодня не определён, требует уточнения). Это событие через интеграцию АГБИС → Back доходит до нас <span class="chip red">с задержкой 15–45 мин</span>. Back переводит заказ в <code class="inline">BACK-10 "Ожидает самовывоз"</code>. App переходит в <code class="inline">APP-9 "Готов к выдаче"</code>. Клиент получает push «заказ готов к выдаче в ПП», с адресом и часами работы.
+  </li>
+  <li>
+    <b>Фаза 2 · Клиент приходит в ПП.</b>
+    Клиент приходит, называет номер заказа / показывает QR из приложения / диктует телефон. Технолог находит заказ в АГБИС. Проверяет соответствие — того ли клиента выдаём, все ли вещи собраны.
+  </li>
+  <li>
+    <b>Опционально · Фаза 3 · Оплата в ПП.</b>
+    Если признак оплаты <code class="inline">Не оплачено</code> — клиент доплачивает на месте. Варианты: <b>наличные</b> (касса АГБИС), <b>карта</b> (терминал АГБИС), <b>СБП</b> (через АГБИС, не Cloud). Платёж проводится в АГБИС, признак оплаты отмечается там. С задержкой 15–45 мин долетает до Back. Параллельно Back шлёт признак в Maxma (Maxma: <code class="inline">MAX-1</code> → <code class="inline">MAX-2</code>).
+  </li>
+  <li>
+    <b>Фаза 4 · Выдача и завершение (триггер из АГБИС).</b>
+    Технолог выдаёт клиенту вещи и в АГБИС помечает заказ как выданный: <code class="inline">AG-3 "Исполненный"</code> → <code class="inline">AG-4 "Выданный"</code>. <b>Это тоже приходит к нам из АГБИС</b> с задержкой 15–45 мин. Back: <code class="inline">BACK-10 "Ожидает самовывоз"</code> → <code class="inline">BACK-11 "Завершён"</code>. App: <code class="inline">APP-9 "Готов к выдаче"</code> → <code class="inline">APP-10 "Выдан"</code>.
+  </li>
+</ol>
+
+<div class="alt-badge">
+  <b>Если клиент уже оплатил в приложении</b> (Сценарии A или B Этапа 4) — Фаза 3 пропускается. Признак оплаты уже «Оплачено», Maxma уже в <code class="inline">MAX-2</code>. Этап сводится к Фазам 1, 2, 4.
+</div>
+
+<div class="warn">
+  <b>Задержка 15–45 минут остаётся.</b> Так как ведущая система на этапе — АГБИС, любые обновления от АГБИС (выдача вещей, признак оплаты) приходят в Back с той же задержкой 15–45 мин. Это нужно учитывать: клиент может увидеть в приложении статус <code class="inline">APP-10 "Выдан"</code> не сразу, а через 15–45 минут после физической выдачи. В большинстве случаев это не критично (клиент уже ушёл с вещами).
+</div>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">03 ·</span> Sequence-диаграмма</h2>
+
+<div class="diagram-sticky-wrap">
+  <div class="diagram-legend-sticky">
+    <span class="legend-item"><span class="legend-chip actor-chip">👤 Клиент</span></span>
+    <span class="legend-item"><span class="legend-chip chip app">Norma App</span></span>
+    <span class="legend-item"><span class="legend-chip chip back">Norma Back</span></span>
+    <span class="legend-item"><span class="legend-chip chip agbis">АГБИС</span></span>
+    <span class="legend-item"><span class="legend-chip actor-chip">🧑‍🔧 Технолог</span></span>
+    <span class="legend-item"><span class="legend-chip chip maxma">Maxma</span></span>
+  </div>
+
+<div class="diagram-wrap">
+<div class="mermaid">
+sequenceDiagram
+    autonumber
+    actor Client as Клиент
+    participant App as Norma App
+    participant Back as Norma Back
+    participant AGBIS as АГБИС
+    actor Tech as Технолог
+    participant Maxma as Maxma
+
+    Note over Client,Maxma: Фаза 1 · Уведомление о готовности (триггер из АГБИС)
+
+    AGBIS->>AGBIS: Вещи прибыли в ПП,<br/>АГБИС фиксирует событие<br/>(конкретный механизм<br/>не определён)
+
+    Note right of AGBIS: Задержка 15–45 мин<br/>на AGBIS → Back
+
+    AGBIS->>Back: Сигнал "готов к выдаче в ПП"
+    Back->>Back: BACK-7 "Готов к отправке (отдача)" →<br/>BACK-10 "Ожидает самовывоз"
+    Back->>App: 
+    App->>App: APP-7 "Готово к отправке" →<br/>APP-9 "Готов к выдаче"<br/>Push: "заказ готов в ПП"
+
+    Note over Client,Maxma: Фаза 2 · Клиент приходит в ПП
+
+    Client->>Tech: Приходит в ПП,<br/>называет номер заказа<br/>/ показывает QR / телефон
+    Tech->>AGBIS: Находит заказ<br/>проверяет клиента и вещи
+
+    Note over Client,Maxma: Фаза 3 · Оплата в ПП (если не оплачено ранее)
+
+    alt СЦЕНАРИЙ · Оплата уже была онлайн (A или B с Этапа 4)
+        Note right of AGBIS: Признак оплаты уже "Оплачено"<br/>Пропускаем Фазу 3
+
+    else СЦЕНАРИЙ · Оплата при выдаче
+        Client->>Tech: Платит: наличные / карта /<br/>СБП (через АГБИС)
+        Tech->>AGBIS: Проводит платёж
+        AGBIS->>AGBIS: Признак оплаты:<br/>Не оплачено → Оплачено
+    end
+
+    Note over Client,Maxma: Фаза 4 · Выдача и завершение
+
+    Tech->>Client: Выдаёт вещи
+    Tech->>AGBIS: Помечает заказ как выданный
+    AGBIS->>AGBIS: AG-3 "Исполненный" →<br/>AG-4 "Выданный"
+
+    Note right of AGBIS: Задержка 15–45 мин<br/>на AGBIS → Back
+
+    AGBIS->>Back: 
+    Back->>Back: BACK-10 "Ожидает самовывоз" →<br/>BACK-11 "Завершён"<br/>Признак оплаты: Оплачено
+    Back->>App: 
+    App->>App: APP-9 "Готов к выдаче" →<br/>APP-10 "Выдан"
+
+    alt ВАРИАНТ · Если оплата была в ПП (Фаза 3, сценарий 2)
+        Back->>Maxma: 
+        Maxma->>Maxma: MAX-1 "В работе" →<br/>MAX-2 "Завершённый"
+    end
+
+    Note over Client,Maxma: Этап 6В завершён · Заказ выдан клиенту в ПП
+</div>
+</div>
+</div>
+
+<h3>Изменения по фазам</h3>
+
+<table>
+  <colgroup>
+    <col style="width:14%">
+    <col style="width:24%">
+    <col style="width:26%">
+    <col style="width:13%">
+    <col style="width:23%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Система</th>
+      <th>Было</th>
+      <th>Стало</th>
+      <th>Триггер</th>
+      <th>Что меняется</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr><td colspan="5" class="cat">Фаза 1 · Уведомление о готовности (триггер из АГБИС)</td></tr>
+    <tr>
+      <td><span class="sys">АГБИС</span></td>
+      <td>Вещи ещё не в ПП</td>
+      <td>Вещи в ПП, зафиксировано событие «готов к выдаче»</td>
+      <td><span class="sys">Технолог</span></td>
+      <td>внешнее событие в АГБИС</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back</span></td>
+      <td><span class="chip back">BACK-7</span> «Готов к отправке (отдача)»</td>
+      <td><span class="chip back">BACK-10</span> «Ожидает самовывоз» <span class="chip red">задержка 15–45 мин</span></td>
+      <td><span class="sys">АГБИС</span></td>
+      <td>статус</td>
+    </tr>
+    <tr>
+      <td><span class="sys">App</span></td>
+      <td><span class="chip app">APP-7</span> «Готово к отправке»</td>
+      <td><span class="chip app">APP-9</span> «Готов к выдаче»</td>
+      <td><span class="sys">Back</span></td>
+      <td>статус</td>
+    </tr>
+    <tr>
+      <td><span class="sys">App</span></td>
+      <td>—</td>
+      <td>Push «заказ готов к выдаче в ПП» <span class="chip green">отправлен</span></td>
+      <td><span class="sys">Back</span></td>
+      <td>уведомление</td>
+    </tr>
+
+    <tr><td colspan="5" class="cat">Фаза 2 · Клиент приходит в ПП</td></tr>
+    <tr>
+      <td colspan="5" style="color:#666; font-style:italic; text-align:center;">Статусы не меняются. Технолог ищет заказ в АГБИС, проверяет идентификацию клиента.</td>
+    </tr>
+
+    <tr><td colspan="5" class="cat">Фаза 3 · Оплата в ПП (если не оплачено ранее)</td></tr>
+    <tr>
+      <td><span class="sys">АГБИС</span></td>
+      <td>Признак оплаты: <span class="chip orange">Не оплачено</span></td>
+      <td>Признак оплаты: <span class="chip green">Оплачено</span> · источник: касса / терминал / СБП АГБИС</td>
+      <td><span class="sys">Технолог</span></td>
+      <td>признак оплаты</td>
+    </tr>
+
+    <tr><td colspan="5" class="cat">Фаза 4 · Выдача и завершение</td></tr>
+    <tr>
+      <td><span class="sys">АГБИС</span></td>
+      <td><span class="chip agbis">AG-3</span> «Исполненный»</td>
+      <td><span class="chip agbis">AG-4</span> «Выданный»</td>
+      <td><span class="sys">Технолог</span></td>
+      <td>статус заказа</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back</span></td>
+      <td><span class="chip back">BACK-10</span> «Ожидает самовывоз»</td>
+      <td><span class="chip back">BACK-11</span> «Завершён» <span class="chip red">задержка 15–45 мин</span></td>
+      <td><span class="sys">АГБИС</span></td>
+      <td>статус</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back</span></td>
+      <td>Признак оплаты: <span class="chip orange">Не оплачено</span> (если был)</td>
+      <td>Признак оплаты: <span class="chip green">Оплачено</span> <span class="chip red">задержка 15–45 мин</span></td>
+      <td><span class="sys">АГБИС</span></td>
+      <td>признак оплаты</td>
+    </tr>
+    <tr>
+      <td><span class="sys">App</span></td>
+      <td><span class="chip app">APP-9</span> «Готов к выдаче»</td>
+      <td><span class="chip app">APP-10</span> «Выдан»</td>
+      <td><span class="sys">Back</span></td>
+      <td>статус</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Maxma</span></td>
+      <td><span class="chip maxma">MAX-1</span> «В работе» (если оплата была в ПП)</td>
+      <td><span class="chip maxma">MAX-2</span> «Завершённый»</td>
+      <td><span class="sys">Back</span></td>
+      <td>статус</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">04 ·</span> Интеграции на этапе</h2>
+
+<table>
+  <colgroup>
+    <col style="width:24%">
+    <col style="width:20%">
+    <col style="width:28%">
+    <col style="width:28%">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>Направление</th>
+      <th>Режим</th>
+      <th>Когда вызывается</th>
+      <th>Зачем</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="sys">АГБИС → Back</span></td>
+      <td><span class="chip red">задержка 15–45 мин</span></td>
+      <td>Фаза 1 · АГБИС зафиксировал прибытие вещей в ПП</td>
+      <td>Триггерит переход в BACK-10 «Ожидает самовывоз». <b>Конкретный механизм в АГБИС не определён</b></td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back → App</span></td>
+      <td><span class="chip green">реалтайм</span></td>
+      <td>Фаза 1 · после перехода в BACK-10</td>
+      <td>Показать экран «готов к выдаче», отправить push</td>
+    </tr>
+    <tr>
+      <td><span class="sys">АГБИС → Back</span></td>
+      <td><span class="chip red">задержка 15–45 мин</span></td>
+      <td>Фаза 4 · после пометки выдачи и оплаты в АГБИС</td>
+      <td>Синхронизация финальных статусов (AG-4) и признака оплаты</td>
+    </tr>
+    <tr>
+      <td><span class="sys">Back → Maxma</span></td>
+      <td><span class="chip green">быстро</span></td>
+      <td>Фаза 4 · если оплата была в ПП (Фаза 3 сработала)</td>
+      <td>Перевести в MAX-2 «Завершённый»</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="warn">
+  <b>Два триггера из АГБИС с задержкой.</b> Этот этап сильно зависит от АГБИС: и готовность к выдаче, и факт выдачи — оба события приходят с задержкой 15–45 мин. На UX это может отразиться так: клиент пришёл в ПП раньше, чем в приложении появился статус «готов к выдаче»; или клиент уже получил вещи, но в приложении ещё «ожидает самовывоз». В обоих случаях технолог может проверить фактическое состояние в АГБИС — оно точнее.
+</div>
+
+<div class="note">
+  <b>Телетрек, Cloud, Life не задействованы.</b> Курьера нет (самовывоз), QR для СБП в Телетреке не готовим, терминал Life не используется. Платежи обрабатываются через АГБИС.
+</div>
+
+<!-- ========================================================== -->
+<h2><span class="h2-count">05 ·</span> Заметки</h2>
+
+<div class="warn">
+  <b>Механизм триггера из АГБИС не определён.</b> В АГБИС должен существовать способ зафиксировать событие «заказ готов к выдаче в ПП» и передать его нам. Варианты: отдельный статус заказа / статус услуги / специальный флаг / отдельное событие в API. Пока команда не договорилась с АГБИС о конкретной реализации. Это <b>блокирующий вопрос</b> для имплементации этого этапа.
+</div>
+
+<div class="note">
+  <b>Идентификация клиента в ПП.</b> Технолог должен найти заказ в АГБИС. Варианты: клиент называет номер заказа, показывает QR-код из приложения, диктует телефон. Решение о способе идентификации — задача UX приложения и интерфейса АГБИС. В этом флоу мы считаем что идентификация проходит успешно.
+</div>
+
+<div class="note">
+  <b>СБП через АГБИС vs Cloud.</b> В ПП клиент может заплатить СБП, но обработка идёт не через Cloud — АГБИС имеет свою интеграцию с банком для СБП в ПП. Поэтому мы не получаем Cloud-колбэк; признак оплаты приходит от АГБИС с задержкой 15–45 мин.
+</div>
+
+<div class="note">
+  <b>Возврат вещей клиентом.</b> В ПП клиент при выдаче может заметить брак чистки и отказаться принимать. Это отдельный unhappy-path сценарий: технолог должен отменить выдачу, перевести заказ обратно в АГБИС для повторной чистки или инициировать возврат денег. Здесь не описывается.
+</div>
+
+<div class="warn">
+  <b>Unhappy path не покрыт.</b> Клиент не пришёл в течение N дней, клиент пришёл но нет документа, клиент отказывается платить, платёж АГБИС упал — всё это отдельные сценарии.
+</div>
+
+<!-- ========================================================== -->
+<div class="toc-links">
+  <span>← <a href="stage-5.html">Этап 5 — Чистка</a> · <a href="stage-6a.html">Альтернатива: 6А (домой)</a></span>
+  <span><a href="index.html">↑ К оглавлению</a></span>
+  <span>Следующий: <a href="stage-7.html">Этап 7 — Завершение и отзыв →</a></span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#fafbfc',
+      primaryTextColor: '#111',
+      primaryBorderColor: '#111',
+      lineColor: '#333',
+      secondaryColor: '#eaf1f9',
+      tertiaryColor: '#fff',
+      actorBkg: '#fafbfc',
+      actorBorder: '#222',
+      actorTextColor: '#111',
+      actorLineColor: '#333',
+      signalColor: '#333',
+      signalTextColor: '#111',
+      labelBoxBkgColor: '#2b6cb0',
+      labelBoxBorderColor: '#1e4d84',
+      labelTextColor: '#fff',
+      loopTextColor: '#111',
+      noteBorderColor: '#cfdcee',
+      noteBkgColor: '#eaf1f9',
+      noteTextColor: '#1e4d84',
+      activationBorderColor: '#2b6cb0',
+      activationBkgColor: '#eaf1f9',
+      sequenceNumberColor: '#fff',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif'
+    },
+    sequence: {
+      diagramMarginX: 40,
+      diagramMarginY: 20,
+      actorMargin: 80,
+      boxMargin: 12,
+      boxTextMargin: 6,
+      messageMargin: 38,
+      messageFontSize: 13,
+      noteFontSize: 13,
+      actorFontSize: 14,
+      labelBoxWidth: 60,
+      labelFontSize: 15,
+      labelFontWeight: 700,
+      mirrorActors: true,
+      bottomMarginAdj: 40
+    }
+  });
+</script>
+
+<script>
+(function() {
+  // Цвет линии — плотный, контрастный
+  const LINE_COLOR = {
+    'Клиент': '#555',
+    'Технолог': '#555',
+    'Norma App': '#111',
+    'Norma Back': '#111',
+    'АГБИС': '#a42c2c',
+    'Телетрек': '#0d6c64',
+    'Maxma': '#512da8',
+    'Cloud': '#0d47a1',
+    'Life': '#bf5f00',
+  };
+
+  const BOX_COLOR = {
+    'Клиент':     { fill: '#f4f4f6', stroke: '#cbd0d6', text: '#555' },
+    'Технолог':   { fill: '#f4f4f6', stroke: '#cbd0d6', text: '#555' },
+    'Norma App':  { fill: '#ffffff', stroke: '#111',    text: '#111' },
+    'Norma Back': { fill: '#111',    stroke: '#111',    text: '#ffffff' },
+    'АГБИС':      { fill: '#fde8e8', stroke: '#f0c4c4', text: '#a42c2c' },
+    'Телетрек':   { fill: '#d7f5f2', stroke: '#9fddd5', text: '#0d6c64' },
+    'Maxma':      { fill: '#ede7f6', stroke: '#b39ddb', text: '#512da8' },
+    'Cloud':      { fill: '#e3f2fd', stroke: '#90caf9', text: '#0d47a1' },
+    'Life':       { fill: '#fff3e0', stroke: '#ffcc80', text: '#bf5f00' },
+  };
+
+  function colorizeDiagram() {
+    const diagrams = document.querySelectorAll('.mermaid svg');
+    diagrams.forEach(function(svg) {
+      const nameToX = {};
+      svg.querySelectorAll('text.actor').forEach(function(t) {
+        const name = (t.textContent || '').trim();
+        if (!name) return;
+        const x = parseFloat(t.getAttribute('x'));
+        if (!isNaN(x) && !(name in nameToX)) {
+          nameToX[name] = x;
+        }
+      });
+
+      svg.querySelectorAll('line').forEach(function(line) {
+        const x1 = parseFloat(line.getAttribute('x1'));
+        const x2 = parseFloat(line.getAttribute('x2'));
+        const y1 = parseFloat(line.getAttribute('y1'));
+        const y2 = parseFloat(line.getAttribute('y2'));
+        if (isNaN(x1) || isNaN(x2) || isNaN(y1) || isNaN(y2)) return;
+        if (Math.abs(x1 - x2) > 2) return;
+        if (Math.abs(y2 - y1) < 50) return;
+
+        let nearestName = null;
+        let minDist = Infinity;
+        for (const name in nameToX) {
+          const dist = Math.abs(nameToX[name] - x1);
+          if (dist < minDist) { minDist = dist; nearestName = name; }
+        }
+        if (minDist > 5) return;
+
+        if (nearestName && LINE_COLOR[nearestName]) {
+          const color = LINE_COLOR[nearestName];
+          line.setAttribute('stroke', color);
+          line.setAttribute('stroke-width', '2.5');
+          line.style.stroke = color;
+          line.style.strokeWidth = '2.5px';
+        }
+      });
+
+      svg.querySelectorAll('rect.actor').forEach(function(rect) {
+        const rectX = parseFloat(rect.getAttribute('x'));
+        const rectW = parseFloat(rect.getAttribute('width'));
+        if (isNaN(rectX) || isNaN(rectW)) return;
+        const centerX = rectX + rectW / 2;
+
+        let nearestName = null;
+        let minDist = Infinity;
+        for (const name in nameToX) {
+          const dist = Math.abs(nameToX[name] - centerX);
+          if (dist < minDist) { minDist = dist; nearestName = name; }
+        }
+        if (!nearestName || minDist > 5 || !BOX_COLOR[nearestName]) return;
+
+        const colors = BOX_COLOR[nearestName];
+
+        rect.setAttribute('fill', colors.fill);
+        rect.setAttribute('stroke', colors.stroke);
+        rect.setAttribute('stroke-width', '1.5');
+        rect.style.fill = colors.fill;
+        rect.style.stroke = colors.stroke;
+        rect.style.strokeWidth = '1.5px';
+
+        const parentG = rect.parentNode;
+        if (parentG) {
+          parentG.querySelectorAll('text.actor').forEach(function(t) {
+            const tx = parseFloat(t.getAttribute('x'));
+            if (!isNaN(tx) && Math.abs(tx - centerX) < 5) {
+              t.setAttribute('fill', colors.text);
+              t.style.fill = colors.text;
+              t.style.fontWeight = '700';
+              t.querySelectorAll('tspan').forEach(function(tspan) {
+                tspan.setAttribute('fill', colors.text);
+                tspan.style.fill = colors.text;
+              });
+            }
+          });
+        }
+      });
+
+      svg.querySelectorAll('g.actor-man').forEach(function(manG) {
+        const nameText = manG.querySelector('text.actor') ||
+                         manG.parentNode.querySelector('text.actor');
+        if (!nameText) return;
+        const name = (nameText.textContent || '').trim();
+        if (!name || !BOX_COLOR[name]) return;
+        const colors = BOX_COLOR[name];
+
+        manG.querySelectorAll('line').forEach(function(l) {
+          l.setAttribute('stroke', colors.text);
+          l.setAttribute('stroke-width', '2');
+          l.style.stroke = colors.text;
+          l.style.strokeWidth = '2px';
+        });
+        manG.querySelectorAll('circle').forEach(function(c) {
+          c.setAttribute('stroke', colors.text);
+          c.setAttribute('fill', colors.fill);
+          c.style.stroke = colors.text;
+          c.style.fill = colors.fill;
+        });
+
+        if (nameText) {
+          nameText.setAttribute('fill', colors.text);
+          nameText.style.fill = colors.text;
+          nameText.style.fontWeight = '700';
+          nameText.querySelectorAll('tspan').forEach(function(tspan) {
+            tspan.setAttribute('fill', colors.text);
+            tspan.style.fill = colors.text;
+          });
+        }
+      });
+    });
+  }
+
+  function waitForDiagrams(attempts) {
+    attempts = attempts || 0;
+    const svgs = document.querySelectorAll('.mermaid svg');
+    if (svgs.length > 0) { setTimeout(colorizeDiagram, 100); return; }
+    if (attempts > 100) return;
+    setTimeout(function() { waitForDiagrams(attempts + 1); }, 100);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { waitForDiagrams(0); });
+  } else {
+    waitForDiagrams(0);
+  }
+})();
+</script>
+
+</body>
+</html>

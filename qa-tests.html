@@ -39,6 +39,7 @@
     background: #e0e0e0; color: #555; letter-spacing: 0.4px; text-transform: uppercase;
   }
   .status-code {
+    position: relative;
     display: inline-block;
     font-family: ui-monospace, Menlo, monospace; font-weight: 700;
     font-size: 12px;
@@ -49,6 +50,40 @@
     white-space: nowrap;
   }
   .status-code:hover { background: #dde6f1; }
+  .status-code[data-tip]::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a1a1a; color: #fff;
+    padding: 5px 9px; border-radius: 5px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 12px; font-weight: 500;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.12s ease, visibility 0.12s ease;
+    z-index: 1500;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .status-code[data-tip]::before {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #1a1a1a;
+    pointer-events: none;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.12s ease, visibility 0.12s ease;
+    z-index: 1500;
+  }
+  .status-code[data-tip]:hover::after,
+  .status-code[data-tip]:hover::before {
+    opacity: 1; visibility: visible;
+  }
   .status-code .status-label {
     color: #4a6a98; font-weight: 500; margin-left: 4px;
   }
@@ -3291,7 +3326,7 @@ function enrichStatuses(escapedText) {
       const code = `${prefix}-${num}`;
       const label = STATUS_LABELS[code];
       if (!label) return match;
-      const span = `<span class="status-code" title="${label}">${code}</span>`;
+      const span = `<span class="status-code" data-tip="${label}">${code}</span>`;
       if (trailing) return span + trailing;
       return `${span} <span class="status-label">(${label})</span>`;
     }

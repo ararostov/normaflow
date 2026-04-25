@@ -62,12 +62,66 @@
     font-size: 12px; padding: 3px 6px; border: 1px solid #d0d7de; border-radius: 4px;
     background: #fff; color: #24292f; cursor: pointer; font-family: inherit;
   }
-  .bug-row .bug-btn {
+  .bug-row .qa-btn {
     font-size: 12px; font-weight: 600; padding: 4px 10px;
-    background: #d73a49; color: #fff; border: none; border-radius: 4px; cursor: pointer;
-    font-family: inherit; transition: background 0.12s ease;
+    border: 1px solid #d0d7de; border-radius: 4px; cursor: pointer;
+    font-family: inherit; transition: background 0.12s ease, border-color 0.12s ease;
   }
-  .bug-row .bug-btn:hover { background: #b62a36; }
+  .bug-row .pass-btn {
+    background: #fff; color: #1a7f37; border-color: #1a7f37;
+  }
+  .bug-row .pass-btn:hover { background: #e6f4ea; }
+  .bug-row .pass-btn.active {
+    background: #1a7f37; color: #fff;
+  }
+  .bug-row .bug-btn {
+    background: #f6f8fa; color: #24292f;
+  }
+  .bug-row .bug-btn:hover { background: #eaeef2; border-color: #afb8c1; }
+
+  /* Per-test status visuals */
+  .tc.status-pass { border-left: 4px solid #1a7f37; }
+  .tc.status-fail { border-left: 4px solid #cf222e; }
+  .qa-status {
+    font-size: 11.5px; font-weight: 600; padding: 2px 7px; border-radius: 999px;
+    margin-left: 6px; white-space: nowrap;
+  }
+  .qa-status.pass { background: #dafbe1; color: #1a7f37; }
+  .qa-status.fail { background: #ffebe9; color: #cf222e; }
+  .issue-input {
+    font-size: 11.5px; padding: 2px 6px; border: 1px solid #d0d7de; border-radius: 4px;
+    width: 130px; font-family: inherit; margin-left: 4px;
+  }
+
+  /* Report modal */
+  .qa-modal-bg {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 2000;
+    display: none; align-items: center; justify-content: center; padding: 20px;
+  }
+  .qa-modal-bg.show { display: flex; }
+  .qa-modal {
+    background: #fff; border-radius: 8px; max-width: 820px; width: 100%;
+    max-height: 85vh; display: flex; flex-direction: column; overflow: hidden;
+  }
+  .qa-modal-head {
+    padding: 12px 16px; border-bottom: 1px solid #e3e3e3;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .qa-modal-head h3 { margin: 0; font-size: 15px; }
+  .qa-modal-head .spacer { flex: 1; }
+  .qa-modal-body { flex: 1; overflow: auto; padding: 12px 16px; }
+  .qa-modal-body textarea {
+    width: 100%; min-height: 380px; font-family: ui-monospace, Menlo, monospace;
+    font-size: 12.5px; line-height: 1.5; border: 1px solid #d0d7de; border-radius: 6px;
+    padding: 10px; box-sizing: border-box; resize: vertical;
+  }
+  .qa-toolbar-btn {
+    font-size: 12px; font-weight: 600; padding: 4px 10px;
+    border: 1px solid #d0d7de; border-radius: 4px; cursor: pointer;
+    background: #f6f8fa; color: #24292f; font-family: inherit;
+  }
+  .qa-toolbar-btn:hover { background: #eaeef2; }
+  .qa-toolbar-btn.danger { color: #cf222e; }
 
   .grid {
     display: grid; grid-template-columns: 1fr 1.4fr 1.2fr; gap: 12px; margin-top: 6px;
@@ -241,7 +295,23 @@
       <option value="edge">edge</option>
     </select>
     <button onclick="resetState()">Сброс</button>
+    <button class="qa-toolbar-btn" onclick="showReport()">📋 Отчёт прогона</button>
+    <button class="qa-toolbar-btn danger" onclick="resetRun()">Сбросить прогон</button>
     <span class="counter" id="counter"></span>
+  </div>
+
+  <div class="qa-modal-bg" id="reportModal" onclick="if(event.target===this)hideReport()">
+    <div class="qa-modal">
+      <div class="qa-modal-head">
+        <h3>📋 Отчёт по прогону QA</h3>
+        <div class="spacer"></div>
+        <button class="qa-toolbar-btn" onclick="copyReport()">Скопировать</button>
+        <button class="qa-toolbar-btn" onclick="hideReport()">Закрыть</button>
+      </div>
+      <div class="qa-modal-body">
+        <textarea id="reportText" readonly></textarea>
+      </div>
+    </div>
   </div>
 
   <details class="summary-cat">
@@ -2855,6 +2925,90 @@ function escape(s) {
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
+// === QA run state (localStorage) ===
+const QA_RUN_KEY = 'qa-run-v1';
+
+function loadRun() {
+  try {
+    const raw = localStorage.getItem(QA_RUN_KEY);
+    if (!raw) return { startedAt: null, results: {} };
+    const obj = JSON.parse(raw);
+    if (!obj.results) obj.results = {};
+    return obj;
+  } catch (e) {
+    return { startedAt: null, results: {} };
+  }
+}
+function saveRun(run) {
+  localStorage.setItem(QA_RUN_KEY, JSON.stringify(run));
+}
+function ensureStarted(run) {
+  if (!run.startedAt) run.startedAt = new Date().toISOString();
+}
+function getResult(run, scId) {
+  if (!run.results[scId]) run.results[scId] = { status: null, checkedAt: null, bugs: [], issueRef: '' };
+  return run.results[scId];
+}
+
+function markPass(scId, btn) {
+  const run = loadRun();
+  ensureStarted(run);
+  const r = getResult(run, scId);
+  r.status = (r.status === 'pass') ? null : 'pass';
+  r.checkedAt = r.status ? new Date().toISOString() : null;
+  saveRun(run);
+  applyCardStatus(scId);
+}
+
+function setIssueRef(scId, value) {
+  const run = loadRun();
+  ensureStarted(run);
+  const r = getResult(run, scId);
+  r.issueRef = value.trim();
+  saveRun(run);
+}
+
+function applyCardStatus(scId) {
+  const card = document.getElementById('test-' + scId);
+  if (!card) return;
+  const run = loadRun();
+  const r = run.results[scId];
+  card.classList.remove('status-pass', 'status-fail');
+  const slot = card.querySelector('.qa-status-slot');
+  const passBtn = card.querySelector('.pass-btn');
+  const issueInput = card.querySelector('.issue-input');
+  if (slot) slot.innerHTML = '';
+  if (passBtn) passBtn.classList.remove('active');
+
+  if (!r) {
+    if (issueInput) issueInput.style.display = 'none';
+    return;
+  }
+  if (r.status === 'pass') {
+    card.classList.add('status-pass');
+    if (slot) slot.innerHTML = '<span class="qa-status pass">✓ Прошёл</span>';
+    if (passBtn) passBtn.classList.add('active');
+  } else if (r.status === 'fail') {
+    card.classList.add('status-fail');
+    const bugCount = (r.bugs || []).length;
+    if (slot) slot.innerHTML = `<span class="qa-status fail">🐞 Баг${bugCount > 1 ? ' ×' + bugCount : ''}</span>`;
+  }
+  if (issueInput) {
+    issueInput.style.display = (r.status === 'fail') ? '' : 'none';
+    if (r.issueRef && issueInput.value !== r.issueRef) issueInput.value = r.issueRef;
+  }
+}
+
+function applyAllStatuses() {
+  SCENARIOS.forEach(sc => applyCardStatus(sc.id));
+}
+
+function resetRun() {
+  if (!confirm('Сбросить весь прогон? Все отметки «Прошёл» и записи о созданных багах будут удалены.')) return;
+  localStorage.removeItem(QA_RUN_KEY);
+  applyAllStatuses();
+}
+
 // === Bug creation: GitHub prefilled-issue links ===
 // Issue создаётся в репозитории. Чтобы он автоматически попал в Project,
 // настройте в самом Project auto-add rule (например, по лейблу `qa`).
@@ -2955,6 +3109,127 @@ _Перетащи файлы (PNG, JPG, GIF, MP4) прямо в это поле 
   }
 
   window.open(url, '_blank', 'noopener');
+
+  // Зафиксировать в прогоне
+  const run = loadRun();
+  ensureStarted(run);
+  const r = getResult(run, scId);
+  r.status = 'fail';
+  r.checkedAt = new Date().toISOString();
+  r.bugs.push({
+    repoFull: repoFull,
+    repoLabel: repoLabel,
+    title: title,
+    projectUrl: project ? project.url : null,
+    time: new Date().toISOString()
+  });
+  saveRun(run);
+  applyCardStatus(scId);
+}
+
+// === Report generation ===
+function showReport() {
+  const run = loadRun();
+  const ta = document.getElementById('reportText');
+  ta.value = buildReport(run);
+  document.getElementById('reportModal').classList.add('show');
+}
+function hideReport() {
+  document.getElementById('reportModal').classList.remove('show');
+}
+function copyReport() {
+  const ta = document.getElementById('reportText');
+  ta.select();
+  navigator.clipboard.writeText(ta.value).then(() => {
+    const btn = event.target;
+    const old = btn.textContent;
+    btn.textContent = '✓ Скопировано';
+    setTimeout(() => btn.textContent = old, 1500);
+  });
+}
+
+function fmtDate(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  const dd = String(d.getDate()).padStart(2, '0');
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const yyyy = d.getFullYear();
+  const hh = String(d.getHours()).padStart(2, '0');
+  const mi = String(d.getMinutes()).padStart(2, '0');
+  return `${dd}.${mm}.${yyyy} ${hh}:${mi}`;
+}
+
+function normalizeIssueRef(ref, repoFull) {
+  if (!ref) return null;
+  const t = ref.trim();
+  if (/^https?:\/\//.test(t)) return t;
+  const num = t.replace(/^#/, '');
+  if (/^\d+$/.test(num) && repoFull) return `https://github.com/${repoFull}/issues/${num}`;
+  return t;
+}
+
+function buildReport(run) {
+  const startedAt = run.startedAt || new Date().toISOString();
+  const total = SCENARIOS.length;
+  const passed = [];
+  const failed = [];
+  SCENARIOS.forEach(sc => {
+    const r = run.results[sc.id];
+    if (!r || !r.status) return;
+    if (r.status === 'pass') passed.push(sc);
+    else if (r.status === 'fail') failed.push(sc);
+  });
+
+  const lines = [];
+  lines.push(`# Отчёт по прогону QA — Norma`);
+  lines.push('');
+  lines.push(`**Дата начала прогона:** ${fmtDate(startedAt)}`);
+  lines.push(`**Дата отчёта:** ${fmtDate(new Date().toISOString())}`);
+  lines.push(`**Всего сценариев в каталоге:** ${total}`);
+  lines.push(`**Проверено:** ${passed.length + failed.length} (✅ ${passed.length} · 🐞 ${failed.length})`);
+  lines.push('');
+
+  lines.push(`## ✅ Прошли успешно (${passed.length})`);
+  if (passed.length === 0) {
+    lines.push('_—_');
+  } else {
+    passed.forEach(sc => {
+      const r = run.results[sc.id];
+      lines.push(`- \`${sc.id}\` — ${sc.title} _(${fmtDate(r.checkedAt)})_`);
+    });
+  }
+  lines.push('');
+
+  lines.push(`## 🐞 С багами (${failed.length})`);
+  if (failed.length === 0) {
+    lines.push('_—_');
+  } else {
+    failed.forEach(sc => {
+      const r = run.results[sc.id];
+      lines.push(`### \`${sc.id}\` — ${sc.title}`);
+      lines.push(`- Время: ${fmtDate(r.checkedAt)}`);
+      const refUrl = normalizeIssueRef(r.issueRef, (r.bugs[0] || {}).repoFull);
+      if (refUrl) lines.push(`- Issue: ${refUrl}`);
+      else if (r.issueRef) lines.push(`- Issue: ${r.issueRef}`);
+      else lines.push(`- Issue: _не указан_`);
+      if (r.bugs && r.bugs.length) {
+        lines.push(`- Создано багов: ${r.bugs.length}`);
+        r.bugs.forEach((b, i) => {
+          lines.push(`  ${i + 1}. ${b.repoLabel} (\`${b.repoFull}\`) — ${fmtDate(b.time)}`);
+        });
+      }
+      lines.push('');
+    });
+  }
+
+  const notChecked = total - passed.length - failed.length;
+  if (notChecked > 0) {
+    lines.push(`## ⚪ Не проверены (${notChecked})`);
+    lines.push('_Сценарии без отметки в этом прогоне._');
+    lines.push('');
+  }
+
+  return lines.join('\n');
 }
 
 function render() {
@@ -2984,11 +3259,14 @@ function render() {
         ${sc.role ? `<span class="pill role-pill">${escape(roleLabels[sc.role]||sc.role)}</span>` : ''}
         <span class="pill type-pill">${escape(sc.type)}</span>
         <span class="tc-title">${escape(sc.title)}</span>
+        <span class="qa-status-slot"></span>
         <span class="bug-row">
+          <button class="qa-btn pass-btn" type="button" onclick="markPass('${escape(sc.id)}', this)">✓ Прошёл</button>
           <select class="bug-repo" title="Репозиторий для бага">
             ${BUG_REPOS.map(r => `<option value="${r.repo}">${escape(r.label)}</option>`).join('')}
           </select>
-          <button class="bug-btn" type="button" onclick="createBug('${escape(sc.id)}', this)">🐞 Создать баг</button>
+          <button class="qa-btn bug-btn" type="button" onclick="createBug('${escape(sc.id)}', this)">🐞 Создать баг</button>
+          <input type="text" class="issue-input" placeholder="issue # или URL" title="Номер созданного issue (например 142 или ссылка)" oninput="setIssueRef('${escape(sc.id)}', this.value)" />
         </span>
       </div>
       <div class="grid">
@@ -3009,6 +3287,7 @@ function render() {
     list.appendChild(card);
   });
   applyFilters();
+  applyAllStatuses();
 }
 
 function applyFilters() {

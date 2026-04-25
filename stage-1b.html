@@ -353,9 +353,58 @@
     .topnav-logo { font-size: 12px; }
     .topnav-item { font-size: 12px; padding: 5px 8px; }
   }
+
+/* === SITE HEADER === */
+.site-header {
+  background: linear-gradient(135deg, #0b2d5c 0%, #1b3a66 100%);
+  color: #fff;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid #082249;
+}
+.site-header .sh-brand {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #fff;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.site-header .sh-brand:hover { opacity: 0.85; }
+.site-header .sh-divider {
+  width: 1px;
+  height: 22px;
+  background: rgba(255,255,255,0.25);
+}
+.site-header .sh-subtitle {
+  font-size: 13px;
+  color: rgba(255,255,255,0.78);
+  font-weight: 400;
+}
+.site-header .sh-meta {
+  margin-left: auto;
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  white-space: nowrap;
+}
+@media (max-width: 700px) {
+  .site-header { padding: 10px 14px; gap: 10px; }
+  .site-header .sh-brand { font-size: 15px; }
+  .site-header .sh-subtitle { font-size: 12px; }
+  .site-header .sh-meta { display: none; }
+}
 </style>
 </head>
 <body>
+
+<header class="site-header">
+  <a href="index.html" class="sh-brand">🧺 NORMA</a>
+  <span class="sh-divider"></span>
+  <span class="sh-subtitle">Документация бизнес-процессов · Dry Cleaning Flow</span>
+  <span class="sh-meta">v0.1</span>
+</header>
 
 <nav class="topnav">
   <a href="index.html" class="topnav-logo">NORMA · FLOW</a>
@@ -515,11 +564,11 @@ sequenceDiagram
     Tech->>AGBIS: Списывает бонусы<br/>(из локального баланса АГБИС)<br/>→ B бонусов
 
     alt СЦЕНАРИЙ · Клиент платит в ПП сразу
-        Client->>Tech: Платит остаток D руб:<br/>наличные / карта / СБП
+        Client->>Tech: Платит остаток D руб,<br/>наличные / карта / СБП
         Tech->>AGBIS: Проводит оплату
-        AGBIS->>AGBIS: Признак оплаты: Оплачено<br/>Breakdown: скидка S + бонусы B + деньги D<br/>= полная стоимость заказа
+        AGBIS->>AGBIS: Признак оплаты Оплачено<br/>Breakdown скидка S + бонусы B + деньги D<br/>= полная стоимость заказа
     else СЦЕНАРИЙ · Клиент откладывает оплату
-        Note right of AGBIS: Признак: Не оплачено<br/>(деньги D не получены)<br/>Клиент оплатит позже<br/>в приложении или<br/>при получении
+        Note right of AGBIS: Признак Не оплачено,<br/>деньги D не получены.<br/>Клиент оплатит позже<br/>в приложении или<br/>при получении.
     end
 
     Note over Client,App: Фаза 3 · Подтверждение сразу (клиент здесь, в ПП)
@@ -530,16 +579,16 @@ sequenceDiagram
 
     Note right of AGBIS: Задержка 15–45 мин<br/>на AGBIS → Back
 
-    AGBIS->>Back: Передаёт заказ + breakdown оплаты:<br/>скидка S руб, бонусы B шт, деньги D руб<br/>(сумма закрывает полную стоимость)<br/>+ состав, цена, признаки
+    AGBIS->>Back: Передаёт заказ + breakdown оплаты —<br/>скидка S руб, бонусы B шт, деньги D руб<br/>сумма закрывает полную стоимость,<br/>состав, цена, признаки
 
-    Back->>Back: Создаём заказ сразу<br/>в BACK-5 "Подтверждён клиентом"<br/>Сохраняем breakdown оплаты:<br/>скидка / бонусы / деньги — отдельно
+    Back->>Back: Создаём заказ сразу<br/>в BACK-5 "Подтверждён клиентом".<br/>Сохраняем breakdown оплаты —<br/>скидка, бонусы, деньги отдельно
 
-    Back->>Maxma: Регистрирует заказ:<br/>скидка S руб + списание B бонусов<br/>(деньги D в Maxma не передаются)
-    Maxma->>Maxma: MAX-1 "В работе"<br/>Баланс бонусов уменьшен на B<br/>Скидка зафиксирована
+    Back->>Maxma: Регистрирует заказ —<br/>скидка S руб + списание B бонусов.<br/>Деньги D в Maxma не передаются
+    Maxma->>Maxma: MAX-1 "В работе".<br/>Баланс бонусов уменьшен на B,<br/>скидка зафиксирована
 
     alt ВАРИАНТ · Клиент установил приложение<br/>(сейчас или позже)
         Client->>App: Скачивает, логинится<br/>по телефону
-        App->>Back: 
+        App->>Back: Запрашивает заказы клиента
         Back->>App: Отдаёт все заказы клиента<br/>(включая новый из ПП)
         App->>App: Показывает заказ<br/>APP-5 "Вещи приняты"<br/>(или появляется push "новый заказ")
     else ВАРИАНТ · Клиент не скачал приложение

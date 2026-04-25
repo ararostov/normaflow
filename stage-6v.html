@@ -409,9 +409,58 @@
     .topnav-logo { font-size: 12px; }
     .topnav-item { font-size: 12px; padding: 5px 8px; }
   }
+
+/* === SITE HEADER === */
+.site-header {
+  background: linear-gradient(135deg, #0b2d5c 0%, #1b3a66 100%);
+  color: #fff;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid #082249;
+}
+.site-header .sh-brand {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #fff;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.site-header .sh-brand:hover { opacity: 0.85; }
+.site-header .sh-divider {
+  width: 1px;
+  height: 22px;
+  background: rgba(255,255,255,0.25);
+}
+.site-header .sh-subtitle {
+  font-size: 13px;
+  color: rgba(255,255,255,0.78);
+  font-weight: 400;
+}
+.site-header .sh-meta {
+  margin-left: auto;
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  white-space: nowrap;
+}
+@media (max-width: 700px) {
+  .site-header { padding: 10px 14px; gap: 10px; }
+  .site-header .sh-brand { font-size: 15px; }
+  .site-header .sh-subtitle { font-size: 12px; }
+  .site-header .sh-meta { display: none; }
+}
 </style>
 </head>
 <body>
+
+<header class="site-header">
+  <a href="index.html" class="sh-brand">🧺 NORMA</a>
+  <span class="sh-divider"></span>
+  <span class="sh-subtitle">Документация бизнес-процессов · Dry Cleaning Flow</span>
+  <span class="sh-meta">v0.1</span>
+</header>
 
 <nav class="topnav">
   <a href="index.html" class="topnav-logo">NORMA · FLOW</a>
@@ -548,18 +597,18 @@ sequenceDiagram
 
     Note over Client,Maxma: Фаза 1 · Уведомление о готовности (триггер — смена склада в АГБИС)
 
-    Tech->>AGBIS: Перемещает вещи в ПП:<br/>меняет поле «склад заказа»<br/>на склад нужного ПП
+    Tech->>AGBIS: Перемещает вещи в ПП,<br/>меняет поле "склад заказа"<br/>на склад нужного ПП
 
-    Note right of Back: Back регулярно опрашивает АГБИС по API<br/>для заказов в статусе «Готов к отправке»<br/>с выбранным самовывозом
+    Note right of Back: Back регулярно опрашивает АГБИС по API<br/>для заказов в статусе "Готов к отправке"<br/>с выбранным самовывозом
 
-    Back->>AGBIS: GET склад заказа<br/>(поллинг по API)
+    Back->>AGBIS: GET склад заказа<br/>поллинг по API
     AGBIS->>Back: Возвращает текущий склад заказа
 
-    Note right of Back: Задержка 15–45 мин<br/>(интервал поллинга)
+    Note right of Back: Задержка 15–45 мин,<br/>интервал поллинга
 
-    Back->>Back: Склад заказа = ПП клиента →<br/>BACK-7 "Готов к отправке (отдача)" →<br/>BACK-10 "Ожидает самовывоз"
-    Back->>App:
-    App->>App: APP-7 "Готово к отправке" →<br/>APP-9 "Готов к выдаче"<br/>Push: "заказ готов в ПП"
+    Back->>Back: Склад заказа = ПП клиента,<br/>BACK-7 → BACK-10 "Ожидает самовывоз"
+    Back->>App: Обновляем статус заказа
+    App->>App: APP-7 "Готово к отправке" →<br/>APP-9 "Готов к выдаче"<br/>Push: заказ готов в ПП
 
     Note over Client,Maxma: Фаза 2 · Клиент приходит в ПП
 
@@ -570,7 +619,6 @@ sequenceDiagram
 
     alt СЦЕНАРИЙ · Оплата уже была онлайн (A или B с Этапа 4)
         Note right of AGBIS: Признак оплаты уже "Оплачено"<br/>Пропускаем Фазу 3
-
     else СЦЕНАРИЙ · Оплата при выдаче
         Client->>Tech: Платит: наличные / карта /<br/>СБП (через АГБИС)
         Tech->>AGBIS: Проводит платёж
@@ -585,13 +633,13 @@ sequenceDiagram
 
     Note right of AGBIS: Задержка 15–45 мин<br/>на AGBIS → Back
 
-    AGBIS->>Back: 
-    Back->>Back: BACK-10 "Ожидает самовывоз" →<br/>BACK-11 "Завершён"<br/>Признак оплаты: Оплачено
-    Back->>App: 
+    AGBIS->>Back: Передаёт факт выдачи и<br/>финальные признаки оплаты
+    Back->>Back: BACK-10 "Ожидает самовывоз" →<br/>BACK-11 "Завершён".<br/>Признак оплаты Оплачено
+    Back->>App: Обновляем статус
     App->>App: APP-9 "Готов к выдаче" →<br/>APP-10 "Выдан"
 
     alt ВАРИАНТ · Если оплата была в ПП (Фаза 3, сценарий 2)
-        Back->>Maxma: 
+        Back->>Maxma: Передаёт оплату
         Maxma->>Maxma: MAX-1 "В работе" →<br/>MAX-2 "Завершённый"
     end
 

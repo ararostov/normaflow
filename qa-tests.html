@@ -55,6 +55,20 @@
   .type-pill { background: #ede7f6; color: #4527a0; }
   .role-pill { background: #fff3e0; color: #b25600; }
 
+  .bug-row {
+    margin-left: auto; display: flex; align-items: center; gap: 6px;
+  }
+  .bug-row select {
+    font-size: 12px; padding: 3px 6px; border: 1px solid #d0d7de; border-radius: 4px;
+    background: #fff; color: #24292f; cursor: pointer; font-family: inherit;
+  }
+  .bug-row .bug-btn {
+    font-size: 12px; font-weight: 600; padding: 4px 10px;
+    background: #d73a49; color: #fff; border: none; border-radius: 4px; cursor: pointer;
+    font-family: inherit; transition: background 0.12s ease;
+  }
+  .bug-row .bug-btn:hover { background: #b62a36; }
+
   .grid {
     display: grid; grid-template-columns: 1fr 1.4fr 1.2fr; gap: 12px; margin-top: 6px;
   }
@@ -2841,12 +2855,96 @@ function escape(s) {
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
+// === Bug creation: GitHub prefilled-issue links ===
+// Поправь owner/repo здесь, когда репозитории появятся.
+const BUG_GH_OWNER = "ararostov";
+const BUG_REPOS = [
+  { repo: "norma-app",     label: "App" },
+  { repo: "norma-backend", label: "Backend" }
+];
+
+function createBug(scId, btn) {
+  const sc = SCENARIOS.find(s => s.id === scId);
+  if (!sc) { alert('Тест не найден: ' + scId); return; }
+
+  const select = btn.parentElement.querySelector('.bug-repo');
+  const repo = select.value;
+  const repoLabel = select.options[select.selectedIndex].text;
+
+  const summary = prompt('Кратко опиши проблему (станет заголовком issue):', '');
+  if (summary === null) return;
+  const trimmed = summary.trim();
+  if (!trimmed) { alert('Заголовок не может быть пустым'); return; }
+
+  // Текущая дата DD.MM.YYYY
+  const d = new Date();
+  const dd = String(d.getDate()).padStart(2, '0');
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const yyyy = d.getFullYear();
+  const dateStr = `${dd}.${mm}.${yyyy}`;
+
+  // Абсолютная ссылка на конкретный тест
+  const testUrl = `${location.origin}${location.pathname}#test-${scId}`;
+
+  // Шаги теста
+  const stepsMd = (sc.steps || []).map((st, i) => {
+    if (typeof st === 'string') return `${i + 1}. ${st}`;
+    const sys = whereLabels[st.sys] || st.sys || '';
+    return `${i + 1}. **[${sys}]** ${st.text}`;
+  }).join('\n');
+
+  const expectedMd = (sc.expected || []).map(e => `- ${e}`).join('\n');
+  const preMd = (sc.pre || []).map(p => `- ${p}`).join('\n') || '_—_';
+
+  const stagesArr = Array.isArray(sc.stage) ? sc.stage : [sc.stage];
+  const stagesStr = stagesArr.map(s => stageNames[s] || s).join(', ');
+
+  const body = `## Контекст
+**Дата:** ${dateStr}
+**Тест:** [\`${sc.id}\` — ${sc.title}](${testUrl})
+**Этап:** ${stagesStr}
+**Тип:** ${sc.type}${sc.role ? `\n**Роль:** ${roleLabels[sc.role] || sc.role}` : ''}
+
+## Предусловия
+${preMd}
+
+## Шаги воспроизведения
+${stepsMd}
+
+## Ожидаемый результат
+${expectedMd}
+
+## Фактический результат
+_Опиши, что происходит на самом деле._
+
+## Скриншоты / видео
+_Перетащи файлы (PNG, JPG, GIF, MP4) прямо в это поле — GitHub загрузит их автоматически._
+
+## Окружение
+- Платформа: <!-- iOS / Android / Web / Backend -->
+- Версия: <!-- например 1.4.2 (build 312) -->
+- Устройство / браузер:
+- Учётка / тестовый аккаунт:
+
+---
+🔗 Создано из QA-сценария: ${testUrl}`;
+
+  const title = `[QA] ${sc.id}: ${trimmed}`;
+  const url = `https://github.com/${BUG_GH_OWNER}/${repo}/issues/new`
+            + `?title=${encodeURIComponent(title)}`
+            + `&body=${encodeURIComponent(body)}`
+            + `&labels=${encodeURIComponent('bug,qa')}`;
+
+  window.open(url, '_blank', 'noopener');
+}
+
 function render() {
   const list = document.getElementById('list');
   list.innerHTML = '';
   SCENARIOS.forEach((sc, idx) => {
     const card = document.createElement('div');
     card.className = 'tc';
+    card.id = 'test-' + sc.id;
     card.dataset.id = sc.id;
     card.dataset.stage = Array.isArray(sc.stage) ? sc.stage.join(',') : sc.stage;
     card.dataset.role = sc.role || '';
@@ -2867,6 +2965,12 @@ function render() {
         ${sc.role ? `<span class="pill role-pill">${escape(roleLabels[sc.role]||sc.role)}</span>` : ''}
         <span class="pill type-pill">${escape(sc.type)}</span>
         <span class="tc-title">${escape(sc.title)}</span>
+        <span class="bug-row">
+          <select class="bug-repo" title="Репозиторий для бага">
+            ${BUG_REPOS.map(r => `<option value="${r.repo}">${escape(r.label)}</option>`).join('')}
+          </select>
+          <button class="bug-btn" type="button" onclick="createBug('${escape(sc.id)}', this)">🐞 Создать баг</button>
+        </span>
       </div>
       <div class="grid">
         <div class="blk">

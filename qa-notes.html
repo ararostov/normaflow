@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Заметки для QA</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background: #fafafa; color: #111; font-size: 14.5px; line-height: 1.55; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 28px 22px 80px; }
+  h1 { font-size: 28px; margin: 0 0 6px; letter-spacing: -0.3px; }
+  .sub { color: #555; margin: 0 0 24px; font-size: 14px; }
+  h2 { font-size: 20px; margin: 32px 0 10px; color: #0b2d5c; border-bottom: 1px solid #e3e8f0; padding-bottom: 4px; }
+  h3 { font-size: 16px; margin: 18px 0 6px; color: #1b3a66; }
+
+  .card { background: #fff; border: 1px solid #e3e3e3; border-radius: 10px; padding: 16px 18px; margin: 14px 0; }
+  ul, ol { padding-left: 22px; margin: 6px 0; }
+  li { margin: 4px 0; }
+
+  code { background: #f2f2f2; padding: 1px 5px; border-radius: 3px; font-size: 13px; font-family: ui-monospace, Menlo, monospace; }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11.5px; font-weight: 600; }
+  .pill-warn { background: #fff8d6; color: #5a4200; border: 1px solid #e8cb55; }
+  .pill-info { background: #e3f2fd; color: #0d47a1; }
+  .pill-ok { background: #e3fcec; color: #0b3d29; }
+
+  .note-warn { background: #fff8e1; border-left: 4px solid #f9a825; padding: 10px 14px; border-radius: 6px; margin: 12px 0; font-size: 13.5px; }
+  .note-info { background: #e8f4fd; border-left: 4px solid #1976d2; padding: 10px 14px; border-radius: 6px; margin: 12px 0; font-size: 13.5px; }
+
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; margin: 10px 0; }
+  th, td { padding: 8px 10px; border: 1px solid #e3e8f0; text-align: left; vertical-align: top; }
+  th { background: #f5f7fb; color: #455; font-weight: 600; font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.3px; }
+
+  a { color: #0d47a1; }
+  a:hover { text-decoration: underline; }
+
+  .toc { background: #fff; border: 1px solid #e3e3e3; border-radius: 10px; padding: 12px 16px; margin: 14px 0 24px; }
+  .toc h3 { margin: 0 0 8px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.4px; color: #455; }
+  .toc ul { margin: 0; padding-left: 20px; }
+  .toc li { margin: 3px 0; font-size: 13.5px; }
+
+  .back-link { font-size: 13px; color: #0d47a1; text-decoration: none; }
+  .back-link:hover { text-decoration: underline; }
+
+  .creds { margin: 0; padding: 0; list-style: none; }
+  .creds .cred-block { background: #fff; border: 1px solid #e3e8f0; border-radius: 8px; padding: 12px 14px; margin: 10px 0; }
+  .creds .cred-title { font-weight: 600; font-size: 14.5px; color: #0b2d5c; margin: 0 0 6px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .creds .cred-title a { font-size: 12.5px; font-weight: 400; word-break: break-all; }
+  .creds .cred-row { display: flex; align-items: center; gap: 10px; padding: 4px 0; font-size: 13.5px; flex-wrap: wrap; }
+  .creds .cred-label { color: #556; min-width: 86px; font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.3px; }
+  .creds .cred-value {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    background: #f4f6fa; padding: 4px 8px; border-radius: 5px;
+    color: #111; user-select: all; flex: 1; min-width: 200px;
+    word-break: break-all;
+  }
+  .creds .cred-value.masked { color: #999; letter-spacing: 2px; user-select: none; }
+  .creds .cred-actions { display: flex; gap: 6px; }
+  .creds button.icon-btn {
+    background: #fff; border: 1px solid #ccd; border-radius: 5px;
+    width: 32px; height: 30px; cursor: pointer; padding: 0; font-size: 15px;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .creds button.icon-btn:hover { background: #f0f3f8; }
+  .creds button.icon-btn:active { background: #e3e8f0; }
+  .creds .copy-toast {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: #0b2d5c; color: #fff; padding: 8px 16px; border-radius: 6px;
+    font-size: 13px; opacity: 0; transition: opacity 0.2s ease; pointer-events: none;
+    z-index: 100;
+  }
+  .creds .copy-toast.show { opacity: 1; }
+
+  .deleted-cred { opacity: 0.55; text-decoration: line-through; }
+  .deleted-badge { background: #fce4ec; color: #b71c1c; padding: 1px 7px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back-link" href="qa-tests.html">← К каталогу QA сценариев</a>
+  <h1>Заметки для QA</h1>
+  <p class="sub">Общие правила, термины, типовые приёмы при прогоне тестов flow заказа «Норма».</p>
+
+  <div class="toc">
+    <h3>Содержание</h3>
+    <ul>
+      <li><a href="#memo">Памятка тестировщику (общие принципы)</a></li>
+      <li><a href="#access">Доступы (логины и пароли)</a></li>
+      <li><a href="#systems">Системы и роли</a></li>
+      <li><a href="#client-check">Главное правило: проверка со стороны клиента</a></li>
+      <li><a href="#delays">Задержки и тайминги</a></li>
+      <li><a href="#delivery-rules">Правила доставки и слотов</a></li>
+      <li><a href="#address-rules">Адрес и способ возврата после подтверждения</a></li>
+      <li><a href="#loyalty">Лояльность: скидки, промокоды, бонусы</a></li>
+      <li><a href="#payment-channels">Каналы оплаты</a></li>
+      <li><a href="#admin">Админка / CMS / CRM (отдельное тестирование)</a></li>
+      <li><a href="#statuses">Карта статусов</a></li>
+      <li><a href="#docs">Где искать документацию</a></li>
+      <li><a href="#tips">Лайфхаки и типовые ошибки</a></li>
+    </ul>
+  </div>
+
+  <h2 id="memo">Памятка тестировщику</h2>
+  <div class="card">
+    <div class="note-warn"><b>Важно перед стартом.</b> Этот проект — не одна система, а связка АГБИС, Maxma, Teletrack, Cloud, Life, Back, App, сайта и админки. Стабилизация требует больше времени, чем обычно. На тестирование закладывайте больше дней, чем кажется по первому взгляду.</div>
+
+    <h3>Что должен уметь тестировщик</h3>
+    <ul>
+      <li><b>АГБИС</b> — уверенно работать в системе пунктов приёма и фабрики. Знать, где меняются статусы услуг, как менять цену, как сменить склад заказа, как принять оплату, как выдать заказ. Это самая объёмная компетенция.</li>
+      <li><b>Maxma</b> — понимать работу с акциями, промокодами, бонусами. Уметь смотреть транзакции клиента, сверять баланс.</li>
+      <li><b>Teletrack</b> — глубокие навыки не нужны. Достаточно понимать, что это диспетчеризация курьеров, и уметь смотреть статусы задач.</li>
+      <li><b>Приложение курьера</b> — должно быть установлено на тестовом устройстве. Тестировщик сам выступает в роли курьера и нажимает кнопки.</li>
+      <li><b>Norma App</b> — основное клиентское приложение. На нём должны быть тестовые аккаунты с разными состояниями.</li>
+      <li><b>Сайт и мобильный сайт</b> — тестировать без авторизации, на разных разрешениях.</li>
+      <li><b>Back / админка</b> — тестировщик должен уметь открывать карточки заказов, видеть аудит и логи синхронизации.</li>
+    </ul>
+
+    <h3>Как работать с проектом</h3>
+    <ul>
+      <li><b>Замечать все баги по ходу дела.</b> Любой странный UX, не только функциональные ошибки. Записывать сразу, не откладывать.</li>
+      <li><b>Все шаги — строго по документации</b> (<a href="https://ararostov.github.io/normaflow/" target="_blank" rel="noopener">normaflow</a>). Если фактическое поведение расходится с документом — это сигнал. Открыть тикет с пометкой «расхождение с документацией».</li>
+      <li><b>Не считать тест пройденным, пока не проверил у клиента.</b> Любое изменение, которое должно отобразиться в App — проверяется в App.</li>
+      <li><b>Учитывать задержки 15–45 мин</b> в любых тестах с участием АГБИС. Если статус не догнал за 45 мин — это повод тикета.</li>
+      <li><b>Скриншоты «до» и «после»</b> — особенно баланса бонусов и сумм заказа.</li>
+      <li><b>Готовить наборы тестовых данных заранее</b>: клиент с известным балансом бонусов, активный промокод, акция в Maxma, ПП с расписанием, тестовые карты для Cloud / Life.</li>
+      <li><b>Параллельные тесты — отдельный риск.</b> Особенно одновременные операции с бонусами в АГБИС и App, или несколько заказов с одинаковыми суммами через Life.</li>
+    </ul>
+
+    <h3>Как закладывать время</h3>
+    <ul>
+      <li>Полный E2E прогон одного flow (1А → 6А или 6В) — это не 30 минут, а 1.5–2 часа реального времени за счёт задержек АГБИС.</li>
+      <li>На стабилизацию каждого этапа — несколько дней, не «несколько часов».</li>
+      <li>Регрессионный прогон всего каталога — это полноценный спринт, не один день.</li>
+      <li>Закладывать буфер на обучение QA работе с АГБИС и Maxma.</li>
+    </ul>
+
+    <h3>Когда сигнализировать команде</h3>
+    <ul>
+      <li>Расхождение фактического поведения с документацией.</li>
+      <li>Любая нарушение целостности сумм: АГБИС ≠ Back ≠ Maxma.</li>
+      <li>Любая ситуация с двойным списанием/начислением бонусов.</li>
+      <li>Зависший заказ (статус не двигается > 1 часа).</li>
+      <li>Неожиданное поведение виджетов (W-1, W-2, W-3).</li>
+      <li>Любая edge-ситуация, не покрытая ни сценарием, ни документацией.</li>
+    </ul>
+  </div>
+
+  <h2 id="access">Доступы (логины и пароли)</h2>
+  <div class="card">
+    <div class="note-warn"><b>Безопасность.</b> Пароли скрыты. Чтобы посмотреть — нажмите 👁. Чтобы скопировать — нажмите 📋. Не пересылайте этот файл по почте/мессенджерам, не публикуйте в трекерах. Если устройство общее — закрывайте вкладку после работы.</div>
+
+    <ul class="creds">
+      <li class="cred-block deleted-cred">
+        <div class="cred-title">Подключение к компьютеру с АГБИС <span class="deleted-badge">УДАЛЕНО</span></div>
+        <div class="cred-row"><span class="cred-label">IP-адрес</span><span class="cred-value">147.45.249.154</span></div>
+        <div class="cred-row"><span class="cred-label">Логин</span><span class="cred-value">Administrator</span></div>
+        <div class="cred-row">
+          <span class="cred-label">Пароль</span>
+          <span class="cred-value masked" data-secret="fHhCjV^oWD2,Nq">••••••••••••••</span>
+          <span class="cred-actions">
+            <button class="icon-btn" title="Показать / скрыть" data-toggle>👁</button>
+            <button class="icon-btn" title="Скопировать" data-copy="fHhCjV^oWD2,Nq">📋</button>
+          </span>
+        </div>
+      </li>
+
+      <li class="cred-block">
+        <div class="cred-title">АГБИС</div>
+        <div class="cred-row"><span class="cred-label">Логин</span><span class="cred-value">Хачикян Ара</span></div>
+        <div class="cred-row">
+          <span class="cred-label">Пароль</span>
+          <span class="cred-value masked" data-secret="275784">••••••</span>
+          <span class="cred-actions">
+            <button class="icon-btn" title="Показать / скрыть" data-toggle>👁</button>
+            <button class="icon-btn" title="Скопировать" data-copy="275784">📋</button>
+          </span>
+        </div>
+      </li>
+
+      <li class="cred-block">
+        <div class="cred-title">Teletrack <a href="https://login.teletrack.ru/login/Account/Login?returnUrl=%2Flogin%2Fc%2FTaskCatalog%2Ftable" target="_blank" rel="noopener">login.teletrack.ru</a></div>
+        <div class="cred-row" style="color:#667;font-size:13px">Логин и пароль не указаны — добавить при получении.</div>
+      </li>
+
+      <li class="cred-block">
+        <div class="cred-title">Maxma <a href="https://my.maxma.com/#/app/login/signin" target="_blank" rel="noopener">my.maxma.com</a></div>
+        <div class="cred-row"><span class="cred-label">Логин</span><span class="cred-value">ararostov</span></div>
+        <div class="cred-row">
+          <span class="cred-label">Пароль</span>
+          <span class="cred-value masked" data-secret="!pr8vef!UaAWJGQ">•••••••••••••••</span>
+          <span class="cred-actions">
+            <button class="icon-btn" title="Показать / скрыть" data-toggle>👁</button>
+            <button class="icon-btn" title="Скопировать" data-copy="!pr8vef!UaAWJGQ">📋</button>
+          </span>
+        </div>
+      </li>
+
+      <li class="cred-block">
+        <div class="cred-title">Админка <a href="https://admin.normaclean.ru/" target="_blank" rel="noopener">admin.normaclean.ru</a></div>
+        <div class="cred-row" style="color:#667;font-size:13px">Логин и пароль не указаны — добавить при получении.</div>
+      </li>
+    </ul>
+  </div>
+  <div class="copy-toast" id="copy-toast">Скопировано</div>
+
+  <h2 id="systems">Системы и роли</h2>
+  <div class="card">
+    <h3>Роли тестировщика</h3>
+    <ul>
+      <li><b>Клиент</b> — App, сайт, мобильная версия сайта.</li>
+      <li><b>Технолог</b> — АГБИС в пункте приёма и на фабрике: создание заказа, приёмка, фото, цена, выдача.</li>
+      <li><b>Логист</b> — Teletrack: назначение курьеров, слоты, зоны.</li>
+      <li><b>Курьер</b> — приложение Teletrack: забор, доставка, фотоотчёт, подпись, оплата через Life-терминал.</li>
+      <li><b>Техподдержка</b> — Back, Maxma. Решает edge-кейсы, синхронизацию.</li>
+      <li><b>Маркетолог</b> — Maxma: акции, промокоды, реферальная программа.</li>
+    </ul>
+
+    <h3>Системы</h3>
+    <table>
+      <thead><tr><th>Система</th><th>Зона ответственности</th></tr></thead>
+      <tbody>
+        <tr><td>App / Сайт / Мобильный сайт</td><td>Клиентские интерфейсы. На сайте нет авторизации — только создание заказа.</td></tr>
+        <tr><td>АГБИС</td><td>Фабрика и пункт приёма. Ведущая система для этапов 1Б, 3, 5, 6В.</td></tr>
+        <tr><td>Back</td><td>Внутренний бэкенд. Оркестрация платежей, лояльности, синхронизации.</td></tr>
+        <tr><td>Teletrack</td><td>Слоты, зоны, задачи курьерам. Статусы TELE-1..TELE-5.</td></tr>
+        <tr><td>Maxma</td><td>Программа лояльности. Источник правды по бонусам, скидкам и промокодам.</td></tr>
+        <tr><td>Cloud</td><td>Онлайн-платежи (карты, СБП через QR).</td></tr>
+        <tr><td>Life</td><td>Терминальные платежи у курьера. Привязка через matching по сумма+время+курьер.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="client-check">Главное правило: проверка со стороны клиента</h2>
+  <div class="card">
+    <div class="note-warn"><b>Правило для всех тестов.</b> Если действие меняет что-либо у клиента (статус заказа, сумма, виджет, push, баланс бонусов, история транзакций) — в шагах ОБЯЗАТЕЛЬНО должен быть финальный шаг «Открыть App клиента, проверить, что изменения действительно отображаются».</div>
+    <p>QA не считает тест пройденным, пока не убедился в этом со стороны клиента.</p>
+    <h3>Где проверять у клиента</h3>
+    <ul>
+      <li><b>Карточка заказа</b> — статус, сумма, скидки, признак оплаты, фото от технолога, доп. реквизиты.</li>
+      <li><b>Виджеты на главном экране</b> — W-1 «Курьер в пути», W-2 «Подтвердите заказ».</li>
+      <li><b>«Мои бонусы» / «История бонусов»</b> — для каждой операции списания и начисления должна быть отдельная транзакция с привязкой к заказу.</li>
+      <li><b>История заказов</b> — заказ должен переместиться в раздел «Завершённые» после выдачи.</li>
+      <li><b>Push-уведомления</b> — N-1 «Курьер в пути», уведомления об изменении статуса.</li>
+    </ul>
+  </div>
+
+  <h2 id="delays">Задержки и тайминги</h2>
+  <div class="card">
+    <table>
+      <thead><tr><th>Направление</th><th>Режим</th><th>Когда</th></tr></thead>
+      <tbody>
+        <tr><td>АГБИС → Back</td><td><span class="pill pill-warn">15–45 мин</span></td><td>Создание, приёмка, оплата в ПП, выдача</td></tr>
+        <tr><td>Back → АГБИС</td><td><span class="pill pill-ok">быстро</span></td><td>Признаки «фабрика/клиент = Да», синхронизация лояльности</td></tr>
+        <tr><td>Teletrack ↔ Back</td><td><span class="pill pill-ok">real-time</span></td><td>Любой курьерский статус</td></tr>
+        <tr><td>Cloud / Life → Back</td><td><span class="pill pill-ok">real-time</span></td><td>Колбэки оплаты</td></tr>
+        <tr><td>Back ↔ Maxma</td><td><span class="pill pill-ok">быстро</span></td><td>Лояльность</td></tr>
+        <tr><td>Back ↔ App</td><td><span class="pill pill-ok">real-time</span></td><td>Статусы и виджеты</td></tr>
+      </tbody>
+    </table>
+    <div class="note-info">При тестировании этапов с участием АГБИС закладывайте 15–45 минут на синхронизацию. Если статусы доходят дольше 45 минут — это повод открыть тикет на мониторинг поллинга.</div>
+  </div>
+
+  <h2 id="delivery-rules">Правила доставки и слотов</h2>
+  <div class="card">
+    <ul>
+      <li><b>Город:</b> Санкт-Петербург.</li>
+      <li><b>Бесплатная доставка:</b> при сумме заказа ≥ <code>2490 ₽</code>.</li>
+      <li><b>Платная доставка:</b> <code>390 ₽</code> при сумме &lt; 2490 ₽.</li>
+      <li><b>Граничный случай:</b> сумма ровно 2490 ₽ — доставка должна быть бесплатной (правило ≥). Если в коде строго &gt; — открыть тикет на расхождение с документом.</li>
+      <li><b>Слоты:</b>
+        <ul>
+          <li>Прошедшее время недоступно.</li>
+          <li>Слот возврата нельзя выбрать раньше слота забора.</li>
+          <li>Слот может «протухнуть» во время оформления — система должна предложить выбрать новый и не создать заказ со старым.</li>
+        </ul>
+      </li>
+      <li><b>Пункты приёма в СПб:</b> 3 ПП (адреса и часы работы должны быть видны клиенту).</li>
+      <li><b>Возврат в ПП на сайте:</b> на сайте НЕЛЬЗЯ выбрать ПП — только ввести адрес доставки.</li>
+    </ul>
+  </div>
+
+  <h2 id="address-rules">Адрес и способ возврата после подтверждения</h2>
+  <div class="card">
+    <div class="note-warn"><b>Главное правило:</b> после подтверждения заказа клиентом адрес доставки или ПП можно <b>только заменить на другой</b>. Кнопок «удалить адрес», «уточнить позже» НЕТ.</div>
+    <ul>
+      <li>Если способ возврата = «доставка», адрес можно сменить на другой адрес из той же или другой зоны Teletrack. Слот пересчитается.</li>
+      <li>Если способ возврата = «самовывоз ПП», можно сменить ПП на другой, но нельзя «не выбрать ПП».</li>
+      <li>Полное удаление способа возврата запрещено.</li>
+      <li>Если задача доставки уже создана (этап 6А) — изменение адреса должно быть согласовано с Teletrack (TODO правило обновления / переназначения).</li>
+    </ul>
+  </div>
+
+  <h2 id="loyalty">Лояльность: скидки, промокоды, бонусы</h2>
+  <div class="card">
+    <h3>Что такое лояльность</h3>
+    <ul>
+      <li><b>Скидка по составу</b> — автоматическая, по правилам Maxma.</li>
+      <li><b>Промокод</b> — вручную вводится клиентом или применяется в АГБИС.</li>
+      <li><b>Бонусы</b> — баланс клиента в Maxma. Можно списывать на оплату.</li>
+    </ul>
+
+    <h3>Правило «всё или ничего»</h3>
+    <p>Если хотя бы одна сущность лояльности в комбинации не валидна (промокод просрочен, бонусов недостаточно) — лояльность НЕ применяется частично. Клиент получает либо весь стек, либо ничего.</p>
+
+    <h3>В АГБИС — агрегированная скидка</h3>
+    <p>В АГБИС скидки и промокоды свёрнуты в одну сумму скидки в рублях. <b>Бонусы передаются ОТДЕЛЬНО.</b> Из АГБИС в Back приходят: «итоговая скидка X ₽» и «количество списанных бонусов Y».</p>
+
+    <h3>Заказ в АГБИС закрывается на ПОЛНУЮ сумму</h3>
+    <p>Включая доставку. Если оплата частичная (бонусы + деньги + скидка) — все три суммы должны давать в сумме полную стоимость. Сверить: АГБИС = Back = Maxma.</p>
+
+    <h3>История бонусов в App</h3>
+    <ul>
+      <li>Каждое списание и каждое начисление = отдельная запись в «Мои бонусы» / «История бонусов».</li>
+      <li>Запись должна быть привязана к конкретному заказу (можно нажать и перейти в карточку заказа).</li>
+      <li>Дата и время совпадают с моментом операции в АГБИС/Back.</li>
+      <li>Итоговый баланс пересчитан корректно.</li>
+    </ul>
+
+    <h3>Кешбэк</h3>
+    <p>Начисляется на сумму, оплаченную ДЕНЬГАМИ (не на бонусы и не на скидку). TODO: уточнить триггер (оплата / завершение / выдача).</p>
+
+    <h3>Риск двойного списания бонусов</h3>
+    <div class="note-warn">Локальная копия Maxma в АГБИС может разойтись с центральной. Если технолог списал бонусы в АГБИС, а клиент параллельно списывает те же бонусы в App до синхронизации — возможен «долг». При тестировании обращайте внимание на одновременные операции.</div>
+  </div>
+
+  <h2 id="payment-channels">Каналы оплаты</h2>
+  <div class="card">
+    <table>
+      <thead><tr><th>Канал</th><th>Где</th><th>Через что</th></tr></thead>
+      <tbody>
+        <tr><td>Онлайн в App</td><td>Клиент в приложении</td><td>Cloud (карта / СБП)</td></tr>
+        <tr><td>Ссылка от технолога</td><td>SMS/Email клиенту</td><td>Cloud</td></tr>
+        <tr><td>Оплата при доставке (СБП)</td><td>Курьер показывает QR</td><td>Cloud</td></tr>
+        <tr><td>Оплата при доставке (карта)</td><td>Курьер с Life-терминалом</td><td>Life + matching по сумма/время/курьер</td></tr>
+        <tr><td>Оплата в ПП наличными</td><td>Касса АГБИС</td><td>АГБИС</td></tr>
+        <tr><td>Оплата в ПП картой</td><td>Терминал АГБИС</td><td>АГБИС (не Life)</td></tr>
+        <tr><td>Оплата в ПП СБП</td><td>QR от АГБИС</td><td>АГБИС (не Cloud)</td></tr>
+      </tbody>
+    </table>
+    <div class="note-warn"><b>Важно:</b> матчинг Life по сумма+время+курьер пока на холде. При совпадающих параметрах нескольких заказов возможны коллизии — платёж попадает в ручную приёмку.</div>
+  </div>
+
+  <h2 id="admin">Админка / CMS / CRM (отдельное тестирование)</h2>
+  <div class="card">
+    <div class="note-info">Тестирование админки идёт <b>отдельно</b> от flow заказа. Покрывает управление контентом сайта/App, пунктами приёма, услугами и категориями, слотами, и весь functional CRM-карточки заказа.</div>
+
+    <h3>Управление контентом (CMS)</h3>
+    <ul>
+      <li>Статьи блога — создание, редактирование, публикация.</li>
+      <li>Контентные страницы: «Главная», «Компания», «Программа лояльности», «Способы оплаты», «Реквизиты» и т.д.</li>
+      <li>Акции — создание, активация, завершение, баннеры.</li>
+      <li>Отзывы — добавление, редактирование, скрытие.</li>
+      <li>«Истории» в App — карточки на главном экране.</li>
+      <li>FAQ (вопросы-ответы) — категории, порядок.</li>
+      <li>Онбординг в App — экраны при первом запуске.</li>
+    </ul>
+
+    <h3>Управление пунктами приёма</h3>
+    <ul>
+      <li>Создание ПП с адресом, часами, координатами, признаками (касса, СБП).</li>
+      <li>Редактирование, временное отключение / включение.</li>
+      <li>Проверка отображения в App и на сайте.</li>
+    </ul>
+
+    <h3>Управление слотами</h3>
+    <ul>
+      <li>Загрузка таблицы слотов на следующий месяц (CSV / ручной ввод).</li>
+      <li>Редактирование отдельного дня, увеличение/уменьшение количества слотов.</li>
+      <li>Блокировка слота / целого дня (праздник, нет курьеров).</li>
+      <li>Проверка немедленного отражения изменений в App.</li>
+    </ul>
+
+    <h3>Категории и услуги</h3>
+    <ul>
+      <li>Создание категорий, иконки, порядок.</li>
+      <li>Создание услуг вручную: цена, тип (обычная / с калькулятором / с модификаторами).</li>
+      <li>Импорт услуг из АГБИС, привязка по идентификатору, признак «показывать клиентам».</li>
+      <li>Пометка «популярная» для подборок.</li>
+      <li>Редактирование цены — применяется только к новым заказам.</li>
+    </ul>
+
+    <h3>CRM-карточка заказа</h3>
+    <ul>
+      <li>Поиск по номеру/телефону/ФИО.</li>
+      <li>Фильтрация: статус, дата, способ оплаты, ПП, источник.</li>
+      <li>Полная информация: клиент, состав, скидки, бонусы, способ возврата, история статусов.</li>
+      <li>Фотоотчёт курьера и подпись клиента — отображаются в карточке (но НЕ показываются клиенту в App).</li>
+      <li>Формирование ссылки на оплату → отправка SMS/Email клиенту → проверка отображения «Оплачено» в App.</li>
+      <li>Частичный возврат: выбрать услугу/сумму → возврат через Cloud → пересчёт в АГБИС/Back/Maxma.</li>
+      <li>Полный возврат: возврат суммы + откат бонусов и кешбэка.</li>
+      <li>Скачивание квитанции (PDF) — реквизиты компании из актуальной CMS-страницы.</li>
+      <li>Ручное изменение статуса (с указанием причины) — для разруливания edge-кейсов.</li>
+    </ul>
+
+    <h3>Учётные функции</h3>
+    <ul>
+      <li>Роли и права: Админ, Контент-менеджер, Техподдержка, Маркетолог.</li>
+      <li>Аудит-лог изменений: кто, что, когда, старое и новое значение.</li>
+    </ul>
+  </div>
+
+  <h2 id="statuses">Карта статусов</h2>
+  <div class="card">
+    <table>
+      <thead><tr><th>Система</th><th>Статусы</th></tr></thead>
+      <tbody>
+        <tr><td>App</td><td>APP-1 «Заказ создан» → APP-3 «Сбор вещей» → APP-4 «Приёмка вещей» → APP-5 «Вещи приняты» → APP-6 «Чистим» → APP-7 «Готово к отправке» → APP-8 «Доставка» → APP-9 «Готов к выдаче» (для самовывоза) → APP-10 «Выдан»</td></tr>
+        <tr><td>Back</td><td>BACK-1 «Новый» → BACK-2 «Назначен курьер (приём)» → BACK-3 «Сбор» → BACK-4 «Приём на фабрике» → BACK-5 «Подтверждён клиентом» → BACK-6 «Чистим» → BACK-7 «Готов к отправке (отдача)» → BACK-8 «Назначен курьер (отдача)» → BACK-9 «Доставка вещей (отдача)» → BACK-10 «Ожидает самовывоз» → BACK-11 «Завершён»</td></tr>
+        <tr><td>АГБИС</td><td>AG-1 «Новый» → AG-2 «В исполнении» → AG-3 «Исполненный» → AG-4 «Выданный» (AG-5 «Закрытый» НЕ используется)</td></tr>
+        <tr><td>АГБИС услуги</td><td>AG-I-1 «Новая» → AG-I-2 «В работе» → AG-I-3 «Готова» / AG-I-6 «Отменена»</td></tr>
+        <tr><td>Teletrack</td><td>TELE-1 «Новая» → TELE-2 «Принята» → TELE-3 «В работе» → TELE-4 «В пути» (игнорируется) → TELE-5 «Выполнена»</td></tr>
+        <tr><td>Maxma</td><td>MAX-1 «В работе» → MAX-2 «Завершённый»</td></tr>
+      </tbody>
+    </table>
+    <h3>Виджеты у клиента</h3>
+    <ul>
+      <li><b>W-1 «Курьер в пути»</b> — включается при назначении курьера, выключается на TELE-5.</li>
+      <li><b>W-2 «Подтвердите заказ»</b> — включается после Фазы 2 этапа 3, выключается после подтверждения клиентом.</li>
+      <li><b>W-3 «Оцените качество»</b> — этап 7, опционально.</li>
+    </ul>
+  </div>
+
+  <h2 id="docs">Где искать документацию</h2>
+  <div class="card">
+    <ul>
+      <li><a href="https://ararostov.github.io/normaflow/" target="_blank" rel="noopener">Главная Norma Flow</a></li>
+      <li><a href="https://ararostov.github.io/normaflow/stage-1a.html" target="_blank" rel="noopener">Этап 1А — Создание в App / на сайте</a></li>
+      <li><a href="https://ararostov.github.io/normaflow/stage-1b.html" target="_blank" rel="noopener">Этап 1Б — Создание в ПП через АГБИС</a></li>
+      <li><a href="https://ararostov.github.io/normaflow/stage-2.html" target="_blank" rel="noopener">Этап 2 — Сбор вещей</a></li>
+      <li><a href="https://ararostov.github.io/normaflow/stage-3.html" target="_blank" rel="noopener">Этап 3 — Приёмка и подтверждение</a></li>
+      <li><a href="https://ararostov.github.io/normaflow/stage-4.html" target="_blank" rel="noopener">Этап 4 — Оплата и лояльность</a></li>
+      <li><a href="https://ararostov.github.io/normaflow/stage-5.html" target="_blank" rel="noopener">Этап 5 — Чистка</a></li>
+      <li><a href="https://ararostov.github.io/normaflow/stage-6a.html" target="_blank" rel="noopener">Этап 6А — Доставка домой</a></li>
+      <li><a href="https://ararostov.github.io/normaflow/stage-6v.html" target="_blank" rel="noopener">Этап 6В — Доставка в ПП</a></li>
+      <li><a href="https://ararostov.github.io/normaflow/stage-7.html" target="_blank" rel="noopener">Этап 7 — Завершение и отзыв</a></li>
+    </ul>
+  </div>
+
+  <h2 id="tips">Лайфхаки и типовые ошибки</h2>
+  <div class="card">
+    <h3>Что чаще всего ломается</h3>
+    <ul>
+      <li><b>Заказ в АГБИС закрыт не на полную сумму</b> (особенно с доставкой). Сверять «АГБИС = Back = Maxma».</li>
+      <li><b>Бонусы и скидки склеиваются</b> в одну сумму при передаче. Должны быть отдельно.</li>
+      <li><b>Двойное списание бонусов</b> при одновременных операциях АГБИС и App.</li>
+      <li><b>Цена изменена технологом, но платёж не пересчитан.</b> На этапе 3 нет автопересчёта — только смена цены.</li>
+      <li><b>Виджеты не выключаются</b> после соответствующего перехода (особенно W-1 после TELE-5).</li>
+      <li><b>Спящие статусы</b> — APP-9 и BACK-10 живут только в самовывозе. Если они появились в доставке домой — баг.</li>
+      <li><b>На сайте применяют функцию, которой там нет</b> — авторизация, реферальная программа, выбор ПП. Этого не должно быть.</li>
+    </ul>
+
+    <h3>Полезные приёмы</h3>
+    <ul>
+      <li>Прежде чем тестировать любой этап с АГБИС — закладывайте 15–45 мин на синхронизацию.</li>
+      <li>Для тестов с порогом доставки готовьте 3 заказа: чуть ниже 2490, ровно 2490, чуть выше.</li>
+      <li>Для тестов лояльности готовьте отдельного клиента с известным балансом бонусов.</li>
+      <li>Для тестов матчинга Life — не запускайте параллельно одинаковые заказы.</li>
+      <li>Для тестов поллинга 6В — фиксируйте время смены склада в АГБИС, чтобы потом сверить со временем перехода в Back.</li>
+      <li>Делайте скриншоты «до» и «после» — особенно баланса бонусов и сумм заказа.</li>
+    </ul>
+
+    <h3>Когда что-то странное в App</h3>
+    <ul>
+      <li>Прокрутить экран — иногда обновляется по pull-to-refresh.</li>
+      <li>Свернуть и открыть приложение заново — иногда это триггерит подгрузку.</li>
+      <li>Если статус не догнал за 45 мин — это повод тикета.</li>
+    </ul>
+  </div>
+
+  <p style="margin-top:36px"><a class="back-link" href="qa-tests.html">← К каталогу QA сценариев</a></p>
+</div>
+
+<script>
+(function() {
+  const toast = document.getElementById('copy-toast');
+  function showToast(text) {
+    if (!toast) return;
+    toast.textContent = text;
+    toast.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => toast.classList.remove('show'), 1500);
+  }
+
+  // Toggle visibility of password
+  document.querySelectorAll('button[data-toggle]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const row = btn.closest('.cred-row');
+      const value = row && row.querySelector('.cred-value');
+      if (!value) return;
+      const isMasked = value.classList.contains('masked');
+      const secret = value.getAttribute('data-secret');
+      if (isMasked) {
+        value.textContent = secret;
+        value.classList.remove('masked');
+        btn.textContent = '🙈';
+      } else {
+        value.textContent = '•'.repeat(secret.length);
+        value.classList.add('masked');
+        btn.textContent = '👁';
+      }
+    });
+  });
+
+  // Copy secret to clipboard
+  document.querySelectorAll('button[data-copy]').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const text = btn.getAttribute('data-copy');
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast('Скопировано');
+      } catch (e) {
+        // Fallback
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); showToast('Скопировано'); }
+        catch (_) { showToast('Не удалось скопировать'); }
+        document.body.removeChild(ta);
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

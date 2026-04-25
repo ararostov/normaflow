@@ -2856,11 +2856,25 @@ function escape(s) {
 }
 
 // === Bug creation: GitHub prefilled-issue links ===
-// Поправь owner/repo здесь, когда репозитории появятся.
-const BUG_GH_OWNER = "ararostov";
+// Issue создаётся в репозитории. Чтобы он автоматически попал в Project,
+// настройте в самом Project auto-add rule (например, по лейблу `qa`).
+// project: ссылка на доску — добавляется в тело issue для удобства.
 const BUG_REPOS = [
-  { repo: "norma-app",     label: "App" },
-  { repo: "norma-backend", label: "Backend" }
+  {
+    repo: "x2-agency/norma-backend",
+    label: "[Norma] Backend",
+    project: { org: "x2-agency", number: 4, url: "https://github.com/orgs/x2-agency/projects/4" }
+  },
+  {
+    repo: "x2-agency/norma-app",
+    label: "[Norma] mobile-app",
+    project: { org: "x2-agency", number: 9, url: "https://github.com/orgs/x2-agency/projects/9" }
+  },
+  {
+    repo: "x2-agency/norma-webapp",
+    label: "[Norma] Frontend",
+    project: { org: "x2-agency", number: 7, url: "https://github.com/orgs/x2-agency/projects/7" }
+  }
 ];
 
 function createBug(scId, btn) {
@@ -2868,8 +2882,10 @@ function createBug(scId, btn) {
   if (!sc) { alert('Тест не найден: ' + scId); return; }
 
   const select = btn.parentElement.querySelector('.bug-repo');
-  const repo = select.value;
+  const repoFull = select.value; // owner/repo
   const repoLabel = select.options[select.selectedIndex].text;
+  const repoCfg = BUG_REPOS.find(r => r.repo === repoFull);
+  const project = repoCfg && repoCfg.project;
 
   const summary = prompt('Кратко опиши проблему (станет заголовком issue):', '');
   if (summary === null) return;
@@ -2903,7 +2919,7 @@ function createBug(scId, btn) {
 **Дата:** ${dateStr}
 **Тест:** [\`${sc.id}\` — ${sc.title}](${testUrl})
 **Этап:** ${stagesStr}
-**Тип:** ${sc.type}${sc.role ? `\n**Роль:** ${roleLabels[sc.role] || sc.role}` : ''}
+**Тип:** ${sc.type}${sc.role ? `\n**Роль:** ${roleLabels[sc.role] || sc.role}` : ''}${project ? `\n**Project:** [${repoLabel}](${project.url})` : ''}
 
 ## Предусловия
 ${preMd}
@@ -2930,10 +2946,13 @@ _Перетащи файлы (PNG, JPG, GIF, MP4) прямо в это поле 
 🔗 Создано из QA-сценария: ${testUrl}`;
 
   const title = `[QA] ${sc.id}: ${trimmed}`;
-  const url = `https://github.com/${BUG_GH_OWNER}/${repo}/issues/new`
-            + `?title=${encodeURIComponent(title)}`
-            + `&body=${encodeURIComponent(body)}`
-            + `&labels=${encodeURIComponent('bug,qa')}`;
+  let url = `https://github.com/${repoFull}/issues/new`
+          + `?title=${encodeURIComponent(title)}`
+          + `&body=${encodeURIComponent(body)}`
+          + `&labels=${encodeURIComponent('bug,qa')}`;
+  if (project) {
+    url += `&projects=${encodeURIComponent(project.org + '/' + project.number)}`;
+  }
 
   window.open(url, '_blank', 'noopener');
 }
